@@ -1,0 +1,88 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MasterPage.master.cs" Inherits="ProyectoPedidosRestaurante.Views.MasterPage" %>
+
+<!DOCTYPE html>
+<html>
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Sistemas MH</title>
+
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+        }
+
+        form {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background-color: #2c2c2c;
+            width: 100%;
+            text-align: center;
+            padding: 50px 0;
+        }
+
+            .header span {
+                font-weight: bold;
+            }
+
+        .sistemas {
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .mh {
+            color: #00BFFF;
+            font-size: 2.25rem;
+        }
+
+        .content {
+            flex: 2;
+            padding: 20px;
+        }
+
+        .footer {
+            background-color: #2c2c2c;
+            color: #ccc;
+            text-align: center;
+            padding: 20px 0;
+            font-size: 14px;
+            border-top: 1px solid #444;
+        }
+
+            .footer .mh {
+                color: #00BFFF;
+                font-size: 1.25rem;
+            }
+    </style>
+
+    <asp:ContentPlaceHolder ID="head" runat="server" />
+</head>
+<body>
+    <form id="form1" runat="server">
+        <!-- Encabezado -->
+        <div class="header">
+            <span class="sistemas">SISTEMAS</span>
+            <span class="mh">MH</span>
+        </div>
+
+        <!-- Contenido principal -->
+        <div class="content">
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server" />
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>© 2025 <strong>SISTEMAS <span class="mh">MH</span></strong>. Todos los derechos reservados.</p>
+        </div>
+    </form>
+</body>
+</html>
+
