@@ -1,0 +1,95 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MasterPage.master.cs" Inherits="ProyectoPedidosResto.Views.MasterPage" %>
+
+
+<!DOCTYPE html>
+<html>
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SistemasMH</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: #2e2e2e;
+            color: white;
+            padding-bottom: 60px;
+        }
+
+        .header {
+            background-color: #000;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-placeholder {
+            width: 50px;
+            height: 50px;
+            background-color: #ccc;
+            color: darkred;
+            font-weight: bold;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 4px;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #111;
+            color: #ccc;
+            text-align: center;
+            padding: 0.5rem 0;
+            font-size: 0.9rem;
+        }
+    </style>
+
+    <asp:ContentPlaceHolder ID="head" runat="server" />
+</head>
+<body>
+    <form id="form1" runat="server">
+
+        <!-- Header -->
+        <div class="header">
+            <!-- Izquierda: Empresa y Logo -->
+            <div class="logo-container">
+                <span class="fw-bold">Empresa</span>
+                <div class="logo-placeholder">Logo</div>
+            </div>
+
+            <!-- Derecha: Saludo al usuario -->
+            <div>
+                <asp:Label ID="lblSaludo" runat="server" Text="Hola, Usuario"></asp:Label>
+            </div>
+        </div>
+
+        <!-- Contenido dinámico -->
+        <div class="container-fluid mt-3">
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server" />
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            Sistemas MH - Todos los derechos reservados ©
+        </footer>
+
+    </form>
+</body>
+</html>
