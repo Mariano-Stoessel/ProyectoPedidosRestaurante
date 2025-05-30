@@ -23,7 +23,7 @@
             <asp:TextBox ID="txtUsuario" runat="server" CssClass="form-control mb-2" Placeholder="Usuario"></asp:TextBox>
             <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" CssClass="form-control mb-3" Placeholder="Contraseña"></asp:TextBox>
 
-            <asp:Button ID="btnLogin" runat="server" CssClass="btn btn-primary w-100" Text="Login" />
+            <asp:Button ID="btnLogin" runat="server" CssClass="btn btn-primary w-100" Text="Login" OnClick="btnLogin_Click"/>
 
             <asp:Label ID="lblMensaje" runat="server" ForeColor="Red" EnableViewState="false"></asp:Label>
         </div>
