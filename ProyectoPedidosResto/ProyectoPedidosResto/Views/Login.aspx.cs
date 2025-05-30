@@ -13,5 +13,12 @@ namespace ProyectoPedidosResto.Views
         {
 
         }
+
+        protected void btnLogin_Click(object sender, EventArgs e)
+        {
+            // Validar usuario
+
+            Response.Redirect("Tables.aspx");
+        }
     }
 }
