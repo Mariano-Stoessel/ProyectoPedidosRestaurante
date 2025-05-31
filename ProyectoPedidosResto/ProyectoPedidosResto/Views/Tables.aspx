@@ -81,7 +81,7 @@
                     </div>
                 </div>
 
-                <!--   PRUEBA DE VARIAS CARTAS      
+                    
                 <div class="col d-flex">
 
                     <div class="card text-bg-danger mesa-card w-100">
@@ -178,7 +178,7 @@
                         </div>
                     </div>
                 </div>
-          -->
+          
 
             </div>
         </div>
