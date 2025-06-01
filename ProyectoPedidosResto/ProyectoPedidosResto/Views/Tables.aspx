@@ -72,7 +72,7 @@
         <div class="mesas">
             <div class="container mt-3">
                 <div class="row row-cols-2 g-2">
-                    <div class="col d-flex">
+                    <%--<div class="col d-flex">
                         <div class="card text-bg-success mesa-card w-100">
                             <div class="card-header text-center">Libre</div>
                             <div class="card-body">
@@ -152,7 +152,7 @@
                                 <asp:Button Text="Cargar Mesa" runat="server" CssClass="btn btn-light" ID="Button6" OnClick="BtnCargarMesa_Click" />
                             </div>
                         </div>
-                    </div>
+                    </div>--%>
 
 
                     <div class="col d-flex">
@@ -164,30 +164,18 @@
                                 <p class="card-text">Reserva para 3.</p>
                             </div>
                             <div class="card-footer">
-                                <asp:Button Text="Cargar Mesa" runat="server" CssClass="btn btn-light" ID="Button4" OnClick="BtnCargarMesa_Click" />
+                                <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                    Cargar Mesa
+                                </button>
                             </div>
                         </div>
                     </div>
-
-                    <div class="col d-flex">
-
-                        <div class="card text-bg-success mesa-card w-100">
-                            <div class="card-header text-center">Libre</div>
-                            <div class="card-body">
-                                <h5 class="card-title">MESA 1</h5>
-                                <p class="card-text"></p>
-                            </div>
-                            <div class="card-footer">
-                                <asp:Button Text="Cargar Mesa" runat="server" CssClass="btn btn-light" ID="Button5" OnClick="BtnCargarMesa_Click" />
-                            </div>
-                        </div>
-                    </div>
-
-
                 </div>
             </div>
+            
 
-            <div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <%--Modal--%>
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content bg-dark text-white">
                         <div class="modal-header border-secondary">
@@ -226,8 +214,6 @@
                     </div>
                 </div>
             </div>
-
-            <asp:Literal ID="modalScript" runat="server" />
         </div>
     </div>
 

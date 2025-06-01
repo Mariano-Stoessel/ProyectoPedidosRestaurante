@@ -92,7 +92,7 @@
 
                 <div class="d-flex justify-content-between mb-2">
                     <button class="btn btn-delete">Eliminar</button>
-                    <button class="btn btn-success">Agregar</button>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalComandas" >Agregar</button>
                 </div>
 
                 <div class="product-list">
@@ -125,7 +125,7 @@
         </main>
 
         <!-- Modal Productos -->
-        <div class="modal fade" id="modalProductos" tabindex="-1" aria-labelledby="modalProductosLabel" aria-hidden="true">
+        <div class="modal fade" id="ModalComandas" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content bg-dark text-white">
                     <div class="modal-header border-0">
@@ -165,7 +165,7 @@
                                         <td>100</td>
                                         <td>$4500,00</td>
                                     </tr>
-                                    <tr class="table-primary text-dark">
+                                    <tr >
                                         <td>Flan c/ dulce de leche</td>
                                         <td>24</td>
                                         <td>$8000,00</td>

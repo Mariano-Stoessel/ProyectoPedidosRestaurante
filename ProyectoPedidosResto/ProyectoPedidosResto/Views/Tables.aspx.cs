@@ -19,7 +19,7 @@ namespace ProyectoPedidosResto.Views
 protected void BtnCargarMesa_Click(object sender, EventArgs e)
         {
 
-            modalScript.Text = "<script>var myModal = new bootstrap.Modal(document.getElementById('Modal')); myModal.show();</script>";
+           
         }
     }
 }

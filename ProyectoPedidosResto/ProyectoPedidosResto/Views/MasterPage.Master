@@ -83,7 +83,8 @@
             font-size: 0.8rem;
         }
     </style>
-    <script>
+
+   <%-- <script>
         document.addEventListener("DOMContentLoaded", () => {
             const btn = document.getElementById("btnFullscreen");
 
@@ -125,7 +126,7 @@
                 }
             });
         });
-    </script>
+    </script>--%>
 
 
     <asp:ContentPlaceHolder ID="head" runat="server" />
@@ -163,13 +164,13 @@
                                     <!-- Usuario -->
                                     <asp:Label ID="lblUsuario" runat="server" Text="Sesión de Maxi"/>
                                     
-                                    <!-- Pantalla completa -->
+                                   <%-- <!-- Pantalla completa -->
                                     <button id="btnFullscreen" type="button" class="btn btn-success text-white" onclick="toggleFullscreen()">
                                         Pantalla completa
-                                    </button>
+                                    </button>--%>
 
                                     <!-- Cerrar Sesión -->
-                                    <asp:Button ID="btnCerrarSesion" runat="server" Text="Cerrar Sesión" CssClass="btn btn-danger btn-cerrar-sesion"/>
+                                    <asp:Button ID="btnCerrarSesion"  runat="server" Text="Cerrar Sesión" CssClass="btn btn-danger btn-cerrar-sesion"/>
                                 </div>
                             </div>
                         </div>
