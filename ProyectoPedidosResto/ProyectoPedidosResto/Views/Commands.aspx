@@ -4,38 +4,6 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <style>
-        main {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px 0;
-        }
-
-        .container-box {
-            width: 100%;
-            padding: 20px;          
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        }
-
-        .table-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .btn-delete {
-            background-color: #c0392b;
-            color: white;
-        }
-
-        .btn-add {
-            background-color: #27ae60;
-            color: white;
-        }
-
         .btn-finalize {
             background-color: #2980b9;
             color: white;
@@ -46,15 +14,13 @@
             background-color: #2b2b2b;
             padding: 0.5rem;
             border-radius: 5px;
-             font-size: smaller;
+            font-size: smaller;
             margin-bottom: 10px;
             height: 200px;
             overflow-y: auto;
         }
 
         .product-item {
-            display: flex;
-            justify-content: space-between;
             padding: 5px 0;
             font-size: smaller;
             border-bottom: 1px solid #444;
@@ -66,64 +32,108 @@
             border: 1px solid #555 !important;
         }
     </style>
-    <div class="Comandas">
-
-        <main>
-            <div class="container-box">
-                <div class="table-header">
-
+    <div class="commands-container p-3">
+        <div class="row" style="text-align: center;">
+            <h1>Consumos</h1>
+        </div>
+        <div class="estadoPedido pb-2">
+            <div class="row mb-2">
+                <div class="col-4">
                     <h5>Mesa 1</h5>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="consumos">
-                        <label class="form-check-label" for="consumos">Consumos</label>
-                    </div>
                 </div>
-
-                <p class="mb-2">Mozo a cargo: <strong>Wanchope Avila</strong></p>
-                <div class="mb-3">
-                    <select class="form-select" id="estadoPedido">
-                        <option selected>Estado de pedido</option>
-                        <option value="1">Pendiente</option>
-                        <option value="2">En preparación</option>
-                        <option value="3">Servido</option>
-                    </select>
-                </div>
-
-
-                <div class="d-flex justify-content-between mb-2">
-                    <button class="btn btn-delete">Eliminar</button>
-                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#ModalComandas" >Agregar</button>
-                </div>
-
-                <div class="product-list">
-                    <div class="product-item">
-                        <span>Coca cola 1.5 L (2)</span>
-                        <span>$10.000,00</span>
-                    </div>
-                    <div class="product-item">
-                        <span>Milanesa c/ guarnición (1)</span>
-                        <span>$15.000,00</span>
-                    </div>
-                    <div class="product-item">
-                        <span>Sorrentinos Promo (1)</span>
-                        <span>$20.000,00</span>
-                    </div>
-                </div>
-
-                <div class="d-flex align-items-center mb-3">
-                    <label for="cantidad" class="me-2">Cantidad:</label>
-                    <input type="number" class="form-control w-25 me-2" id="cantidad" value="1" min="1">
-                </div>
-
-                <h5 class="text-end mb-3">Total: <strong>$45.000,00</strong></h5>
-
-                <div class="d-flex justify-content-between">
-                    <asp:Button id="BtnVolver"  runat="server"  Text="Volver" Class="btn btn-secondary" OnClick="BtnVolver_Click"/>
- 
-                    <button class="btn btn-primary">Finalizar</button>
+                <div class="col-8 text-end">
+                    <strong>Wanchope Avila</strong>
                 </div>
             </div>
-        </main>
+            <div class="row m-0">
+                <asp:DropDownList ID="ddlEstadoPedido" runat="server" CssClass="form-select bg-primary text-white text-center">
+                    <asp:ListItem Text="Estado del Pedido" Value="" Disabled="true" Selected="true"></asp:ListItem>
+                    <asp:ListItem Text="Pendiente" Value="1"></asp:ListItem>
+                    <asp:ListItem Text="En preparación" Value="2"></asp:ListItem>
+                    <asp:ListItem Text="Servido" Value="3"></asp:ListItem>
+                </asp:DropDownList>
+            </div>
+        </div>
+        <div class="listaPedido pb-2">
+            <div class="product-list">
+                <div class="row bg-dark pb-2">
+                    <div class="col-6">
+                        <span>Producto</span>
+                    </div>
+                    <div class="col-2 text-end">
+                        <span>Un</span>
+                    </div>
+                    <div class="col text-end">
+                        <span>Subtotal</span>
+                    </div>
+                </div>
+                <div class="product-item">
+                    <div class="row pb-1">
+                        <div class="col-6">
+                            <span>Coca cola 1.5 L</span>
+                        </div>
+                        <div class="col-2 text-end">
+                            <span>2</span>
+                        </div>
+                        <div class="col text-end">
+                            <span>$10.000,00</span>
+                        </div>
+                    </div>
+                    <div class="row pb-1">
+                        <div class="col-6">
+                            <span>Milanesa c/ guarnición</span>
+                        </div>
+                        <div class="col-2 text-end">
+                            <span>1</span>
+                        </div>
+                        <div class="col text-end">
+                            <span>$15.000,00</span>
+                        </div>
+                    </div>
+                    <div class="row pb-1">
+                        <div class="col-6">
+                            <span>Sorrentinos Promo</span>
+                        </div>
+                        <div class="col-2 text-end">
+                            <span>1</span>
+                        </div>
+                        <div class="col text-end">
+                            <span>$20.000,00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="controlPedido pb-2">
+            <div class="row pb-2">
+                <div class="col-6">
+                    <button class="btn btn-danger">Eliminar</button>
+                </div>
+                <div class="col-6">
+                    <div class="input-group">
+                        <button type="button" class="btn btn-primary">- </button>
+                        <span id="lblCantidad" class="form-control text-center bg-primary text-white border-0">1</span>
+                        <button type="button" class="btn btn-primary">+ </button>
+                    </div>
+                </div>
+            </div>
+            <div class="row m-0">
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#ModalComandas">Agregar</button>
+            </div>
+            <div class="row pt-3">
+                <div class="col">
+                    <h5>Total:</h5>
+                </div>
+                <div class="col text-end">
+                    <h5><strong>$45.000,00</strong></h5>
+                </div>
+            </div>
+        </div>
+        <div class="FinalizarPedido d-flex justify-content-between">
+            <asp:Button ID="BtnVolver" runat="server" Text="Volver" Class="btn btn-secondary" OnClick="BtnVolver_Click" />
+
+            <button class="btn btn-primary">Finalizar</button>
+        </div>
 
         <!-- Modal Productos -->
         <div class="modal fade" id="ModalComandas" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -143,7 +153,7 @@
                             <button class="btn btn-secondary me-2" type="button">Limpiar</button>
                         </div>
                         <div class="mb-3 d-flex">
-                        <input type="text" class="form-control me-2" placeholder="Buscar producto...">
+                            <input type="text" class="form-control me-2" placeholder="Buscar producto...">
                             <button class="btn btn-primary me-2" type="button">Buscar</button>
 
                         </div>
@@ -169,7 +179,7 @@
                                         <td>100</td>
                                         <td>$4500,00</td>
                                     </tr>
-                                    <tr >
+                                    <tr>
                                         <td>Flan c/ dulce de leche</td>
                                         <td>24</td>
                                         <td>$8000,00</td>
@@ -185,7 +195,7 @@
                                         <td>$20000,00</td>
                                     </tr>
                                 </tbody>
-                               
+
                             </table>
                         </div>
 
@@ -196,7 +206,7 @@
 
                         <div class="d-flex justify-content-between">
                             <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Volver</button>
-                            <button class="btn btn-success" data-bs-dismiss="modal" type="button" >Agregar</button>
+                            <button class="btn btn-success" data-bs-dismiss="modal" type="button">Agregar</button>
                         </div>
                     </div>
                 </div>
