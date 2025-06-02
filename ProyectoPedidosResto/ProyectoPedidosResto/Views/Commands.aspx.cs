@@ -12,5 +12,10 @@ namespace ProyectoPedidosResto.Views
         protected void Page_Load(object sender, EventArgs e)
         {
         }
+
+        protected void BtnVolver_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Tables.aspx");
+        }
     }
 }

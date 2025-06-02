@@ -14,9 +14,7 @@
 
         .container-box {
             width: 100%;
-            max-width: 400px;
-            padding: 20px;
-            background-color: #2b2b2b;
+            padding: 20px;          
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
@@ -44,9 +42,11 @@
         }
 
         .product-list {
-            background-color: black;
-            padding: 10px;
+            margin: 0.5rem auto;
+            background-color: #2b2b2b;
+            padding: 0.5rem;
             border-radius: 5px;
+             font-size: smaller;
             margin-bottom: 10px;
             height: 200px;
             overflow-y: auto;
@@ -56,6 +56,7 @@
             display: flex;
             justify-content: space-between;
             padding: 5px 0;
+            font-size: smaller;
             border-bottom: 1px solid #444;
         }
 
@@ -70,16 +71,16 @@
         <main>
             <div class="container-box">
                 <div class="table-header">
-                    <h5>Mesa 1</h5>
 
+                    <h5>Mesa 1</h5>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="consumos">
                         <label class="form-check-label" for="consumos">Consumos</label>
                     </div>
                 </div>
 
+                <p class="mb-2">Mozo a cargo: <strong>Wanchope Avila</strong></p>
                 <div class="mb-3">
-                    <label for="estadoPedido" class="form-label">Estado de pedido</label>
                     <select class="form-select" id="estadoPedido">
                         <option selected>Estado de pedido</option>
                         <option value="1">Pendiente</option>
@@ -88,11 +89,10 @@
                     </select>
                 </div>
 
-                <p class="mb-2">Mozo a cargo: <strong>Wanchope Avila</strong></p>
 
                 <div class="d-flex justify-content-between mb-2">
                     <button class="btn btn-delete">Eliminar</button>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalComandas" >Agregar</button>
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#ModalComandas" >Agregar</button>
                 </div>
 
                 <div class="product-list">
@@ -118,8 +118,9 @@
                 <h5 class="text-end mb-3">Total: <strong>$45.000,00</strong></h5>
 
                 <div class="d-flex justify-content-between">
-                    <button class="btn btn-secondary">Cancelar</button>
-                    <asp:Button ID="btnFinalizar" runat="server" Text="Finalizar" CssClass="btn btn-success" />
+                    <asp:Button id="BtnVolver"  runat="server"  Text="Volver" Class="btn btn-secondary" OnClick="BtnVolver_Click"/>
+ 
+                    <button class="btn btn-primary">Finalizar</button>
                 </div>
             </div>
         </main>
@@ -140,10 +141,13 @@
                                 <option value="2">Comidas</option>
                             </select>
                             <button class="btn btn-secondary me-2" type="button">Limpiar</button>
-                            <button class="btn btn-primary" type="button">Buscar</button>
+                        </div>
+                        <div class="mb-3 d-flex">
+                        <input type="text" class="form-control me-2" placeholder="Buscar producto...">
+                            <button class="btn btn-primary me-2" type="button">Buscar</button>
+
                         </div>
 
-                        <input type="text" class="form-control mb-3" placeholder="Buscar producto...">
 
                         <div class="table-responsive mb-3" style="max-height: 200px; overflow-y: auto;">
                             <table class="table table-dark table-bordered table-hover text-white">
@@ -181,6 +185,7 @@
                                         <td>$20000,00</td>
                                     </tr>
                                 </tbody>
+                               
                             </table>
                         </div>
 
@@ -190,8 +195,8 @@
                         </div>
 
                         <div class="d-flex justify-content-between">
-                            <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Cancelar</button>
-                            <button class="btn btn-success" type="button">Agregar</button>
+                            <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Volver</button>
+                            <button class="btn btn-success" data-bs-dismiss="modal" type="button" >Agregar</button>
                         </div>
                     </div>
                 </div>
