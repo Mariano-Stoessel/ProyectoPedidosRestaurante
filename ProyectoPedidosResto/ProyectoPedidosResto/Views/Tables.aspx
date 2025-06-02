@@ -141,6 +141,8 @@
 
                     <% if (mesa.Estado == "libre" || mesa.Estado == "reservado")
                         { %>
+
+                    <!-- Modal Mesa -->
                     <div class="modal fade" id="<%= modalId %>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="label<%= modalId %>" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content bg-dark text-white">
