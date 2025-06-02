@@ -139,23 +139,29 @@
         <div class="modal fade" id="ModalComandas" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content bg-dark text-white">
-                    <div class="modal-header border-0">
-                        <h5 class="modal-title" id="modalProductosLabel">Productos</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    <div class="modal-header border-0 justify-content-center pb-1">
+                        <h3 class="modal-title" id="modalProductosLabel">Productos</h3>
                     </div>
                     <div class="modal-body">
-                        <div class="mb-3 d-flex">
-                            <select class="form-select me-2">
-                                <option selected>Categoría</option>
-                                <option value="1">Bebidas</option>
-                                <option value="2">Comidas</option>
-                            </select>
-                            <button class="btn btn-secondary me-2" type="button">Limpiar</button>
+                        <div class="row mb-3">
+                            <div class="col-8">
+                                <select class="form-select me-2">
+                                    <option selected>Categoría</option>
+                                    <option value="1">Bebidas</option>
+                                    <option value="2">Comidas</option>
+                                </select>
+                            </div>
+                            <div class="col-4 d-flex justify-content-end">
+                                <button class="btn btn-secondary me-2 w-100" type="button">Limpiar</button>
+                            </div>
                         </div>
-                        <div class="mb-3 d-flex">
-                            <input type="text" class="form-control me-2" placeholder="Buscar producto...">
-                            <button class="btn btn-primary me-2" type="button">Buscar</button>
-
+                        <div class="row pb-3">
+                            <div class="col-8">
+                                <input type="text" class="form-control me-2" placeholder="Buscar producto...">
+                            </div>
+                            <div class="col-4 d-flex justify-content-end">
+                                <button class="btn btn-primary me-2 w-100" type="button">Buscar</button>
+                            </div>
                         </div>
 
 
