@@ -39,6 +39,8 @@ namespace ProyectoPedidosResto.Views
                 ddlFiltros.Items.Add(new ListItem("Disponible", "2"));
                 ddlFiltros.Items.Add(new ListItem("Reservado", "3"));
                 ddlFiltros.Items.Add(new ListItem("Ocupado", "4"));
+
+                ddlFiltros.SelectedValue = "1";
             }
         }
 
@@ -56,11 +58,11 @@ namespace ProyectoPedidosResto.Views
         {
 
         }
-      
+
         protected void BtnCargarMesa_Click(object sender, EventArgs e)
         {
 
-           
+
         }
 
         protected void txtBuscar_TextChanged(object sender, EventArgs e)
@@ -69,6 +71,24 @@ namespace ProyectoPedidosResto.Views
             // Por ejemplo:
             string texto = txtBuscar.Text;
             // Filtra tus datos aquí
+        }
+
+        protected void btnAceptarMesa_Click(object sender, EventArgs e)
+        {
+            // Obtener el número de mesa desde el CommandArgument
+            var btn = (Button)sender;
+            string mesaNumero = btn.CommandArgument;
+
+            // Leer el valor del hidden field y obtener valor CantidadPersonas
+            string personasKey = "hfPersonas" + mesaNumero;
+            string personasValue = Request.Form[personasKey];
+
+            int cantidadPersonas = 1;
+            int.TryParse(personasValue, out cantidadPersonas);
+
+            // Revisar que funcione el traspaso de datos!!
+
+            Response.Redirect(Request.RawUrl);
         }
 
         protected void Comanda_Command(object sender, CommandEventArgs e)
