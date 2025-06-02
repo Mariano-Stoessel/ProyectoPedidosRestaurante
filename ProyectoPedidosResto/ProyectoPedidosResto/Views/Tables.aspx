@@ -124,7 +124,6 @@
                         </div>
                     </div>
 
-                    <!-- Modal único para esta mesa -->
                     <% if (mesa.Estado == "libre" || mesa.Estado == "reservado")
                         { %>
                     <div class="modal fade" id="<%= modalId %>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="label<%= modalId %>" aria-hidden="true">
@@ -135,7 +134,6 @@
                                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <!-- Aquí el contenido del modal -->
                                     <div class="mb-3">
                                         <label class="form-label">Seleccione mozo</label>
                                         <select class="form-select bg-primary text-white">
@@ -158,9 +156,9 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer d-flex justify-content-between">
-                                    <button type="button" class="btn btn-danger flex-fill me-2">Cancelar</button>
-                                    <button type="button" class="btn btn-success flex-fill me-2">Aceptar</button>
-                                    <button type="button" class="btn btn-primary flex-fill">Tomar Comanda</button>
+                                    <button type="button" class="btn btn-danger flex-fill">Cancelar</button>
+                                    <button type="button" class="btn btn-success flex-fill">Aceptar</button>
+                                    <a href="Commands.aspx" class="btn btn-primary flex-fill">Tomar comanda</a>
                                 </div>
                             </div>
                         </div>
