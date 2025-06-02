@@ -11,6 +11,16 @@ namespace ProyectoPedidosResto.Views
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack)
+            {
+                ddlEmpresas.Items.Add(new ListItem("Empresa 1", "1"));
+                ddlEmpresas.Items.Add(new ListItem("Empresa 2", "2"));
+                ddlEmpresas.Items.Add(new ListItem("Empresa 3", "3"));
+            }
+        }
+
+        protected void ddlEmpresas_SelectedIndexChanged(object sender, EventArgs e)
+        {
 
         }
 
@@ -20,5 +30,6 @@ namespace ProyectoPedidosResto.Views
 
             Response.Redirect("Tables.aspx");
         }
+
     }
 }

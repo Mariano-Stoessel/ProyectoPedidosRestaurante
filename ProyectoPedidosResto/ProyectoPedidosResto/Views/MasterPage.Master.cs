@@ -13,5 +13,12 @@ namespace ProyectoPedidosResto.Views
         {
 
         }
+
+        protected void btnCerrarSesion_Click(object sender, EventArgs e)
+        {
+            //cambio de estado de usuario en la BBDD
+
+            Response.Redirect("Login.aspx", false);
+        }
     }
 }

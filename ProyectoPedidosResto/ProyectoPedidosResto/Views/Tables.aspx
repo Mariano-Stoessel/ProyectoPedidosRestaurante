@@ -5,6 +5,11 @@
 <asp:Content ID="ContentTables" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
     <style>
+        .filtros {
+            background-color: #0d6efd;
+            padding: 1rem;
+        }
+
         .mesa-card {
             aspect-ratio: 1 / 1;
             display: flex;
@@ -34,40 +39,28 @@
 
     <div class="tables-container">
         <div class="filtros">
-            <div class="row mb-2">
-                <div class="col-7 col-md-6 mb-2 mb-md-0">
-                    <asp:DropDownList ID="ddlFiltros" runat="server" CssClass="form-select" AutoPostBack="true">
-                        <asp:ListItem Text="Todos" Value="Todos" Selected="True" />
-                        <asp:ListItem Text="Disponible" Value="Disponible" />
-                        <asp:ListItem Text="Reservado" Value="Reservado" />
-                        <asp:ListItem Text="Ocupado" Value="Ocupado" />
-                    </asp:DropDownList>
+            <div class="row justify-content-center">
+                <div class="col-7 col-md-6 mb-2 mb-md-2 d-flex justify-content-center align-items-center">
+                    <asp:DropDownList ID="ddlFiltros" runat="server" CssClass="form-select w-100 w-md-auto" AutoPostBack="true" OnSelectedIndexChanged="ddlFiltros_SelectedIndexChanged" />
                 </div>
 
-                <div class="col-5 col-md-3 mb-2 mb-md-0 small d-flex justify-content-end align-items-center">
-                    <label for="chkMisMesas" class="d-flex align-items-center">
-                        <span class="me-2">Mis mesas</span>
-                        <asp:CheckBox ID="chkMisMesas" runat="server" ClientIDMode="Static" CssClass="form-check-input" />
-                    </label>
-                </div>
-
-                <div class="col-12 col-md-3">
-                    <asp:Button ID="btnLimpiar" runat="server" CssClass="btn btn-secondary w-100" Text="Limpiar" />
+                <div class="col-5 col-md-3 mb-2 mb-md-2 d-flex justify-content-center align-items-center">
+                    <asp:CheckBox ID="chkMisMesas" runat="server" ClientIDMode="Static" OnCheckedChanged="chkMisMesas_CheckedChanged" />
+                    <label for="chkMisMesas" class="form-check-label" style="font-size: smaller; margin: .5rem;">Mis mesas</label>
                 </div>
             </div>
 
-            <div class="row mb-2">
-                <div class="col-7 col-md-6">
-                    <asp:TextBox ID="txtBuscar" runat="server" CssClass="form-control" Placeholder="Buscar..." />
+            <div class="row justify-content-center">
+                <div class="col-7 col-md-6 d-flex justify-content-center align-items-center">
+                    <asp:TextBox ID="txtBuscar" runat="server" CssClass="form-control w-100 w-md-auto" Placeholder="Buscar..." AutoPostBack="true" OnTextChanged="txtBuscar_TextChanged" />
                 </div>
-                <div class="d-none d-md-block col-md-3">
-                    <!-- Columna vacía para separación -->
-                </div>
-                <div class="col-5 col-md-3 d-flex justify-content-end">
-                    <asp:Button ID="btnBuscar" runat="server" CssClass="btn btn-primary w-100" Text="Buscar" />
+                <div class="col-5 col-md-3 d-flex justify-content-center align-items-center">
+                    <asp:Button ID="btnLimpiar" runat="server" CssClass="btn btn-secondary" Text="Limpiar" OnClick="btnLimpiar_Click" />
                 </div>
             </div>
         </div>
+
+
 
         <div class="mesas">
             <div class="container mt-3">
@@ -172,7 +165,7 @@
                     </div>
                 </div>
             </div>
-            
+
 
             <%--Modal--%>
             <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

@@ -5,8 +5,8 @@
         .login-container {
             display:flex;
             justify-content:center;
-            align-items:center;
             height: 65vh;
+            margin: 4rem;
         }
     </style>
 </asp:Content>
@@ -17,7 +17,7 @@
         <div class="text-center" style="width: 300px;">
             <h1 class="text-primary fw-bold mb-5">Iniciar sesión</h1>
 
-            <asp:DropDownList ID="ddlEmpresas" runat="server" CssClass="form-control mb-2">
+            <asp:DropDownList ID="ddlEmpresas" runat="server" CssClass="form-control mb-2" OnSelectedIndexChanged="ddlEmpresas_SelectedIndexChanged">
                 <asp:ListItem Text="Seleccione una empresa" Value="" Disabled="true" Selected="true"></asp:ListItem>
             </asp:DropDownList>
             <asp:TextBox ID="txtUsuario" runat="server" CssClass="form-control mb-2" Placeholder="Usuario"></asp:TextBox>
