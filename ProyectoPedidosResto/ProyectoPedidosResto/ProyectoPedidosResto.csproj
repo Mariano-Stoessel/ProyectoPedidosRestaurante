@@ -168,7 +168,6 @@
     </Compile>
     <Compile Include="Views\Commands.aspx.cs">
       <DependentUpon>Commands.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Views\Commands.aspx.designer.cs">
       <DependentUpon>Commands.aspx</DependentUpon>
