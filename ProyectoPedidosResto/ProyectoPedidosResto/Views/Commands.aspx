@@ -49,36 +49,7 @@
             align-items: stretch;
         }
 
-        .btn-cantidad {
-            background: transparent;
-            color: #fff;
-            border: none;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            text-align: center;
-            padding: 0;
-            margin: 0 2px;
-            width: 2rem;
-            min-width: 2rem;
-        }
-
-        .lbl-cantidad {
-            min-width: 2rem;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            background: transparent !important;
-            border: none !important;
-            font-size: 1.2rem;
-            text-align: center;
-            margin: 0 2px;
-        }
-
+        .btn-modificar,
         .btn-eliminar {
             color: #fff;
             background: transparent;
@@ -94,39 +65,28 @@
             border-radius: 0 0 5px 5px;
         }
 
-        btn-modificar {
-            color: #fff;
-            background: transparent;
-            border: none;
-            font-weight: normal;
-            box-shadow: none;
-            padding: 0 1rem;
-            height: 100%;
-            align-items: end;
-            justify-content: center;
-            transition: background 0.2s, color 0.2s;
-            text-align: center;
-            border-radius: 0 0 5px 5px;
-        }
-
-        .btn-cantidad,
+        .btn-modificar,
         .btn-eliminar {
             transition: background 0.2s, color 0.2s;
         }
 
-            .btn-cantidad:hover,
-            .btn-cantidad:focus,
+            .btn-modificar:hover,
+            .btn-modificar:focus,
             .btn-eliminar:hover,
             .btn-eliminar:focus {
                 background: #495057;
                 color: #fff;
             }
 
-            .btn-cantidad:active,
+            .btn-modificar:active,
             .btn-eliminar:active {
                 background: #212529;
                 color: #fff;
             }
+
+        .modal-cantidad {
+            padding: 2rem;
+        }
     </style>
     <script>
         function seleccionarProducto(element) {
@@ -160,7 +120,7 @@
                 <button class="btn btn-eliminar me-2" type="button" onclick="eliminarProductoSeleccionado()">
                     Eliminar
                 </button>
-                <button class="btn btn-modificar me-2" type="button" data-bs-toggle="modal" data-bs-target="#ModalModificarCantidad">
+                <button class="btn btn-modificar me-2" type="button" onclick="abrirModalModificarCantidad()">
                     Modificar
                 </button>
             `;
@@ -174,36 +134,21 @@
             }
         }
 
-        function cambiarCantidad(delta) {
-            var lbl = document.getElementById('lblCantidad');
-            if (!lbl) return;
-            var cantidad = parseInt(lbl.textContent, 10) + delta;
-            if (cantidad < 1) cantidad = 1;
-            lbl.textContent = cantidad;
-
+        function abrirModalModificarCantidad() {
             var fila = document.querySelector('.fila-producto.selected');
             if (fila) {
                 var spans = fila.querySelectorAll('span');
-                if (spans.length > 1) spans[1].textContent = cantidad;
-
-                var productoId = fila.getAttribute('data-producto-id');
-                $.ajax({
-                    type: "POST",
-                    url: "Commands.aspx/ActualizarCantidad",
-                    data: JSON.stringify({ productoId: parseInt(productoId), nuevaCantidad: cantidad }),
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: function (response) {
-                        if (response.d) {
-                            // Actualiza el subtotal en la lista (tercer span)
-                            if (spans.length > 2) spans[2].textContent = parseFloat(response.d.subtotal).toLocaleString('es-AR', { minimumFractionDigits: 2 });
-                            // Actualiza el total en el label
-                            var lblTotal = document.getElementById('<%= lblTotal.ClientID %>');
-                            if (lblTotal) lblTotal.textContent = "$" + parseFloat(response.d.total).toLocaleString('es-AR', { minimumFractionDigits: 2 });
-                        }
-                    }
-                });
+                var cantidad = spans.length > 1 ? spans[1].textContent.trim() : "1";
+                document.getElementById('nuevaCantidad').value = cantidad;
+                $('#ModalModificarCantidad').modal('show');
             }
+        }
+
+        function guardarCantidadYPostback() {
+            var valor = document.getElementById('nuevaCantidad').value;
+            document.getElementById('<%= hfNuevaCantidad.ClientID %>').value = valor;
+            // Permite el postback
+            return true;
         }
     </script>
 </asp:Content>
@@ -282,106 +227,107 @@
 
     <!-- Modal para modificar cantidad -->
     <div class="modal fade" id="ModalModificarCantidad" tabindex="-1" aria-labelledby="modalModificarCantidadLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered modal-cantidad">
             <div class="modal-content bg-dark text-white">
                 <div class="modal-header border-0 justify-content-center pb-1">
-                    <h3 class="modal-title" id="modalModificarCantidadLabel">Modificar cantidad</h3>
+                    <h4 class="modal-title" id="modalModificarCantidadLabel">Modificar cantidad</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="d-flex align-items-center mb-3">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
                         <label for="nuevaCantidad" class="me-2">Cantidad:</label>
-                        <input type="number" class="form-control w-25 me-2" id="nuevaCantidad" value="1" min="1">
+                        <input type="number" class="form-control ms-3" style="width: 80px;" id="nuevaCantidad" value="1" min="1">
+                        <asp:HiddenField ID="hfNuevaCantidad" runat="server" />
                     </div>
                     <div class="d-flex justify-content-between">
                         <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Cancelar</button>
-                        <button class="btn btn-success" id="btnGuardarCantidad" type="button">Guardar</button>
+                        <asp:Button ID="btnAceptarCantidad" runat="server" CssClass="btn btn-success" Text="Aceptar" OnClientClick="return guardarCantidadYPostback();" OnClick="btnAceptarCantidad_Click" />
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-        <!-- Modal Productos -->
-        <div class="modal fade" id="ModalComandas" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content bg-dark text-white">
-                    <div class="modal-header border-0 justify-content-center pb-1">
-                        <h3 class="modal-title" id="modalProductosLabel">Productos</h3>
+    <!-- Modal Productos -->
+    <div class="modal fade" id="ModalComandas" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-white">
+                <div class="modal-header border-0 justify-content-center pb-1">
+                    <h3 class="modal-title" id="modalProductosLabel">Productos</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-8">
+                            <select class="form-select me-2">
+                                <option selected>Categoría</option>
+                                <option value="1">Bebidas</option>
+                                <option value="2">Comidas</option>
+                            </select>
+                        </div>
+                        <div class="col-4 d-flex justify-content-end">
+                            <button class="btn btn-secondary me-2 w-100" type="button">Limpiar</button>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <div class="row mb-3">
-                            <div class="col-8">
-                                <select class="form-select me-2">
-                                    <option selected>Categoría</option>
-                                    <option value="1">Bebidas</option>
-                                    <option value="2">Comidas</option>
-                                </select>
-                            </div>
-                            <div class="col-4 d-flex justify-content-end">
-                                <button class="btn btn-secondary me-2 w-100" type="button">Limpiar</button>
-                            </div>
+                    <div class="row pb-3">
+                        <div class="col-8">
+                            <input type="text" class="form-control me-2" placeholder="Buscar producto...">
                         </div>
-                        <div class="row pb-3">
-                            <div class="col-8">
-                                <input type="text" class="form-control me-2" placeholder="Buscar producto...">
-                            </div>
-                            <div class="col-4 d-flex justify-content-end">
-                                <button class="btn btn-primary me-2 w-100" type="button">Buscar</button>
-                            </div>
+                        <div class="col-4 d-flex justify-content-end">
+                            <button class="btn btn-primary me-2 w-100" type="button">Buscar</button>
                         </div>
+                    </div>
 
 
-                        <div class="table-responsive mb-3" style="max-height: 200px; overflow-y: auto;">
-                            <table class="table table-dark table-bordered table-hover text-white">
-                                <thead>
-                                    <tr>
-                                        <th>Producto</th>
-                                        <th>Stock</th>
-                                        <th>Unitario</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Coca cola 1.5 L</td>
-                                        <td>122</td>
-                                        <td>$5000,00</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Fanta 1.5 L</td>
-                                        <td>100</td>
-                                        <td>$4500,00</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Flan c/ dulce de leche</td>
-                                        <td>24</td>
-                                        <td>$8000,00</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Milanesa c/ guarnición</td>
-                                        <td>12</td>
-                                        <td>$15000,00</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Sorrentinos Promo</td>
-                                        <td>9</td>
-                                        <td>$20000,00</td>
-                                    </tr>
-                                </tbody>
+                    <div class="table-responsive mb-3" style="max-height: 200px; overflow-y: auto;">
+                        <table class="table table-dark table-bordered table-hover text-white">
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Stock</th>
+                                    <th>Unitario</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Coca cola 1.5 L</td>
+                                    <td>122</td>
+                                    <td>$5000,00</td>
+                                </tr>
+                                <tr>
+                                    <td>Fanta 1.5 L</td>
+                                    <td>100</td>
+                                    <td>$4500,00</td>
+                                </tr>
+                                <tr>
+                                    <td>Flan c/ dulce de leche</td>
+                                    <td>24</td>
+                                    <td>$8000,00</td>
+                                </tr>
+                                <tr>
+                                    <td>Milanesa c/ guarnición</td>
+                                    <td>12</td>
+                                    <td>$15000,00</td>
+                                </tr>
+                                <tr>
+                                    <td>Sorrentinos Promo</td>
+                                    <td>9</td>
+                                    <td>$20000,00</td>
+                                </tr>
+                            </tbody>
 
-                            </table>
-                        </div>
+                        </table>
+                    </div>
 
-                        <div class="d-flex align-items-center mb-3">
-                            <label for="cantidadModal" class="me-2">Cantidad:</label>
-                            <input type="number" class="form-control w-25 me-2" id="cantidadModal" value="2" min="1">
-                        </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <label for="cantidadModal" class="me-2">Cantidad:</label>
+                        <input type="number" class="form-control w-25 me-2" id="cantidadModal" value="2" min="1">
+                    </div>
 
-                        <div class="d-flex justify-content-between">
-                            <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Volver</button>
-                            <button class="btn btn-success" data-bs-dismiss="modal" type="button">Agregar</button>
-                        </div>
+                    <div class="d-flex justify-content-between">
+                        <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Volver</button>
+                        <button class="btn btn-success" data-bs-dismiss="modal" type="button">Agregar</button>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 </asp:Content>

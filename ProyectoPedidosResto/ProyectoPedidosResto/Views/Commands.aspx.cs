@@ -44,26 +44,6 @@ namespace ProyectoPedidosResto.Views
             }
         }
 
-        [WebMethod]
-        public static object ActualizarCantidad(int productoId, int nuevaCantidad)
-        {
-            var productos = HttpContext.Current.Session["Productos"] as List<Producto>;
-            if (productos == null) return null;
-            var prod = productos.FirstOrDefault(p => p.Id == productoId);
-            if (prod != null)
-            {
-                prod.Cantidad = nuevaCantidad;
-            }
-            HttpContext.Current.Session["Productos"] = productos;
-            decimal subtotal = prod != null ? prod.Cantidad * prod.PrecioUnitario : 0;
-            decimal total = productos.Sum(p => p.Cantidad * p.PrecioUnitario);
-            return new
-            {
-                subtotal = subtotal,
-                total = total
-            };
-        }
-
         protected void BtnVolver_Click(object sender, EventArgs e)
         {
             Response.Redirect("Tables.aspx");
@@ -74,6 +54,16 @@ namespace ProyectoPedidosResto.Views
             var productos = Session["Productos"] as List<Producto>;
             rptProductos.DataSource = productos;
             rptProductos.DataBind();
+        }
+
+        protected void btnAceptarCantidad_Click(object sender, EventArgs e)
+        {
+            int nuevaCantidad;
+            if (int.TryParse(hfNuevaCantidad.Value, out nuevaCantidad))
+            {
+                // Aquí tienes el valor de la cantidad elegida en el modal
+                // Puedes usarlo para actualizar el producto seleccionado
+            }
         }
     }
 }
