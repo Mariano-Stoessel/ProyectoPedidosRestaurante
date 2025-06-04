@@ -94,6 +94,21 @@
             border-radius: 0 0 5px 5px;
         }
 
+        btn-modificar {
+            color: #fff;
+            background: transparent;
+            border: none;
+            font-weight: normal;
+            box-shadow: none;
+            padding: 0 1rem;
+            height: 100%;
+            align-items: end;
+            justify-content: center;
+            transition: background 0.2s, color 0.2s;
+            text-align: center;
+            border-radius: 0 0 5px 5px;
+        }
+
         .btn-cantidad,
         .btn-eliminar {
             transition: background 0.2s, color 0.2s;
@@ -139,17 +154,15 @@
 
             var barra = document.createElement('div');
             barra.id = 'controlPedidoBarra';
-            barra.className = 'controlPedido-barra d-flex align-items-center justify-content-between';
+            barra.className = 'controlPedido-barra d-flex align-items-center justify-content-between mb-3';
 
             barra.innerHTML = `
                 <button class="btn btn-eliminar me-2" type="button" onclick="eliminarProductoSeleccionado()">
                     Eliminar
                 </button>
-                <div class="input-group w-auto">
-                    <button type="button" class="btn btn-cantidad" onclick="cambiarCantidad(-1)">-</button>
-                    <span id="lblCantidad" class="lbl-cantidad" style="width: 50px;">${cantidad}</span>
-                    <button type="button" class="btn btn-cantidad btn-cantidad-ancho" onclick="cambiarCantidad(1)">+</button>
-                </div>
+                <button class="btn btn-modificar me-2" type="button" data-bs-toggle="modal" data-bs-target="#ModalModificarCantidad">
+                    Modificar
+                </button>
             `;
             container.appendChild(barra);
         }
@@ -248,8 +261,8 @@
             </div>
         </div>
         <div class="controlPedido">
-            <div id="controlPedidoBarraContainer"></div>
-            <div class="d-flex justify-content-end mt-2">
+            <div id="controlPedidoBarraContainer" class="mb-0"></div>
+            <div class="d-flex justify-content-end">
                 <button type="button" class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#ModalComandas">Agregar</button>
             </div>
             <div class="row pt-3 mb-4">
@@ -266,4 +279,109 @@
             <asp:Button ID="BtnVolver" runat="server" Text="Volver" CssClass="btn btn-secondary w-100" OnClick="BtnVolver_Click" />
         </div>
     </div>
+
+    <!-- Modal para modificar cantidad -->
+    <div class="modal fade" id="ModalModificarCantidad" tabindex="-1" aria-labelledby="modalModificarCantidadLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-white">
+                <div class="modal-header border-0 justify-content-center pb-1">
+                    <h3 class="modal-title" id="modalModificarCantidadLabel">Modificar cantidad</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <label for="nuevaCantidad" class="me-2">Cantidad:</label>
+                        <input type="number" class="form-control w-25 me-2" id="nuevaCantidad" value="1" min="1">
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Cancelar</button>
+                        <button class="btn btn-success" id="btnGuardarCantidad" type="button">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <!-- Modal Productos -->
+        <div class="modal fade" id="ModalComandas" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content bg-dark text-white">
+                    <div class="modal-header border-0 justify-content-center pb-1">
+                        <h3 class="modal-title" id="modalProductosLabel">Productos</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row mb-3">
+                            <div class="col-8">
+                                <select class="form-select me-2">
+                                    <option selected>Categoría</option>
+                                    <option value="1">Bebidas</option>
+                                    <option value="2">Comidas</option>
+                                </select>
+                            </div>
+                            <div class="col-4 d-flex justify-content-end">
+                                <button class="btn btn-secondary me-2 w-100" type="button">Limpiar</button>
+                            </div>
+                        </div>
+                        <div class="row pb-3">
+                            <div class="col-8">
+                                <input type="text" class="form-control me-2" placeholder="Buscar producto...">
+                            </div>
+                            <div class="col-4 d-flex justify-content-end">
+                                <button class="btn btn-primary me-2 w-100" type="button">Buscar</button>
+                            </div>
+                        </div>
+
+
+                        <div class="table-responsive mb-3" style="max-height: 200px; overflow-y: auto;">
+                            <table class="table table-dark table-bordered table-hover text-white">
+                                <thead>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Stock</th>
+                                        <th>Unitario</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Coca cola 1.5 L</td>
+                                        <td>122</td>
+                                        <td>$5000,00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Fanta 1.5 L</td>
+                                        <td>100</td>
+                                        <td>$4500,00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Flan c/ dulce de leche</td>
+                                        <td>24</td>
+                                        <td>$8000,00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Milanesa c/ guarnición</td>
+                                        <td>12</td>
+                                        <td>$15000,00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sorrentinos Promo</td>
+                                        <td>9</td>
+                                        <td>$20000,00</td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                        </div>
+
+                        <div class="d-flex align-items-center mb-3">
+                            <label for="cantidadModal" class="me-2">Cantidad:</label>
+                            <input type="number" class="form-control w-25 me-2" id="cantidadModal" value="2" min="1">
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Volver</button>
+                            <button class="btn btn-success" data-bs-dismiss="modal" type="button">Agregar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 </asp:Content>
