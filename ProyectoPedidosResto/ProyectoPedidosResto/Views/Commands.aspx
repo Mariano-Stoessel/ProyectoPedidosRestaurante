@@ -85,28 +85,42 @@
             }
 
         .modal-cantidad {
-            padding: 2rem;
+            padding: 1.5rem;
         }
     </style>
     <script>
-        function seleccionarProducto(element) {
+
+        function seleccionarProductoLista(element) {
             if (element.classList.contains('selected')) {
                 element.classList.remove('selected');
-                document.getElementById('productoSeleccionado').value = '';
+                document.getElementById('<%= hfProductoListaSeleccionado.ClientID %>').value = '';
                 eliminarBarraControlPedido();
                 return;
             }
-            document.querySelectorAll('.fila-producto.selected').forEach(function (fila) {
+            document.querySelectorAll('.fila-producto-lista.selected').forEach(function (fila) {
                 fila.classList.remove('selected');
             });
             element.classList.add('selected');
-            document.getElementById('productoSeleccionado').value = element.getAttribute('data-producto-id');
-            var spans = element.querySelectorAll('span');
-            var cantidad = spans.length > 1 ? spans[1].textContent.trim() : "1";
-            crearBarraControlPedido(cantidad);
+            document.getElementById('<%= hfProductoListaSeleccionado.ClientID %>').value = element.getAttribute('data-producto-id');
+            crearBarraControlPedidoLista(element);
         }
 
-        function crearBarraControlPedido(cantidad) {
+        function seleccionarProductoCatalogo(element) {
+            if (element.classList.contains('selected')) {
+                element.classList.remove('selected');
+                document.getElementById('<%= hfProductoSeleccionado.ClientID %>').value = '';
+                return;
+            }
+            document.querySelectorAll('.fila-producto-catalogo.selected').forEach(function (fila) {
+                fila.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            document.getElementById('<%= hfProductoSeleccionado.ClientID %>').value = element.getAttribute('data-producto-id');
+        }
+
+        function crearBarraControlPedidoLista(element) {
+            var spans = element.querySelectorAll('span');
+            var cantidad = spans.length > 1 ? spans[1].textContent.trim() : "1";
             var container = document.getElementById('controlPedidoBarraContainer');
             if (!container) return;
             var barraAnterior = document.getElementById('controlPedidoBarra');
@@ -135,21 +149,49 @@
         }
 
         function abrirModalModificarCantidad() {
-            var fila = document.querySelector('.fila-producto.selected');
+            var fila = document.querySelector('.fila-producto-lista.selected');
             if (fila) {
                 var spans = fila.querySelectorAll('span');
                 var cantidad = spans.length > 1 ? spans[1].textContent.trim() : "1";
-                document.getElementById('nuevaCantidad').value = cantidad;
+                document.getElementById('lblCantidadLista').textContent = cantidad;
                 $('#ModalModificarCantidad').modal('show');
             }
         }
+        function abrirModalAgregarProducto() {
+            document.getElementById('lblCantidad').textContent = '1';
+            document.getElementById('<%= hfCantidad.ClientID %>').value = '1';
+            // Si usas Bootstrap 5, puedes abrir el modal así:
+            // var modal = new bootstrap.Modal(document.getElementById('ModalComandas'));
+            // modal.show();
+        }
+
+        function cambiarCantidad(delta) {
+            var label = document.getElementById('lblCantidadLista');
+            var valor = parseInt(label.textContent) || 0;
+            valor += delta;
+            if (valor < 0) valor = 0;
+            label.textContent = valor;
+        }
+
+        function cambiarCantidadCatalogo(delta) {
+            var label = document.getElementById('lblCantidad');
+            var valor = parseInt(label.textContent) || 1;
+            valor += delta;
+            if (valor < 1) valor = 1;
+            label.textContent = valor;
+        }
 
         function guardarCantidadYPostback() {
-            var valor = document.getElementById('nuevaCantidad').value;
+            var valor = document.getElementById('lblCantidadLista').textContent;
             document.getElementById('<%= hfNuevaCantidad.ClientID %>').value = valor;
             // Permite el postback
             return true;
         }
+        function guardarCantidadCatalogo() {
+            var valor = document.getElementById('lblCantidad').textContent;
+            document.getElementById('<%= hfCantidad.ClientID %>').value = valor;
+        }
+
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -178,7 +220,8 @@
         </div>
         <div class="listaPedido pb-2">
             <div class="product-list">
-                <asp:Repeater ID="rptProductos" runat="server">
+                <!-- rptProductosLista -->
+                <asp:Repeater ID="rptProductosLista" runat="server">
                     <HeaderTemplate>
                         <div class="row bg-dark table-dark pb-2">
                             <div class="col-6"><span>Producto</span></div>
@@ -187,9 +230,9 @@
                         </div>
                     </HeaderTemplate>
                     <ItemTemplate>
-                        <div class="product-item fila-producto"
+                        <div class="product-item fila-producto fila-producto-lista"
                             data-producto-id='<%# Eval("Id") %>'
-                            onclick="seleccionarProducto(this)">
+                            onclick="seleccionarProductoLista(this)">
                             <div class="row pb-1">
                                 <div class="col-7"><span><%# Eval("Nombre") %></span></div>
                                 <div class="col-1 text-end"><span><%# Eval("Cantidad") %></span></div>
@@ -202,13 +245,16 @@
                         </div>
                     </ItemTemplate>
                 </asp:Repeater>
-                <input type="hidden" id="productoSeleccionado" name="productoSeleccionado" value="" />
+                <asp:HiddenField ID="hfProductoListaSeleccionado" runat="server" />
             </div>
         </div>
         <div class="controlPedido">
             <div id="controlPedidoBarraContainer" class="mb-0"></div>
             <div class="d-flex justify-content-end">
-                <button type="button" class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#ModalComandas">Agregar</button>
+                <button type="button" class="btn btn-success w-100"
+                    onclick="abrirModalAgregarProducto()" data-bs-toggle="modal" data-bs-target="#ModalComandas">
+                    Agregar
+                </button>
             </div>
             <div class="row pt-3 mb-4">
                 <div class="col">
@@ -230,12 +276,16 @@
         <div class="modal-dialog modal-dialog-centered modal-cantidad">
             <div class="modal-content bg-dark text-white">
                 <div class="modal-header border-0 justify-content-center pb-1">
-                    <h4 class="modal-title" id="modalModificarCantidadLabel">Modificar cantidad</h4>
+                    <h4 class="modal-title" id="modalModificarCantidadLabel">Modificar</h4>
                 </div>
                 <div class="modal-body">
                     <div class="d-flex align-items-center justify-content-between mb-3">
-                        <label for="nuevaCantidad" class="me-2">Cantidad:</label>
-                        <input type="number" class="form-control ms-3" style="width: 80px;" id="nuevaCantidad" value="1" min="1">
+                        <label class="me-2">Cantidad:</label>
+                        <div class="input-group">
+                            <button type="button" class="btn btn-primary" onclick="cambiarCantidad(-1)" tabindex="-1">-</button>
+                            <span id="lblCantidadLista" class="form-control bg-primary text-white text-center" style="border: none;">1</span>
+                            <button type="button" class="btn btn-primary" onclick="cambiarCantidad(1)" tabindex="-1">+</button>
+                        </div>
                         <asp:HiddenField ID="hfNuevaCantidad" runat="server" />
                     </div>
                     <div class="d-flex justify-content-between">
@@ -251,80 +301,78 @@
     <div class="modal fade" id="ModalComandas" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content bg-dark text-white">
-                <div class="modal-header border-0 justify-content-center pb-1">
-                    <h3 class="modal-title" id="modalProductosLabel">Productos</h3>
+                <div class="modal-header border-secondary justify-content-center pb-2">
+                    <h1 class="modal-title">Productos</h1>
                 </div>
                 <div class="modal-body">
-                    <div class="row mb-3">
-                        <div class="col-8">
-                            <select class="form-select me-2">
-                                <option selected>Categoría</option>
-                                <option value="1">Bebidas</option>
-                                <option value="2">Comidas</option>
-                            </select>
+                    <div class="controlPedido">
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <select class="form-select me-2 bg-primary text-white text-center">
+                                    <option selected>Todos</option>
+                                    <option value="1">Bebidas</option>
+                                    <option value="2">Comidas</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="col-4 d-flex justify-content-end">
-                            <button class="btn btn-secondary me-2 w-100" type="button">Limpiar</button>
+                        <div class="row pb-3">
+                            <div class="col-8">
+                                <input type="text" class="form-control me-2" placeholder="Buscar...">
+                            </div>
+                            <div class="col-4 d-flex justify-content-end">
+                                <button class="btn btn-secondary" type="button">Limpiar</button>
+                            </div>
                         </div>
                     </div>
-                    <div class="row pb-3">
-                        <div class="col-8">
-                            <input type="text" class="form-control me-2" placeholder="Buscar producto...">
-                        </div>
-                        <div class="col-4 d-flex justify-content-end">
-                            <button class="btn btn-primary me-2 w-100" type="button">Buscar</button>
+
+                    <div class="listaPedido pb-2">
+                        <div class="product-list">
+                            <!-- rptProductos -->
+                            <asp:Repeater ID="rptProductos" runat="server">
+                                <HeaderTemplate>
+                                    <div class="row bg-dark table-dark pb-2">
+                                        <div class="col-6"><span>Producto</span></div>
+                                        <div class="col-2 text-end"><span>Stock</span></div>
+                                        <div class="col text-end"><span>PU</span></div>
+                                    </div>
+                                </HeaderTemplate>
+                                <ItemTemplate>
+                                    <div class="product-item fila-producto fila-producto-catalogo"
+                                        data-producto-id='<%# Eval("Id") %>'
+                                        onclick="seleccionarProductoCatalogo(this)">
+                                        <div class="row pb-1">
+                                            <div class="col-7"><span><%# Eval("Nombre") %></span></div>
+                                            <div class="col-1 text-end"><span><%# Eval("Stock") %></span></div>
+                                            <div class="col text-end"><span><span><%# Convert.ToDecimal(Eval("PrecioUnitario")).ToString("N2") %></span></div>
+                                        </div>
+                                    </div>
+                                </ItemTemplate>
+                            </asp:Repeater>
+                            <asp:HiddenField ID="hfProductoSeleccionado" runat="server" />
                         </div>
                     </div>
 
-
-                    <div class="table-responsive mb-3" style="max-height: 200px; overflow-y: auto;">
-                        <table class="table table-dark table-bordered table-hover text-white">
-                            <thead>
-                                <tr>
-                                    <th>Producto</th>
-                                    <th>Stock</th>
-                                    <th>Unitario</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Coca cola 1.5 L</td>
-                                    <td>122</td>
-                                    <td>$5000,00</td>
-                                </tr>
-                                <tr>
-                                    <td>Fanta 1.5 L</td>
-                                    <td>100</td>
-                                    <td>$4500,00</td>
-                                </tr>
-                                <tr>
-                                    <td>Flan c/ dulce de leche</td>
-                                    <td>24</td>
-                                    <td>$8000,00</td>
-                                </tr>
-                                <tr>
-                                    <td>Milanesa c/ guarnición</td>
-                                    <td>12</td>
-                                    <td>$15000,00</td>
-                                </tr>
-                                <tr>
-                                    <td>Sorrentinos Promo</td>
-                                    <td>9</td>
-                                    <td>$20000,00</td>
-                                </tr>
-                            </tbody>
-
-                        </table>
-                    </div>
-
-                    <div class="d-flex align-items-center mb-3">
-                        <label for="cantidadModal" class="me-2">Cantidad:</label>
-                        <input type="number" class="form-control w-25 me-2" id="cantidadModal" value="2" min="1">
+                    <div class="row d-flex align-items-center mb-3">
+                        <div class="col">
+                            <label class="me-2">Cantidad:</label>
+                        </div>
+                        <div class="col">
+                            <div class="input-group">
+                                <button type="button" class="btn btn-primary" onclick="cambiarCantidadCatalogo(-1)" tabindex="-1">-</button>
+                                <span id="lblCantidad" class="form-control bg-primary text-white text-center" style="border: none;">1</span>
+                                <button type="button" class="btn btn-primary" onclick="cambiarCantidadCatalogo(1)" tabindex="-1">+</button>
+                            </div>
+                        </div>
+                        <asp:HiddenField ID="hfCantidad" runat="server" />
                     </div>
 
                     <div class="d-flex justify-content-between">
                         <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Volver</button>
-                        <button class="btn btn-success" data-bs-dismiss="modal" type="button">Agregar</button>
+                        <asp:Button ID="btnAgregarProducto" runat="server"
+                            CssClass="btn btn-success"
+                            Text="Agregar"
+                            OnClientClick="guardarCantidadCatalogo();"
+                            OnClick="btnAgregarProducto_Click" />
                     </div>
                 </div>
             </div>
