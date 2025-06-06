@@ -8,7 +8,6 @@
         }
 
         .product-list {
-            margin: 0.5rem auto;
             background-color: #2b2b2b;
             border-radius: 0.5rem;
             font-size: smaller;
@@ -17,11 +16,28 @@
             overflow-y: auto;
         }
 
-        .product-item {
-            padding: 0.3125rem 0;
+            .product-list .row {
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+                font-size: smaller;
+                border-bottom: 0.0625rem solid #444;
+            }
+
+        .product-catalog {
+            background-color: #2b2b2b;
+            border-radius: 0.5rem;
             font-size: smaller;
-            border-bottom: 0.0625rem solid #444;
+            margin-bottom: 10px;
+            height: 200px;
+            overflow-y: auto;
         }
+
+            .product-catalog .row {
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+                font-size: smaller;
+                border-bottom: 0.0625rem solid #444;
+            }
 
         .fila-producto {
             transition: background 0.2s, color 0.2s, padding 0.2s;
@@ -87,6 +103,19 @@
         .modal-cantidad {
             padding: 1.5rem;
         }
+
+        @media (min-width: 600px) {
+            .product-list .row {
+                padding-left: 2.5rem;
+                padding-right: 2.5rem;
+            }
+        }
+
+        #ModalModificarCantidad .modal-dialog {
+            max-width: 350px;
+            width: 100%;
+            margin: auto;
+        }
     </style>
     <script>
 
@@ -119,33 +148,21 @@
         }
 
         function crearBarraControlPedidoLista(element) {
-            var spans = element.querySelectorAll('span');
-            var cantidad = spans.length > 1 ? spans[1].textContent.trim() : "1";
-            var container = document.getElementById('controlPedidoBarraContainer');
-            if (!container) return;
-            var barraAnterior = document.getElementById('controlPedidoBarra');
-            if (barraAnterior) barraAnterior.parentNode.removeChild(barraAnterior);
-
-            var barra = document.createElement('div');
-            barra.id = 'controlPedidoBarra';
-            barra.className = 'controlPedido-barra d-flex align-items-center justify-content-between mb-3';
-
-            barra.innerHTML = `
-                <button class="btn btn-eliminar me-2" type="button" onclick="eliminarProductoSeleccionado()">
-                    Eliminar
-                </button>
-                <button class="btn btn-modificar me-2" type="button" onclick="abrirModalModificarCantidad()">
-                    Modificar
-                </button>
-            `;
-            container.appendChild(barra);
+            var barra = document.getElementById('controlPedidoBarra');
+            if (barra) barra.style.display = 'flex';
+            var btnEliminar = document.getElementById('<%= btnEliminarProducto.ClientID %>');
+            if (btnEliminar) btnEliminar.style.display = 'inline-block';
+            var btnModificar = document.getElementById('<%= btnModificarProducto.ClientID %>');
+            if (btnModificar) btnModificar.style.display = 'inline-block';
         }
 
         function eliminarBarraControlPedido() {
             var barra = document.getElementById('controlPedidoBarra');
-            if (barra && barra.parentNode) {
-                barra.parentNode.removeChild(barra);
-            }
+            if (barra) barra.style.display = 'none';
+            var btnEliminar = document.getElementById('<%= btnEliminarProducto.ClientID %>');
+            if (btnEliminar) btnEliminar.style.display = 'none';
+            var btnModificar = document.getElementById('<%= btnModificarProducto.ClientID %>');
+            if (btnModificar) btnModificar.style.display = 'none';
         }
 
         function abrirModalModificarCantidad() {
@@ -230,17 +247,15 @@
                         </div>
                     </HeaderTemplate>
                     <ItemTemplate>
-                        <div class="product-item fila-producto fila-producto-lista"
+                        <div class="row pb-1 fila-producto fila-producto-lista"
                             data-producto-id='<%# Eval("Id") %>'
                             onclick="seleccionarProductoLista(this)">
-                            <div class="row pb-1">
-                                <div class="col-7"><span><%# Eval("Nombre") %></span></div>
-                                <div class="col-1 text-end"><span><%# Eval("Cantidad") %></span></div>
-                                <div class="col text-end">
-                                    <span>
-                                        <%# (Convert.ToInt32(Eval("Cantidad")) * Convert.ToDecimal(Eval("PrecioUnitario"))).ToString("N2") %>
-                                    </span>
-                                </div>
+                            <div class="col-7"><span><%# Eval("Nombre") %></span></div>
+                            <div class="col-1 text-end"><span><%# Eval("Cantidad") %></span></div>
+                            <div class="col text-end">
+                                <span>
+                                    <%# (Convert.ToInt32(Eval("Cantidad")) * Convert.ToDecimal(Eval("PrecioUnitario"))).ToString("N2") %>
+                                </span>
                             </div>
                         </div>
                     </ItemTemplate>
@@ -249,7 +264,20 @@
             </div>
         </div>
         <div class="controlPedido">
-            <div id="controlPedidoBarraContainer" class="mb-0"></div>
+            <div id="controlPedidoBarraContainer" class="mb-0">
+                <div id="controlPedidoBarra" class="controlPedido-barra align-items-center justify-content-between mb-3" style="display: none;">
+                    <asp:Button ID="btnEliminarProducto" runat="server"
+                        CssClass="btn btn-eliminar me-2"
+                        Text="Eliminar"
+                        OnClick="btnEliminarProducto_Click"
+                        Style="display: none;" />
+                    <asp:Button ID="btnModificarProducto" runat="server"
+                        CssClass="btn btn-modificar me-2"
+                        Text="Modificar"
+                        OnClientClick="abrirModalModificarCantidad(); return false;"
+                        Style="display: none;" />
+                </div>
+            </div>
             <div class="d-flex justify-content-end">
                 <button type="button" class="btn btn-success w-100"
                     onclick="abrirModalAgregarProducto()" data-bs-toggle="modal" data-bs-target="#ModalComandas">
@@ -326,7 +354,7 @@
                     </div>
 
                     <div class="listaPedido pb-2">
-                        <div class="product-list">
+                        <div class="product-catalog">
                             <!-- rptProductos -->
                             <asp:Repeater ID="rptProductos" runat="server">
                                 <HeaderTemplate>
@@ -337,14 +365,12 @@
                                     </div>
                                 </HeaderTemplate>
                                 <ItemTemplate>
-                                    <div class="product-item fila-producto fila-producto-catalogo"
+                                    <div class="row pb-1 fila-producto fila-producto-catalogo"
                                         data-producto-id='<%# Eval("Id") %>'
                                         onclick="seleccionarProductoCatalogo(this)">
-                                        <div class="row pb-1">
-                                            <div class="col-7"><span><%# Eval("Nombre") %></span></div>
-                                            <div class="col-1 text-end"><span><%# Eval("Stock") %></span></div>
-                                            <div class="col text-end"><span><span><%# Convert.ToDecimal(Eval("PrecioUnitario")).ToString("N2") %></span></div>
-                                        </div>
+                                        <div class="col-7"><span><%# Eval("Nombre") %></span></div>
+                                        <div class="col-1 text-end"><span><%# Eval("Stock") %></span></div>
+                                        <div class="col text-end"><span><span><%# Convert.ToDecimal(Eval("PrecioUnitario")).ToString("N2") %></span></div>
                                     </div>
                                 </ItemTemplate>
                             </asp:Repeater>

@@ -65,22 +65,12 @@ namespace ProyectoPedidosResto.Views
             }
         }
 
-        protected void BtnVolver_Click(object sender, EventArgs e)
+        protected void btnEliminarProducto_Click(object sender, EventArgs e)
         {
-            Response.Redirect("Tables.aspx");
-        }
-
-        private void CargarProductos(List<Producto> productos)
-        {
-            rptProductos.DataSource = productos;
-            rptProductos.DataBind();
-        }
-
-        private void CargarProductosLista()
-        {
-            var productosLista = Session["productosLista"] as List<ProductoLista>;
-            rptProductosLista.DataSource = productosLista;
-            rptProductosLista.DataBind();
+            string idSeleccionado = hfProductoListaSeleccionado.Value;
+            // Aquí puedes usar idSeleccionado para eliminar el producto de la lista
+            // Ejemplo:
+            // EliminarProductoDeLista(idSeleccionado);
         }
 
         protected void btnAceptarCantidad_Click(object sender, EventArgs e)
@@ -98,6 +88,23 @@ namespace ProyectoPedidosResto.Views
             string idProducto = hfProductoSeleccionado.Value;
             string cantidad = hfCantidad.Value;
             // Tu lógica para agregar el producto al pedido
+        }
+        protected void BtnVolver_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Tables.aspx");
+        }
+
+        private void CargarProductos(List<Producto> productos)
+        {
+            rptProductos.DataSource = productos;
+            rptProductos.DataBind();
+        }
+
+        private void CargarProductosLista()
+        {
+            var productosLista = Session["productosLista"] as List<ProductoLista>;
+            rptProductosLista.DataSource = productosLista;
+            rptProductosLista.DataBind();
         }
     }
 }
