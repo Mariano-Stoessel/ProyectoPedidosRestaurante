@@ -1,4 +1,6 @@
 ﻿using Microsoft.Ajax.Utilities;
+using ProyectoPedidosResto.Domain.Classes;
+using ProyectoPedidosResto.Domain.ConnectionBBDD;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +35,7 @@ namespace ProyectoPedidosResto.Views
         {
             if (!IsPostBack)
             {
-
+                CargarCategorias();
 
                 // Lista inicial de productos
                 var productos = new List<Producto>
@@ -105,6 +107,20 @@ namespace ProyectoPedidosResto.Views
             var productosLista = Session["productosLista"] as List<ProductoLista>;
             rptProductosLista.DataSource = productosLista;
             rptProductosLista.DataBind();
+        }
+        private void CargarCategorias()
+        {
+            var reader = new ReadingCategory();
+            string consulta = "SELECT Cat_Id, Cat_Nombre FROM categorias";
+            List<Category> categorias = reader.LeerCategorias(consulta);
+
+            ddlCategorias.Items.Clear();
+            ddlCategorias.Items.Add(new ListItem("Todos", "")); // Opción por defecto
+
+            foreach (var cat in categorias)
+            {
+                ddlCategorias.Items.Add(new ListItem(cat.Cat_nombre, cat.Cat_id.ToString()));
+            }
         }
     }
 }

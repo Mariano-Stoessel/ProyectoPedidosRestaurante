@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Threading.Tasks;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient; // Cambiado para MySQL
 
 namespace ProyectoPedidosResto.Domain.ConnectionBBDD
 {
@@ -11,19 +11,19 @@ namespace ProyectoPedidosResto.Domain.ConnectionBBDD
     {
         public class AccesoDatos
         {
-            private SqlConnection conexion;
-            private SqlCommand comando;
-            private SqlDataReader lector;
+            private MySqlConnection conexion;
+            private MySqlCommand comando;
+            private MySqlDataReader lector;
 
-            public SqlDataReader Lector
+            public MySqlDataReader Lector
             {
                 get { return lector; }
             }
 
             public AccesoDatos()
             {
-                conexion = new SqlConnection("Server=localhost;Port=3309;Database=mega;Uid=root;Pwd=root;");
-                comando = new SqlCommand();
+                conexion = new MySqlConnection("Server=localhost;Port=3306;Database=mega;Uid=root;Pwd=meko;");
+                comando = new MySqlCommand();
             }
             public void SetearConsulta(string consulta)
             {
@@ -42,14 +42,11 @@ namespace ProyectoPedidosResto.Domain.ConnectionBBDD
                 {
                     conexion.Open();
                     lector = comando.ExecuteReader();
-
                 }
                 catch (Exception ex)
                 {
-
                     throw ex;
                 }
-
             }
 
             public void ejecutarAccion()
@@ -62,7 +59,6 @@ namespace ProyectoPedidosResto.Domain.ConnectionBBDD
                 }
                 catch (Exception ex)
                 {
-
                     throw ex;
                 }
             }
@@ -72,6 +68,26 @@ namespace ProyectoPedidosResto.Domain.ConnectionBBDD
                 if (lector != null)
                     lector.Close();
                 conexion.Close();
+            }
+
+            public bool ProbarConexion(out string mensaje)
+            {
+                try
+                {
+                    conexion.Open();
+                    mensaje = "Conexión exitosa.";
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    mensaje = $"Error de conexión: {ex.Message}";
+                    return false;
+                }
+                finally
+                {
+                    if (conexion.State == System.Data.ConnectionState.Open)
+                        conexion.Close();
+                }
             }
         }
     }

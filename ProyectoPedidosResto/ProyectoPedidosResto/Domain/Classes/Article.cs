@@ -5,10 +5,10 @@ using System.Web;
 
 namespace ProyectoPedidosResto.Domain.Classes
 {
-    public class Product
+    public class Article
     {
 
-        public  Product()
+        public  Article()
         {
             Articulo_Indice = -1;
             Articulo_nombre = string.Empty;
