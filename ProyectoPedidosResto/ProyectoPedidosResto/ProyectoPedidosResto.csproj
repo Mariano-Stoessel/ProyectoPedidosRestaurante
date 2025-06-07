@@ -155,6 +155,13 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Domain\Classes\Category.cs" />
+    <Compile Include="Domain\Classes\Commands.cs" />
+    <Compile Include="Domain\Classes\Product.cs" />
+    <Compile Include="Domain\Classes\Tables.cs" />
+    <Compile Include="Domain\Classes\User.cs" />
+    <Compile Include="Domain\Classes\Waiters.cs" />
+    <Compile Include="Domain\ConnectionBBDD\DataAccess.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
