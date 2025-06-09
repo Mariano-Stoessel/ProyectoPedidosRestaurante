@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace ProyectoPedidosResto.Domain.Classes
+namespace ProyectoPedidosResto.Domain
 {
-    public class Tables
+    public class Table
     {
-        public Tables()
+        public Table()
         {
             Mesa_Id = -1;
             Mesa_Estado = string.Empty;

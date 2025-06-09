@@ -157,10 +157,10 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Domain\Article.cs" />
     <Compile Include="Domain\Category.cs" />
-    <Compile Include="Domain\Commands.cs" />
-    <Compile Include="Domain\Tables.cs" />
+    <Compile Include="Domain\Command.cs" />
+    <Compile Include="Domain\Table.cs" />
     <Compile Include="Domain\User.cs" />
-    <Compile Include="Domain\Waiters.cs" />
+    <Compile Include="Domain\Waiter.cs" />
     <Compile Include="Models\DataAccess.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

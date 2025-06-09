@@ -50,6 +50,19 @@
             label.innerText = valor;
             hidden.value = valor;
         }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // Selecciona todos los modales de mesa
+            document.querySelectorAll('.modal').forEach(function (modal) {
+                modal.addEventListener('hidden.bs.modal', function () {
+                    // Busca el DropDownList de mozos dentro del modal cerrado
+                    var ddl = modal.querySelector('select[id$="ddlMozos"]');
+                    if (ddl) {
+                        ddl.selectedIndex = 0; // Selecciona el primer item ("Seleccione mozo")
+                    }
+                });
+            });
+        });
     </script>
 
     <div class="tables-container">
@@ -83,17 +96,17 @@
                             string colorClase = "";
                             string estadoTexto = "";
 
-                            switch (mesa.Estado)
+                            switch (mesa.Mesa_Estado)
                             {
-                                case "libre":
+                                case "Libre":
                                     colorClase = "text-bg-success";
                                     estadoTexto = "Libre";
                                     break;
-                                case "reservado":
+                                case "Reservado":
                                     colorClase = "text-bg-warning";
-                                    estadoTexto = "Reservada";
+                                    estadoTexto = "Reservado";
                                     break;
-                                case "ocupado":
+                                case "Ocupada":
                                     colorClase = "text-bg-danger";
                                     estadoTexto = "Ocupada";
                                     break;
@@ -102,18 +115,18 @@
                                     estadoTexto = "Estado Desconocido";
                                     break;
                             }
-                            string modalId = "modalMesa" + mesa.Numero;
+                            string modalId = "modalMesa" + mesa.Mesa_Id;
                     %>
                     <div class="col mb-3">
                         <div class="card <%= colorClase %> w-100 text-center d-flex flex-column align-items-center mesa-card">
-                            <div class="card-header">MESA <%= mesa.Numero %></div>
+                            <div class="card-header">MESA <%= mesa.Mesa_Id %></div>
                             <div class="card-body">
                                 <h5 class="card-title"><%= estadoTexto %></h5>
-                                <% if (mesa.Estado == "ocupado")
+                                <% if (mesa.Mesa_Estado == "Ocupada")
                                     { %>
-                                <p class="card-text"><%= mesa.NombrePersona %></p>
+                                <p class="card-text"><%= mesa.Mesa_Mozo %></p>
                                 <% }
-                                    else if (mesa.Estado == "reservado")
+                                    else if (mesa.Mesa_Estado == "Reservado")
                                     { %>
                                 <p class="card-text">X personas</p>
                                 <% }
@@ -123,15 +136,15 @@
                                 <% } %>
                             </div>
                             <div class="card-footer w-100 d-flex justify-content-center">
-                                <% if (mesa.Estado == "libre" || mesa.Estado == "reservado")
+                                <% if (mesa.Mesa_Estado == "Libre" || mesa.Mesa_Estado == "Reservado")
                                     { %>
                                 <button type="button" class="btn btn-primary"
                                     data-bs-toggle="modal"
                                     data-bs-target="#<%= modalId %>">
-                                    <%= mesa.Estado == "libre" ? "Cargar" : "Cargar" %>
+                                    <%= mesa.Mesa_Estado == "Libre" ? "Cargar" : "Cargar" %>
                                 </button>
                                 <% }
-                                    else if (mesa.Estado == "ocupado")
+                                    else if (mesa.Mesa_Estado == "Ocupada")
                                     { %>
                                 <asp:Button runat="server" CssClass="btn btn-primary" Text="Comanda" CommandName="VerComanda" CommandArgument='<% mesa.Numero %>' OnCommand="Comanda_Command" />
                                 <% } %>
@@ -139,7 +152,7 @@
                         </div>
                     </div>
 
-                    <% if (mesa.Estado == "libre" || mesa.Estado == "reservado")
+                    <% if (mesa.Mesa_Estado == "Libre" || mesa.Mesa_Estado == "Reservado")
                         { %>
 
                     <!-- Modal Mesa -->
@@ -147,14 +160,12 @@
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content bg-dark text-white">
                                 <div class="modal-header border-secondary justify-content-center">
-                                    <h1 class="modal-title" id="label<%= modalId %>">Mesa <%= mesa.Numero %></h1>
+                                    <h1 class="modal-title" id="label<%= modalId %>">Mesa <%= mesa.Mesa_Id %></h1>
                                 </div>
                                 <div class="modal-body">
                                     <div class="mb-3">
                                         <asp:DropDownList ID="ddlMozos" runat="server" CssClass="form-select bg-primary text-white text-center">
                                             <asp:ListItem Text="Seleccione mozo" Value="" Disabled="true" Selected="true"></asp:ListItem>
-                                            <asp:ListItem Text="Mozo 1" Value="1"></asp:ListItem>
-                                            <asp:ListItem Text="Mozo 2" Value="2"></asp:ListItem>
                                         </asp:DropDownList>
                                     </div>
                                     <div class="mb-3 d-flex align-items-center justify-content-between">
@@ -162,13 +173,13 @@
 
                                         <div class="input-group" style="max-width: 160px;">
                                             <button type="button" class="btn btn-primary"
-                                                onclick="modificarPersonas('lblPersonas<%= mesa.Numero %>', 'hfPersonas<%= mesa.Numero %>', -1)">
+                                                onclick="modificarPersonas('lblPersonas<%= mesa.Mesa_Id %>', 'hfPersonas<%= mesa.Mesa_Id %>', -1)">
                                                 -</button>
-                                            <span id="lblPersonas<%= mesa.Numero %>" class="form-control text-center bg-primary text-white border-0">1</span>
+                                            <span id="lblPersonas<%= mesa.Mesa_Id %>" class="form-control text-center bg-primary text-white border-0">1</span>
                                             <button type="button" class="btn btn-primary"
-                                                onclick="modificarPersonas('lblPersonas<%= mesa.Numero %>', 'hfPersonas<%= mesa.Numero %>', 1)">
+                                                onclick="modificarPersonas('lblPersonas<%= mesa.Mesa_Id %>', 'hfPersonas<%= mesa.Mesa_Id %>', 1)">
                                                 +</button>
-                                            <input type="hidden" id="hfPersonas<%= mesa.Numero %>" value="1" />
+                                            <input type="hidden" id="hfPersonas<%= mesa.Mesa_Id %>" value="1" />
                                         </div>
                                     </div>
                                     <div class="mb-3">
