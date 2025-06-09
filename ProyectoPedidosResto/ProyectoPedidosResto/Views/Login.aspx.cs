@@ -51,6 +51,13 @@ namespace ProyectoPedidosResto.Views
             bool exito = acceso.ProbarConexion(out mensaje);
             lblMensajeConexion.Text = mensaje;
         }
+        protected void btnProbarConexion_Click(object sender, EventArgs e)
+        {
+            var acceso = new DataAccess.AccesoDatos();
+            string mensaje;
+            bool exito = acceso.ProbarConexion(out mensaje);
+            lblMensajeConexion.Text = mensaje;
+        }
 
     }
 }
