@@ -98,6 +98,51 @@
         }
     </style>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const btn = document.getElementById("btnFullscreen");
+
+            window.toggleFullscreen = function () {
+                if (!document.fullscreenElement) {
+                    enterFullscreen();
+                } else {
+                    exitFullscreen();
+                }
+            };
+
+            function enterFullscreen() {
+                const elem = document.documentElement;
+                if (elem.requestFullscreen) {
+                    elem.requestFullscreen();
+                } else if (elem.webkitRequestFullscreen) {
+                    elem.webkitRequestFullscreen();
+                } else if (elem.msRequestFullscreen) {
+                    elem.msRequestFullscreen();
+                }
+            }
+
+            function exitFullscreen() {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            }
+
+            // Escuchar cambios en pantalla completa para cambiar el texto
+            document.addEventListener("fullscreenchange", () => {
+                if (document.fullscreenElement) {
+                    btn.textContent = "Salir de pantalla completa";
+                } else {
+                    btn.textContent = "Pantalla completa";
+                }
+            });
+        });
+    </script>
+
+
     <asp:ContentPlaceHolder ID="head" runat="server" />
 </head>
 <body>
@@ -117,23 +162,26 @@
                             </div>
 
                             <!-- Botón hamburguesa -->
-                            <asp:Panel ID="pnlHamburguesa" runat="server" CssClass="d-inline">
-                                <button class="navbar-toggler btn-hamburger-sm" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
-                                    aria-label="Toggle navigation">
-                                    <span class="navbar-toggler-icon"></span>
-                                </button>
-                            </asp:Panel>
+                            <button class="navbar-toggler btn-hamburger-sm" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
+                                aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+
                         </div>
 
                         <!-- Collapse -->
                         <div class="collapse-container collapse navbar-collapse" id="navbarNavAltMarkup">
                             <div class="navbar-nav ms-auto">
-                                <!-- Mesas: botón grande y destacado -->
-                                <a class="nav-link btn btn-primary fw-bold fs-4 py-2 mb-2 text-end" href="Tables.aspx">Mesas</a>
                                 <div class="d-flex flex-column flex-lg-row align-items-lg-center text-end gap-3 gap-lg-4">
-                                    <!-- Usuario: texto pequeño y sutil -->
-                                    <asp:Label ID="lblUsuario" runat="server" CssClass="text-white small" Text="Sesión de Maxi" />
+
+                                    <!-- Usuario -->
+                                    <asp:Label ID="lblUsuario" runat="server" Text="Sesión de Maxi" />
+
+                                    <!-- Pantalla completa -->
+                                    <button id="btnFullscreen" type="button" class="btn btn-success text-white" onclick="toggleFullscreen()">
+                                        Pantalla completa
+                                    </button>
 
                                     <!-- Cerrar Sesión -->
                                     <asp:Button ID="btnCerrarSesion" runat="server" Text="Cerrar Sesión" CssClass="btn btn-danger" OnClick="btnCerrarSesion_Click"></asp:Button>

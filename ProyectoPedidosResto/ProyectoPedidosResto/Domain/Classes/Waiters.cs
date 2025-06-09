@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace ProyectoPedidosResto.Domain
+namespace ProyectoPedidosResto.Domain.Classes
 {
-    public class Waiter
+    public class Waiters
     {   
-        public Waiter()
+        public Waiters()
         {
             Mozo_Id = -1;
             Mozo_Nombre = string.Empty;
