@@ -24,10 +24,6 @@
             <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" CssClass="form-control mb-3" Placeholder="Contraseña"></asp:TextBox>
 
             <asp:Button ID="btnLogin" runat="server" CssClass="btn btn-primary w-100" Text="Login" OnClick="btnLogin_Click" />
-
-            <asp:Label ID="lblMensaje" runat="server" ForeColor="Red" EnableViewState="false"></asp:Label>
-            <asp:Button ID="btnProbarConexion" runat="server" Text="Probar Conexión" OnClick="btnProbarConexion_Click" CssClass="btn btn-info" />
-            <asp:Label ID="lblMensajeConexion" runat="server" CssClass="text-info" />
         </div>
     </div>
 </asp:Content>

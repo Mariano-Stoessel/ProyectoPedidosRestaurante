@@ -129,12 +129,10 @@
                         <!-- Collapse -->
                         <div class="collapse-container collapse navbar-collapse" id="navbarNavAltMarkup">
                             <div class="navbar-nav ms-auto">
-                                <!-- Mesas: botón grande y destacado -->
-                                <a class="nav-link btn btn-primary fw-bold fs-4 py-2 mb-2 text-end" href="Tables.aspx">Mesas</a>
                                 <div class="d-flex flex-column flex-lg-row align-items-lg-center text-end gap-3 gap-lg-4">
+
                                     <!-- Usuario: texto pequeño y sutil -->
                                     <asp:Label ID="lblUsuario" runat="server" CssClass="text-white small" Text="Sesión de Maxi" />
-
                                     <!-- Cerrar Sesión -->
                                     <asp:Button ID="btnCerrarSesion" runat="server" Text="Cerrar Sesión" CssClass="btn btn-danger" OnClick="btnCerrarSesion_Click"></asp:Button>
                                 </div>

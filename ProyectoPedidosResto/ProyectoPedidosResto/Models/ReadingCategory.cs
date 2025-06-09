@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using ProyectoPedidosResto.Domain.Classes;
+using ProyectoPedidosResto.Domain;
 
 namespace ProyectoPedidosResto.Domain.ConnectionBBDD
 {

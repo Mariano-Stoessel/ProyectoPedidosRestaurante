@@ -206,21 +206,21 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Domain\Classes\Category.cs" />
-    <Compile Include="Domain\Classes\Commands.cs" />
-    <Compile Include="Domain\Classes\Article.cs" />
-    <Compile Include="Domain\Classes\Tables.cs" />
-    <Compile Include="Domain\Classes\User.cs" />
-    <Compile Include="Domain\Classes\Waiters.cs" />
-    <Compile Include="Domain\ConnectionBBDD\DataAccess.cs" />
-    <Compile Include="Domain\ConnectionBBDD\ReadingArticle.cs" />
-    <Compile Include="Domain\ConnectionBBDD\ReadingCategory.cs" />
-    <Compile Include="Domain\ConnectionBBDD\ReadingCommands.cs" />
-    <Compile Include="Domain\ConnectionBBDD\ReadingTables.cs" />
-    <Compile Include="Domain\ConnectionBBDD\ReadingWaiters.cs" />
+    <Compile Include="Domain\Article.cs" />
+    <Compile Include="Domain\Category.cs" />
+    <Compile Include="Domain\Command.cs" />
+    <Compile Include="Domain\Table.cs" />
+    <Compile Include="Domain\User.cs" />
+    <Compile Include="Domain\Waiter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\DataAccess.cs" />
+    <Compile Include="Models\ReadingArticle.cs" />
+    <Compile Include="Models\ReadingCategory.cs" />
+    <Compile Include="Models\ReadingCommands.cs" />
+    <Compile Include="Models\ReadingTables.cs" />
+    <Compile Include="Models\ReadingWaiters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
@@ -260,7 +260,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Controllers\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

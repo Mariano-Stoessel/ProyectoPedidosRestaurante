@@ -1,5 +1,5 @@
 ﻿using Microsoft.Ajax.Utilities;
-using ProyectoPedidosResto.Domain.Classes;
+using ProyectoPedidosResto.Domain;
 using ProyectoPedidosResto.Domain.ConnectionBBDD;
 using System;
 using System.Collections.Generic;
