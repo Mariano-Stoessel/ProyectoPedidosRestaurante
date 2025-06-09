@@ -115,7 +115,7 @@ namespace ProyectoPedidosResto.Views
             List<Category> categorias = reader.LeerCategorias(consulta);
 
             ddlCategorias.Items.Clear();
-            ddlCategorias.Items.Add(new ListItem("Todos", "")); // Opción por defecto
+            ddlCategorias.Items.Add(new ListItem("TODOS", "")); // Opción por defecto
 
             foreach (var cat in categorias)
             {
