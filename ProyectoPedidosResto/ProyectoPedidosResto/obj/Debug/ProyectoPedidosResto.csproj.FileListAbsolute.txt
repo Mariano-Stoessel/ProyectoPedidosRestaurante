@@ -250,3 +250,35 @@ F:\Proyectos GitHub\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedi
 F:\Proyectos GitHub\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\obj\Debug\Proyecto.206FA42B.Up2Date
 F:\Proyectos GitHub\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\obj\Debug\ProyectoPedidosResto.dll
 F:\Proyectos GitHub\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\obj\Debug\ProyectoPedidosResto.pdb
+D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\BouncyCastle.Cryptography.dll
+D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\Google.Protobuf.dll
+D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\K4os.Compression.LZ4.dll
+D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\K4os.Compression.LZ4.Streams.dll
+D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\K4os.Hash.xxHash.dll
+D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\Microsoft.Bcl.AsyncInterfaces.dll
+D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\MySql.Data.dll
+D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\System.Buffers.dll
+D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\System.Configuration.ConfigurationManager.dll
+D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\System.Diagnostics.DiagnosticSource.dll
+D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\System.IO.Pipelines.dll
+D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\System.Memory.dll
+D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\System.Numerics.Vectors.dll
+D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\System.Runtime.CompilerServices.Unsafe.dll
+D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\System.Threading.Tasks.Extensions.dll
+D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\ZstdSharp.dll
+D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\BouncyCastle.Cryptography.xml
+D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\Google.Protobuf.pdb
+D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\Google.Protobuf.xml
+D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\K4os.Compression.LZ4.xml
+D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\K4os.Compression.LZ4.Streams.xml
+D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\K4os.Hash.xxHash.xml
+D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\Microsoft.Bcl.AsyncInterfaces.xml
+D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\MySql.Data.xml
+D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\System.Buffers.xml
+D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\System.Configuration.ConfigurationManager.xml
+D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\System.Diagnostics.DiagnosticSource.xml
+D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\System.IO.Pipelines.xml
+D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\System.Memory.xml
+D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\System.Numerics.Vectors.xml
+D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\System.Runtime.CompilerServices.Unsafe.xml
+D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\System.Threading.Tasks.Extensions.xml

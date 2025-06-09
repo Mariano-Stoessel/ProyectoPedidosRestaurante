@@ -336,11 +336,9 @@
                     <div class="controlPedido">
                         <div class="row mb-3">
                             <div class="col-12">
-                                <select class="form-select me-2 bg-primary text-white text-center">
-                                    <option selected>Todos</option>
-                                    <option value="1">Bebidas</option>
-                                    <option value="2">Comidas</option>
-                                </select>
+                                <asp:DropDownList ID="ddlCategorias" runat="server" CssClass="form-select me-2 bg-primary text-white text-center">
+                                    <asp:ListItem Text="Todos" Value="" Selected="True"></asp:ListItem>
+                                </asp:DropDownList>
                             </div>
                         </div>
                         <div class="row pb-3">
