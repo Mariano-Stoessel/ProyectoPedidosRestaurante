@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace ProyectoPedidosResto.Domain.ConnectionBBDD
+namespace ProyectoPedidosResto.Domain
 {
-    public class ReadingArticle
+    public class User
     {
+        
+
+        
+
     }
 }

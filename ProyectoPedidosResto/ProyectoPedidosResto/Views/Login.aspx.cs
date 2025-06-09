@@ -32,7 +32,24 @@ namespace ProyectoPedidosResto.Views
         {
             // Validar usuario
 
-            Response.Redirect("Tables.aspx");
+            bool loginValido = true; // Simulación
+
+            if (loginValido)
+            {
+                Session["UsuarioLogueado"] = true;
+                Response.Redirect("Tables.aspx"); // Redirige a la página Tables
+            }
+            else
+            {
+                lblMensaje.Text = "Usuario o contraseña incorrectos.";
+            }
+        }
+        protected void btnProbarConexion_Click(object sender, EventArgs e)
+        {
+            var acceso = new DataAccess.AccesoDatos();
+            string mensaje;
+            bool exito = acceso.ProbarConexion(out mensaje);
+            lblMensajeConexion.Text = mensaje;
         }
         protected void btnProbarConexion_Click(object sender, EventArgs e)
         {

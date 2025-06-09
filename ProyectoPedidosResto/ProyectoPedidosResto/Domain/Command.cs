@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace ProyectoPedidosResto.Domain.Classes
+namespace ProyectoPedidosResto.Domain
 {
-    public class Commands
+    public class Command
     {
-        public Commands() {
+        public Command() {
             Com_Indice = -1;
             Com_MesaId = -1;
             Com_Id_Art = -1;
