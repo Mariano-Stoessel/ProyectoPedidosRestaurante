@@ -36,7 +36,7 @@ namespace ProyectoPedidosResto.Views
 
             if (loginValido)
             {
-                Session["UsuarioLogueado"] = true;
+                Session["UsuarioLogueado"] = txtUsuario.Text;
                 Response.Redirect("Tables.aspx"); // Redirige a la página Tables
             }
             else

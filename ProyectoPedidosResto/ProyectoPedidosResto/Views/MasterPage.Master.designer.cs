@@ -51,6 +51,15 @@ namespace ProyectoPedidosResto.Views
         protected global::System.Web.UI.WebControls.Panel pnlHamburguesa;
 
         /// <summary>
+        /// pnlCollapse control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlCollapse;
+
+        /// <summary>
         /// lblUsuario control.
         /// </summary>
         /// <remarks>
