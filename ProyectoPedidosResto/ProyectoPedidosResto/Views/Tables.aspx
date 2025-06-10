@@ -52,15 +52,22 @@
         }
 
         document.addEventListener("DOMContentLoaded", function () {
-            // Selecciona todos los modales de mesa
-            document.querySelectorAll('.modal').forEach(function (modal) {
-                modal.addEventListener('hidden.bs.modal', function () {
-                    // Busca el DropDownList de mozos dentro del modal cerrado
-                    var ddl = modal.querySelector('select[id$="ddlMozos"]');
-                    if (ddl) {
-                        ddl.selectedIndex = 0; // Selecciona el primer item ("Seleccione mozo")
-                    }
-                });
+            var modal = document.getElementById('modalMesaGeneral');
+            modal.addEventListener('hidden.bs.modal', function () {
+                var ddl = document.getElementById('<%= ddlMozos.ClientID %>');
+                if (ddl) {
+                    ddl.selectedIndex = 0;
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('modalMesaGeneral');
+            modal.addEventListener('show.bs.modal', function (event) {
+                var button = event.relatedTarget;
+                var mesaId = button.getAttribute('data-mesa-id');
+                document.getElementById('modalMesaNumero').textContent = mesaId;
+                document.getElementById('hfMesaId').value = mesaId;
             });
         });
     </script>
@@ -98,15 +105,15 @@
 
                             switch (mesa.Mesa_Estado)
                             {
-                                case "Libre":
+                                case "LIBRE":
                                     colorClase = "text-bg-success";
                                     estadoTexto = "Libre";
                                     break;
-                                case "Reservado":
+                                case "RESERVADO":
                                     colorClase = "text-bg-warning";
                                     estadoTexto = "Reservado";
                                     break;
-                                case "Ocupada":
+                                case "OCUPADA":
                                     colorClase = "text-bg-danger";
                                     estadoTexto = "Ocupada";
                                     break;
@@ -122,11 +129,11 @@
                             <div class="card-header">MESA <%= mesa.Mesa_Id %></div>
                             <div class="card-body">
                                 <h5 class="card-title"><%= estadoTexto %></h5>
-                                <% if (mesa.Mesa_Estado == "Ocupada")
+                                <% if (mesa.Mesa_Estado == "OCUPADA")
                                     { %>
                                 <p class="card-text"><%= mesa.Mesa_Mozo %></p>
                                 <% }
-                                    else if (mesa.Mesa_Estado == "Reservado")
+                                    else if (mesa.Mesa_Estado == "RESERVADO")
                                     { %>
                                 <p class="card-text">X personas</p>
                                 <% }
@@ -136,15 +143,17 @@
                                 <% } %>
                             </div>
                             <div class="card-footer w-100 d-flex justify-content-center">
-                                <% if (mesa.Mesa_Estado == "Libre" || mesa.Mesa_Estado == "Reservado")
+                                <% if (mesa.Mesa_Estado == "LIBRE" || mesa.Mesa_Estado == "RESERVADO")
                                     { %>
                                 <button type="button" class="btn btn-primary"
                                     data-bs-toggle="modal"
-                                    data-bs-target="#<%= modalId %>">
-                                    <%= mesa.Mesa_Estado == "Libre" ? "Cargar" : "Cargar" %>
+                                    data-bs-target="#modalMesaGeneral"
+                                    data-mesa-id="<%= mesa.Mesa_Id %>"
+                                    data-mesa-estado="<%= mesa.Mesa_Estado %>">
+                                    Cargar
                                 </button>
                                 <% }
-                                    else if (mesa.Mesa_Estado == "Ocupada")
+                                    else if (mesa.Mesa_Estado == "OCUPADA")
                                     { %>
                                 <asp:Button runat="server" CssClass="btn btn-primary" Text="Comanda" CommandName="VerComanda" CommandArgument='<% mesa.Numero %>' OnCommand="Comanda_Command" />
                                 <% } %>
@@ -152,49 +161,10 @@
                         </div>
                     </div>
 
-                    <% if (mesa.Mesa_Estado == "Libre" || mesa.Mesa_Estado == "Reservado")
+                    <% if (mesa.Mesa_Estado == "LIBRE" || mesa.Mesa_Estado == "RESERVADO")
                         { %>
 
-                    <!-- Modal Mesa -->
-                    <div class="modal fade" id="<%= modalId %>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="label<%= modalId %>" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content bg-dark text-white">
-                                <div class="modal-header border-secondary justify-content-center">
-                                    <h1 class="modal-title" id="label<%= modalId %>">Mesa <%= mesa.Mesa_Id %></h1>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="mb-3">
-                                        <asp:DropDownList ID="ddlMozos" runat="server" CssClass="form-select bg-primary text-white text-center">
-                                            <asp:ListItem Text="Seleccione mozo" Value="" Disabled="true" Selected="true"></asp:ListItem>
-                                        </asp:DropDownList>
-                                    </div>
-                                    <div class="mb-3 d-flex align-items-center justify-content-between">
-                                        <label class="form-label me-3">Personas:</label>
 
-                                        <div class="input-group" style="max-width: 160px;">
-                                            <button type="button" class="btn btn-primary"
-                                                onclick="modificarPersonas('lblPersonas<%= mesa.Mesa_Id %>', 'hfPersonas<%= mesa.Mesa_Id %>', -1)">
-                                                -</button>
-                                            <span id="lblPersonas<%= mesa.Mesa_Id %>" class="form-control text-center bg-primary text-white border-0">1</span>
-                                            <button type="button" class="btn btn-primary"
-                                                onclick="modificarPersonas('lblPersonas<%= mesa.Mesa_Id %>', 'hfPersonas<%= mesa.Mesa_Id %>', 1)">
-                                                +</button>
-                                            <input type="hidden" id="hfPersonas<%= mesa.Mesa_Id %>" value="1" />
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Observaciones:</label>
-                                        <textarea class="form-control bg-black text-white" rows="4"></textarea>
-                                    </div>
-                                </div>
-                                <div class="modal-footer d-flex justify-content-between">
-                                    <button type="button" class="btn btn-danger flex-fill" data-bs-dismiss="modal">Cancelar</button>
-                                    <asp:Button ID="btnAceptarMesa" runat="server" CssClass="btn btn-success flex-fill" Text="Aceptar" UseSubmitBehavior="false" OnClick="btnAceptarMesa_Click" />
-                                    <a href="Commands.aspx" class="btn btn-primary flex-fill">Tomar comanda</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <% } %>
 
 
@@ -202,8 +172,46 @@
                 </div>
             </div>
         </div>
+        <!-- Modal Mesa -->
+        <div class="modal fade" id="modalMesaGeneral" tabindex="-1" aria-labelledby="modalMesaGeneralLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content bg-dark text-white">
+                    <div class="modal-header border-secondary justify-content-center">
+                        <h1 class="modal-title" id="modalMesaGeneralLabel">Mesa <span id="modalMesaNumero"></span></h1>
+                        <input type="hidden" id="hfMesaId" name="hfMesaId" />
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <asp:DropDownList ID="ddlMozos" runat="server" CssClass="form-select bg-primary text-white text-center"></asp:DropDownList>
+                        </div>
+                        <div class="mb-3 d-flex align-items-center justify-content-between">
+                            <label class="form-label me-3">Personas:</label>
+
+                            <div class="input-group" style="max-width: 160px;">
+                                <button type="button" class="btn btn-primary"
+                                    onclick="modificarPersonas('lblPersonas', 'hfPersonas', -1)">
+                                    -
+                                </button>
+                                <span id="lblPersonas" class="form-control text-center bg-primary text-white border-0">1</span>
+                                <button type="button" class="btn btn-primary"
+                                    onclick="modificarPersonas('lblPersonas', 'hfPersonas', 1)">
+                                    +
+                                </button>
+                                <input type="hidden" id="hfPersonas" value="1" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Observaciones:</label>
+                            <textarea class="form-control bg-black text-white" rows="4"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between">
+                        <button type="button" class="btn btn-danger flex-fill" data-bs-dismiss="modal">Cancelar</button>
+                        <asp:Button ID="btnAceptarMesa" runat="server" CssClass="btn btn-success flex-fill" Text="Aceptar" UseSubmitBehavior="false" OnClick="btnAceptarMesa_Click" />
+                        <a href="Commands.aspx" class="btn btn-primary flex-fill">Tomar comanda</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-
-
 </asp:Content>

@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using ProyectoPedidosResto.Domain;
+using ProyectoPedidosResto.Models;
 using TableDomain = ProyectoPedidosResto.Domain.Table;
 
 namespace ProyectoPedidosResto.Views
@@ -18,46 +19,42 @@ namespace ProyectoPedidosResto.Views
         {
             if (!IsPostBack)
             {
-                // simulacion de mesas y mozos (Inicializa la propiedad Mesas (no una variable local)
-                Mesas = new List<TableDomain>()
+                cargarDatos(); // Cargar datos de mesas y mozos al iniciar la página
+
+                cargarDdl(); // Cargar Filtros de estado y datos en los DropDownList
+
+            }
+        }
+
+        private void cargarDdl()
+        {
+            // Cargar Filtros de estado
+            ddlFiltros.Items.Add(new ListItem("Todos", "1"));
+            ddlFiltros.Items.Add(new ListItem("Libre", "2"));
+            ddlFiltros.Items.Add(new ListItem("Reservado", "3"));
+            ddlFiltros.Items.Add(new ListItem("Ocupada", "4"));
+
+            ddlFiltros.SelectedValue = "1";
+
+            // Cargar Mozos
+            ddlMozos.Items.Clear();
+            ddlMozos.Items.Add(new ListItem("Seleccione mozo", "", true));
+            foreach (var mozo in Mozos)
+            {
+                if (mozo.Mozo_Activo == "Si") // Solo agregar mozos activos
                 {
-                    new TableDomain { Mesa_Id = 1, Mesa_Estado = "Libre" },
-                    new TableDomain { Mesa_Id = 2, Mesa_Estado = "Reservado" },
-                    new TableDomain { Mesa_Id = 3, Mesa_Estado = "Ocupada", Mesa_Mozo = "Juan Pérez" },
-                    new TableDomain { Mesa_Id = 4, Mesa_Estado = "Libre" },
-                    new TableDomain { Mesa_Id = 5, Mesa_Estado = "Ocupada", Mesa_Mozo = "Ana Gómez" },
-                    new TableDomain { Mesa_Id = 6, Mesa_Estado = "Reservado" }
-                };
-
-                // Guarda la lista de mesas en Session
-                Session["MesasOriginal"] = Mesas;
-
-                Mozos = new List<Waiter>()
-                {
-                    new Waiter { Mozo_Id = 1, Mozo_Nombre = "Juan Pérez", Mozo_Activo = "Si" },
-                    new Waiter { Mozo_Id = 2, Mozo_Nombre = "Ana Gómez", Mozo_Activo = "Si" },
-                    new Waiter { Mozo_Id = 3, Mozo_Nombre = "Wanchope Avila",  Mozo_Activo = "Si" },
-                    new Waiter { Mozo_Id = 4, Mozo_Nombre = "Dormilon Diaz",  Mozo_Activo = "No" },
-                };
-                //
-
-                // Cargar Filtros de estado en el DropDownList (pasar a una funcion)
-                ddlFiltros.Items.Add(new ListItem("Todos", "1"));
-                ddlFiltros.Items.Add(new ListItem("Libre", "2"));
-                ddlFiltros.Items.Add(new ListItem("Reservado", "3"));
-                ddlFiltros.Items.Add(new ListItem("Ocupada", "4"));
-
-                ddlFiltros.SelectedValue = "1";
-
-                // Cargar Mozos en el DropDownList (pasar a una funcion)
-                foreach (var mozo in Mozos)
-                {
-                    if (mozo.Mozo_Activo == "Si") // Solo agregar mozos activos
-                    {
-                        ddlMozos.Items.Add(new ListItem(mozo.Mozo_Nombre, mozo.Mozo_Id.ToString()));
-                    }
+                    ddlMozos.Items.Add(new ListItem(mozo.Mozo_Nombre, mozo.Mozo_Id.ToString()));
                 }
             }
+        }
+
+        private void cargarDatos()
+        {
+            var readerMesas = new ReadingTables();
+            Mesas = readerMesas.LeerMesas();
+
+            var readerMozos = new ReadingWaiters();
+            Mozos = readerMozos.LeerMozos();
         }
 
         protected void ddlFiltros_SelectedIndexChanged(object sender, EventArgs e)
