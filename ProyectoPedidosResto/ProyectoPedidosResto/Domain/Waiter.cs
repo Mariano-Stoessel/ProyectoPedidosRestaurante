@@ -15,8 +15,6 @@ namespace ProyectoPedidosResto.Domain
             Mozo_Contrasena = string.Empty;
         }
 
-
-
         public int Mozo_Id { get; set; }
         public string Mozo_Nombre { get; set; }
         public string Mozo_Activo { get; set; }

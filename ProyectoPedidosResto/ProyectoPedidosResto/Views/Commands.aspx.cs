@@ -1,6 +1,6 @@
 ﻿using Microsoft.Ajax.Utilities;
 using ProyectoPedidosResto.Domain;
-using ProyectoPedidosResto.Domain.ConnectionBBDD;
+using ProyectoPedidosResto.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -5,7 +5,7 @@ using System.Web;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient; // Cambiado para MySQL
 
-namespace ProyectoPedidosResto.Domain.ConnectionBBDD
+namespace ProyectoPedidosResto.Models
 {
     public class DataAccess
     {

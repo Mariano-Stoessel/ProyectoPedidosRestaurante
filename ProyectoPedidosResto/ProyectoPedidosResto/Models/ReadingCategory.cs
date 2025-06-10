@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using ProyectoPedidosResto.Domain;
 
-namespace ProyectoPedidosResto.Domain.ConnectionBBDD
+namespace ProyectoPedidosResto.Models
 {
     public class ReadingCategory
     {
