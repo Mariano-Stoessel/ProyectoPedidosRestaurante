@@ -51,6 +51,15 @@ namespace ProyectoPedidosResto.Views
         protected global::System.Web.UI.WebControls.Button btnLimpiar;
 
         /// <summary>
+        /// hfMesaId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfMesaId;
+
+        /// <summary>
         /// ddlMozos control.
         /// </summary>
         /// <remarks>
@@ -58,6 +67,15 @@ namespace ProyectoPedidosResto.Views
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlMozos;
+
+        /// <summary>
+        /// txtObservaciones control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtObservaciones;
 
         /// <summary>
         /// btnAceptarMesa control.

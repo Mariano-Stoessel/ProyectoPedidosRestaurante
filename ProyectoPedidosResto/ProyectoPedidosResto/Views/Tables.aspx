@@ -54,39 +54,40 @@
         document.addEventListener("DOMContentLoaded", function () {
             var modal = document.getElementById('modalMesaGeneral');
             modal.addEventListener('hidden.bs.modal', function () {
+                // Resetea el DropDownList de mozos
                 var ddl = document.getElementById('<%= ddlMozos.ClientID %>');
-                if (ddl) {
-                    ddl.selectedIndex = 0;
-                }
-            });
-        });
+                if (ddl) ddl.selectedIndex = 0;
 
-        document.addEventListener('DOMContentLoaded', function () {
-            var modal = document.getElementById('modalMesaGeneral');
+                // Resetea el campo de observaciones
+                var obs = document.getElementById('<%= txtObservaciones.ClientID %>');
+                if (obs) obs.value = '';
+
+                // Resetea la cantidad de personas
+                var lbl = document.getElementById('lblPersonas');
+                if (lbl) lbl.innerText = '1';
+
+                var hf = document.getElementById('hfPersonas');
+                if (hf) hf.value = '1';
+            });
+
+            // Evento show.bs.modal: solo carga datos, no resetea
             modal.addEventListener('show.bs.modal', function (event) {
                 var button = event.relatedTarget;
                 var mesaId = button.getAttribute('data-mesa-id');
-                var mesaEstado = button.getAttribute('data-mesa-estado');
                 var personas = button.getAttribute('data-personas');
                 var mozoId = button.getAttribute('data-mozo-id');
-                var ddlMozos = document.getElementById('<%= ddlMozos.ClientID %>');
 
                 document.getElementById('modalMesaNumero').textContent = mesaId;
-                document.getElementById('hfMesaId').value = mesaId;
+                document.getElementById('<%= hfMesaId.ClientID %>').value = mesaId;
 
-                // Solo resetea si NO es RESERVADO
-                if (mesaEstado !== 'RESERVADO') {
-                    document.getElementById('lblPersonas').innerText = '1';
-                    document.getElementById('hfPersonas').value = '1';
-                    if (ddlMozos) ddlMozos.selectedIndex = 0; // Resetea el DDL
-                } else {
-                    var cantidad = personas ? personas : '1';
-                    document.getElementById('lblPersonas').innerText = cantidad;
-                    document.getElementById('hfPersonas').value = cantidad;
-                    // Selecciona el mozo si está definido
-                    if (ddlMozos && mozoId) {
-                        ddlMozos.value = mozoId;
-                    }
+                // Si hay datos para cargar (por ejemplo, mesa reservada), los cargas aquí
+                if (personas) {
+                    document.getElementById('lblPersonas').innerText = personas;
+                    document.getElementById('hfPersonas').value = personas;
+                }
+                if (mozoId) {
+                    var ddlMozos = document.getElementById('<%= ddlMozos.ClientID %>');
+                    if (ddlMozos) ddlMozos.value = mozoId;
                 }
             });
         });
@@ -195,7 +196,7 @@
                 <div class="modal-content bg-dark text-white">
                     <div class="modal-header border-secondary justify-content-center">
                         <h1 class="modal-title" id="modalMesaGeneralLabel">Mesa <span id="modalMesaNumero"></span></h1>
-                        <input type="hidden" id="hfMesaId" name="hfMesaId" />
+                        <asp:HiddenField ID="hfMesaId" runat="server" />
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
@@ -214,12 +215,12 @@
                                     onclick="modificarPersonas('lblPersonas', 'hfPersonas', 1)">
                                     +
                                 </button>
-                                <input type="hidden" id="hfPersonas" value="1" />
+                                <input type="hidden" name="hfPersonas<%# Eval("Mesa_Id") %>" id="hfPersonas<%# Eval("Mesa_Id") %>" />
                             </div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Observaciones:</label>
-                            <textarea class="form-control bg-black text-white" rows="4"></textarea>
+                            <asp:TextBox ID="txtObservaciones" runat="server" CssClass="form-control bg-black text-white" TextMode="MultiLine" Rows="4"></asp:TextBox>
                         </div>
                     </div>
                     <div class="modal-footer d-flex justify-content-between">

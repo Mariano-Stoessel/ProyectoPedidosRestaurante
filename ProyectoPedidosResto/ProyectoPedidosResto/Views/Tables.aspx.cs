@@ -1,11 +1,12 @@
-﻿using System;
+﻿using ProyectoPedidosResto.Domain;
+using ProyectoPedidosResto.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using ProyectoPedidosResto.Domain;
-using ProyectoPedidosResto.Models;
 using TableDomain = ProyectoPedidosResto.Domain.Table;
 
 namespace ProyectoPedidosResto.Views
@@ -59,59 +60,24 @@ namespace ProyectoPedidosResto.Views
 
         protected void ddlFiltros_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Recargar datos actualizados de mesas y mozos
-            // (Aquí deberías obtener los datos desde tu fuente real, por ejemplo, base de datos)
-            Mesas = new List<TableDomain>()
-            {
-                new TableDomain { Mesa_Id = 1, Mesa_Estado = "Libre" },
-                new TableDomain { Mesa_Id = 2, Mesa_Estado = "Reservado" },
-                new TableDomain { Mesa_Id = 3, Mesa_Estado = "Ocupada", Mesa_Mozo = "Juan Pérez" },
-                new TableDomain { Mesa_Id = 4, Mesa_Estado = "Libre" },
-                new TableDomain { Mesa_Id = 5, Mesa_Estado = "Ocupada", Mesa_Mozo = "Ana Gómez" },
-                new TableDomain { Mesa_Id = 6, Mesa_Estado = "Reservado" }
-            };
-
-            Session["MesasOriginal"] = Mesas;
-
-            Mozos = new List<Waiter>()
-            {
-                new Waiter { Mozo_Id = 1, Mozo_Nombre = "Juan Pérez", Mozo_Activo = "Si" },
-                new Waiter { Mozo_Id = 2, Mozo_Nombre = "Ana Gómez", Mozo_Activo = "Si" },
-                new Waiter { Mozo_Id = 3, Mozo_Nombre = "Wanchope Avila",  Mozo_Activo = "Si" },
-                new Waiter { Mozo_Id = 4, Mozo_Nombre = "Dormilon Diaz",  Mozo_Activo = "No" },
-            };
-
-            // Filtrado según el filtro seleccionado
-            var mesasOriginal = Session["MesasOriginal"] as List<TableDomain>;
-            if (mesasOriginal == null)
-                return;
-
+            // Determinar el estado según el valor seleccionado
             string filtro = ddlFiltros.SelectedValue;
-            List<TableDomain> mesasFiltradas;
+            string estado = null;
 
+            // Obtener el valor del DropDown para ver estado
             switch (filtro)
             {
-                case "1": // Todos
-                    mesasFiltradas = mesasOriginal;
-                    break;
-                case "2": // Libre
-                    mesasFiltradas = mesasOriginal.Where(m => m.Mesa_Estado.Equals("Libre", StringComparison.OrdinalIgnoreCase)).ToList();
-                    break;
-                case "3": // Reservado
-                    mesasFiltradas = mesasOriginal.Where(m => m.Mesa_Estado.Equals("Reservado", StringComparison.OrdinalIgnoreCase)).ToList();
-                    break;
-                case "4": // Ocupada
-                    mesasFiltradas = mesasOriginal.Where(m => m.Mesa_Estado.Equals("Ocupada", StringComparison.OrdinalIgnoreCase)).ToList();
-                    break;
-                default:
-                    mesasFiltradas = mesasOriginal;
-                    break;
+                case "2": estado = "Libre"; break;
+                case "3": estado = "Reservado"; break;
+                case "4": estado = "Ocupada"; break;
             }
 
-            Mesas = mesasFiltradas;
+            // Obtener el texto de búsqueda desde el textbox
+            string texto = txtBuscar.Text?.Trim();
 
-            // Si tienes controles de datos, aquí deberías hacer DataBind()
-            // Por ejemplo: gridViewMesas.DataSource = Mesas; gridViewMesas.DataBind();
+            // Llamar al método que filtra desde la base de datos
+            var readerMesas = new ReadingTables();
+            Mesas = readerMesas.LeerMesasFiltrado(estado, texto);
         }
 
         protected void chkMisMesas_CheckedChanged(object sender, EventArgs e)
@@ -130,38 +96,54 @@ namespace ProyectoPedidosResto.Views
             // Desmarca el checkbox de "Mis mesas"
             chkMisMesas.Checked = false;
 
-            // Cargar datos de nuevo
-        }
-
-        protected void BtnCargarMesa_Click(object sender, EventArgs e)
-        {
-
-
+            // Recarga los datos por defecto (todas las mesas)
+            var readerMesas = new ReadingTables();
+            Mesas = readerMesas.LeerMesas();
         }
 
         protected void txtBuscar_TextChanged(object sender, EventArgs e)
         {
-            // Aquí va la lógica para filtrar o actualizar los datos según el texto ingresado
-            // Por ejemplo:
-            string texto = txtBuscar.Text;
-            // Filtra tus datos aquí
+            // Obtener el texto de búsqueda desde el textbox
+            string texto = txtBuscar.Text?.Trim();
+
+            // Obtener el valor del DropDown para ver estado
+            string filtro = ddlFiltros.SelectedValue;
+            string estado = null;
+
+            switch (filtro)
+            {
+                case "2": estado = "Libre"; break;
+                case "3": estado = "Reservado"; break;
+                case "4": estado = "Ocupada"; break;
+            }
+
+            // Llamar al método que filtra desde la base de datos
+            var readerMesas = new ReadingTables();
+            if (string.IsNullOrEmpty(texto))
+                Mesas = readerMesas.LeerMesas();
+            else
+                Mesas = readerMesas.LeerMesasFiltrado(estado, texto);
         }
 
         protected void btnAceptarMesa_Click(object sender, EventArgs e)
         {
-            // Obtener el número de mesa desde el CommandArgument
-            var btn = (Button)sender;
-            string mesaNumero = btn.CommandArgument;
+            // Obtener el número de mesa desde el HiddenField
+            string mesaNumero = hfMesaId.Value;
 
-            // Leer el valor del hidden field y obtener valor CantidadPersonas
-            string personasKey = "hfPersonas" + mesaNumero;
-            string personasValue = Request.Form[personasKey];
+            // Obtener el id del mozo seleccionado
+            int idMozo = 0;
+            int.TryParse(ddlMozos.SelectedValue, out idMozo);
 
+            // Obtener cantidad de personas
             int cantidadPersonas = 1;
-            int.TryParse(personasValue, out cantidadPersonas);
+            int.TryParse(Request.Form["hfPersonas"], out cantidadPersonas);
 
-            // Revisar que funcione el traspaso de datos!!
+            // Obtener observaciones desde un TextBox (ejemplo: txtObservaciones)
+            string observaciones = txtObservaciones.Text;
 
+            // Aquí puedes usar las variables para guardar en BBDD
+
+            // Recargar la página (sin redirigir a otra)
             Response.Redirect(Request.RawUrl);
         }
 
