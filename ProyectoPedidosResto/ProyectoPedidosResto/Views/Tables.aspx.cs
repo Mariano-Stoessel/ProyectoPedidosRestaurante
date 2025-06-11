@@ -41,7 +41,7 @@ namespace ProyectoPedidosResto.Views
             ddlMozos.Items.Add(new ListItem("Seleccione mozo", "", true));
             foreach (var mozo in Mozos)
             {
-                if (mozo.Mozo_Activo == "Si") // Solo agregar mozos activos
+                if (mozo.Mozo_Activo == "SI") // Solo agregar mozos activos
                 {
                     ddlMozos.Items.Add(new ListItem(mozo.Mozo_Nombre, mozo.Mozo_Id.ToString()));
                 }
