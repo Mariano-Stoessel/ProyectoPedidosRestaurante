@@ -66,8 +66,28 @@
             modal.addEventListener('show.bs.modal', function (event) {
                 var button = event.relatedTarget;
                 var mesaId = button.getAttribute('data-mesa-id');
+                var mesaEstado = button.getAttribute('data-mesa-estado');
+                var personas = button.getAttribute('data-personas');
+                var mozoId = button.getAttribute('data-mozo-id');
+                var ddlMozos = document.getElementById('<%= ddlMozos.ClientID %>');
+
                 document.getElementById('modalMesaNumero').textContent = mesaId;
                 document.getElementById('hfMesaId').value = mesaId;
+
+                // Solo resetea si NO es RESERVADO
+                if (mesaEstado !== 'RESERVADO') {
+                    document.getElementById('lblPersonas').innerText = '1';
+                    document.getElementById('hfPersonas').value = '1';
+                    if (ddlMozos) ddlMozos.selectedIndex = 0; // Resetea el DDL
+                } else {
+                    var cantidad = personas ? personas : '1';
+                    document.getElementById('lblPersonas').innerText = cantidad;
+                    document.getElementById('hfPersonas').value = cantidad;
+                    // Selecciona el mozo si está definido
+                    if (ddlMozos && mozoId) {
+                        ddlMozos.value = mozoId;
+                    }
+                }
             });
         });
     </script>
@@ -149,7 +169,12 @@
                                     data-bs-toggle="modal"
                                     data-bs-target="#modalMesaGeneral"
                                     data-mesa-id="<%= mesa.Mesa_Id %>"
-                                    data-mesa-estado="<%= mesa.Mesa_Estado %>">
+                                    data-mesa-estado="<%= mesa.Mesa_Estado %>"
+                                    <% if (mesa.Mesa_Estado == "RESERVADO")
+                                    { %>
+                                    data-personas="<%= mesa.Mesa_CantPer %>"
+                                    data-mozo-id="<%= mesa.Mesa_IdMozo %>"
+                                    <% } %>>
                                     Cargar
                                 </button>
                                 <% }
@@ -160,14 +185,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <% if (mesa.Mesa_Estado == "LIBRE" || mesa.Mesa_Estado == "RESERVADO")
-                        { %>
-
-
-                    <% } %>
-
-
                     <% } %>
                 </div>
             </div>
