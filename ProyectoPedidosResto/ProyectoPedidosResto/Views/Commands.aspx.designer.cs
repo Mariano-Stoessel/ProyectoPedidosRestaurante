@@ -96,6 +96,15 @@ namespace ProyectoPedidosResto.Views
         protected global::System.Web.UI.WebControls.Button btnAceptarCantidad;
 
         /// <summary>
+        /// Control smMain.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.ScriptManager smMain;
+
+        /// <summary>
         /// Control ddlCategorias.
         /// </summary>
         /// <remarks>
@@ -103,6 +112,15 @@ namespace ProyectoPedidosResto.Views
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlCategorias;
+
+        /// <summary>
+        /// Control txtBusqueda.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtBusqueda;
 
         /// <summary>
         /// Control rptProductos.

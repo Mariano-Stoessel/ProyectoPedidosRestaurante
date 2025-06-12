@@ -119,6 +119,19 @@
     </style>
     <script>
 
+        function filterProductos() {
+            // tomo el valor, lo paso a minúsculas
+            var filtro = document.getElementById('<%= txtBusqueda.ClientID %>').value.toLowerCase();
+            // recorro cada fila del catálogo
+            document.querySelectorAll('.fila-producto-catalogo').forEach(function (row) {
+                // busco el nombre dentro de la columna
+                var nombre = row.querySelector('.col-7 span').textContent.toLowerCase();
+                // muestro/oculto según coincida
+                row.style.display = nombre.indexOf(filtro) > -1 ? '' : 'none';
+            });
+        }
+
+
         function seleccionarProductoLista(element) {
             if (element.classList.contains('selected')) {
                 element.classList.remove('selected');
@@ -333,6 +346,7 @@
                     <h1 class="modal-title">Productos</h1>
                 </div>
                 <div class="modal-body">
+                    <asp:ScriptManager ID="smMain" runat="server" />
                     <div class="controlPedido">
                         <div class="row mb-3">
                             <div class="col-12">
@@ -343,8 +357,14 @@
                         </div>
                         <div class="row pb-3">
                             <div class="col-8">
-                                <input type="text" class="form-control me-2" placeholder="Buscar...">
-                            </div>
+  <asp:TextBox 
+    ID="txtBusqueda" 
+    runat="server" 
+    CssClass="form-control me-2" 
+    Placeholder="Buscar..."
+    AutoPostBack="false"
+    onkeyup="filterProductos()" />
+</div>
                             <div class="col-4 d-flex justify-content-end">
                                 <button class="btn btn-secondary" type="button">Limpiar</button>
                             </div>
@@ -364,11 +384,11 @@
                                 </HeaderTemplate>
                                 <ItemTemplate>
                                     <div class="row pb-1 fila-producto fila-producto-catalogo"
-                                        data-producto-id='<%# Eval("Id") %>'
+                                        data-producto-id='<%# Eval("Articulo_Indice") %>'
                                         onclick="seleccionarProductoCatalogo(this)">
-                                        <div class="col-7"><span><%# Eval("Nombre") %></span></div>
-                                        <div class="col-1 text-end"><span><%# Eval("Stock") %></span></div>
-                                        <div class="col text-end"><span><span><%# Convert.ToDecimal(Eval("PrecioUnitario")).ToString("N2") %></span></div>
+                                        <div class="col-7"><span><%# Eval("Articulo_Nombre") %></span></div>
+                                        <div class="col-1 text-end"><span><%# Eval("Articulo_Stock") %></span></div>
+                                        <div class="col text-end"><span><span><%# Convert.ToDecimal(Eval("Articulo_Precio")).ToString("N2") %></span></div>
                                     </div>
                                 </ItemTemplate>
                             </asp:Repeater>

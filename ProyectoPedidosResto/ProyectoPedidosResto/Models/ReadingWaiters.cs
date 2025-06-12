@@ -12,7 +12,7 @@ namespace ProyectoPedidosResto.Models
         {
             var mozos = new List<Waiter>();
             var acceso = new DataAccess.AccesoDatos();
-            string consultaSql = "SELECT Mozo_Id, Mozo_Nombre, Mozo_Activo, Mozo_Contrasena FROM mozos";
+            string consultaSql = "SELECT Mozo_Id, Mozo_Nombre, Mozo_Activo, Mozo_Contrasena FROM mozos ORDER BY Mozo_Nombre ASC ";
 
             try
             {
@@ -33,7 +33,7 @@ namespace ProyectoPedidosResto.Models
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine("Error al leer mesas: " + ex.Message);
+                System.Diagnostics.Debug.WriteLine("Error al leer mozos: " + ex.Message);
                 throw;
             }
             finally

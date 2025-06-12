@@ -1,18 +1,20 @@
-﻿using System;
+﻿using ProyectoPedidosResto.Domain;
+using System;
 using System.Collections.Generic;
-using ProyectoPedidosResto.Domain;
+using System.Runtime.Remoting.Messaging;
 
 namespace ProyectoPedidosResto.Models
 {
     public class ReadingCategory
     {
-        public List<Category> LeerCategorias(string consultaSql)
+        public List<Category> LeerCategorias()
         {
             var categorias = new List<Category>();
             var acceso = new DataAccess.AccesoDatos();
+            string consultaSql = "SELECT Cat_Id, Cat_Nombre FROM categorias ORDER BY Cat_Nombre ASC ";
 
             try
-            {
+            { 
                 acceso.SetearConsulta(consultaSql);
                 acceso.EjecutarLectura();
 
@@ -26,6 +28,11 @@ namespace ProyectoPedidosResto.Models
                     categorias.Add(categoria);
                 }
             }
+            catch(Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Error al leer Categoris: " + ex.Message);
+                throw;
+            }
             finally
             {
                 acceso.CerrarConexion();
@@ -33,5 +40,7 @@ namespace ProyectoPedidosResto.Models
 
             return categorias;
         }
+        
+        
     }
 }

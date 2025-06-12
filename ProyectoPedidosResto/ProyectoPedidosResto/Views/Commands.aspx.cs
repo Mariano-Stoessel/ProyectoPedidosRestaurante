@@ -4,6 +4,7 @@ using ProyectoPedidosResto.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Web;
 using System.Web.Services;
 using System.Web.UI;
@@ -29,6 +30,8 @@ namespace ProyectoPedidosResto.Views
 
     public partial class Commands : System.Web.UI.Page
     {
+        List<Article> articulos = new List<Article>();
+
         public decimal TotalPedido { get; set; }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -36,17 +39,8 @@ namespace ProyectoPedidosResto.Views
             if (!IsPostBack)
             {
                 CargarCategorias();
-
-                // Lista inicial de productos
-                var productos = new List<Producto>
-                {
-                    new Producto { Id = 1, Nombre = "Coca cola 1.5 L", Stock = 23, PrecioUnitario = 5000 },
-                    new Producto { Id = 2, Nombre = "Milanesa c/ guarnición", Stock = 12, PrecioUnitario = 15000 },
-                    new Producto { Id = 3, Nombre = "Sorrentinos Promo", Stock = 16, PrecioUnitario = 20000 },
-                    new Producto { Id = 4, Nombre = "Fanta 1 L", Stock = 26, PrecioUnitario = 900 },
-                    new Producto { Id = 5, Nombre = "Mini combo burger", Stock = 20, PrecioUnitario = 8000 }
-                };
-                CargarProductos(productos);
+         
+                CargarProductos();
 
                 //Lista de productos pedidos (ejemplo)
                 var productosLista = new List<ProductoLista>
@@ -96,12 +90,13 @@ namespace ProyectoPedidosResto.Views
             Response.Redirect("Tables.aspx");
         }
 
-        private void CargarProductos(List<Producto> productos)
+        private void CargarProductos()
         {
-            rptProductos.DataSource = productos;
+            var reader = new ReadingArticle();
+            articulos = reader.LeerArticulos();
+            rptProductos.DataSource = articulos;
             rptProductos.DataBind();
         }
-
         private void CargarProductosLista()
         {
             var productosLista = Session["productosLista"] as List<ProductoLista>;
@@ -111,8 +106,7 @@ namespace ProyectoPedidosResto.Views
         private void CargarCategorias()
         {
             var reader = new ReadingCategory();
-            string consulta = "SELECT Cat_Id, Cat_Nombre FROM categorias";
-            List<Category> categorias = reader.LeerCategorias(consulta);
+            List<Category> categorias = reader.LeerCategorias();
 
             ddlCategorias.Items.Clear();
             ddlCategorias.Items.Add(new ListItem("TODOS", "")); // Opción por defecto
@@ -122,5 +116,8 @@ namespace ProyectoPedidosResto.Views
                 ddlCategorias.Items.Add(new ListItem(cat.Cat_nombre, cat.Cat_id.ToString()));
             }
         }
+        
+
+
     }
 }
