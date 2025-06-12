@@ -118,18 +118,43 @@
         }
     </style>
     <script>
+        var categoria = document.getElementById('<%= ddlCategorias.ClientID %>').value.toLowerCase();
+        var catId = row.getAttribute('data-cat-id').toLowerCase();
+        var okCat = !categoria || categoria === catId;
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('<%= txtBusqueda.ClientID %>')
+                .addEventListener('keyup', filterProductos);
+            document.getElementById('<%= ddlCategorias.ClientID %>')
+                .addEventListener('change', filterProductos);
+            $('#ModalComandas').on('shown.bs-modal shown.bs.modal', filterProductos);
+        });
+
 
         function filterProductos() {
-            // tomo el valor, lo paso a minúsculas
             var filtro = document.getElementById('<%= txtBusqueda.ClientID %>').value.toLowerCase();
-            // recorro cada fila del catálogo
+            var categoria = document.getElementById('<%= ddlCategorias.ClientID %>').value;
+
             document.querySelectorAll('.fila-producto-catalogo').forEach(function (row) {
-                // busco el nombre dentro de la columna
                 var nombre = row.querySelector('.col-7 span').textContent.toLowerCase();
-                // muestro/oculto según coincida
-                row.style.display = nombre.indexOf(filtro) > -1 ? '' : 'none';
+                var catId = row.getAttribute('data-cat-id');
+
+                // okTexto: pasa si está vacío el buscador o coincide el texto
+                var okTexto = !filtro || nombre.indexOf(filtro) > -1;
+                // okCat: pasa si “Todos” (value="") o coincide la categoría
+                var okCat = (!categoria || categoria === catId);
+
+                row.style.display = (okTexto && okCat) ? '' : 'none';
             });
         }
+        function clearFilters() {
+            // 1) reseteo textbox y dropdown a “Todos” (value="")
+            document.getElementById('<%= txtBusqueda.ClientID %>').value = '';
+            document.getElementById('<%= ddlCategorias.ClientID %>').value = '';
+            // 2) reaplico el filtrado para mostrar todo
+            filterProductos();
+        }
+
+
 
 
         function seleccionarProductoLista(element) {
@@ -350,23 +375,17 @@
                     <div class="controlPedido">
                         <div class="row mb-3">
                             <div class="col-12">
-                                <asp:DropDownList ID="ddlCategorias" runat="server" CssClass="form-select me-2 bg-primary text-white text-center">
+                                <asp:DropDownList ID="ddlCategorias" runat="server" CssClass="form-select me-2 bg-primary text-white text-center" AutoPostBack="false" onchange="filterProductos()">
                                     <asp:ListItem Text="Todos" Value="" Selected="True"></asp:ListItem>
                                 </asp:DropDownList>
                             </div>
                         </div>
                         <div class="row pb-3">
                             <div class="col-8">
-  <asp:TextBox 
-    ID="txtBusqueda" 
-    runat="server" 
-    CssClass="form-control me-2" 
-    Placeholder="Buscar..."
-    AutoPostBack="false"
-    onkeyup="filterProductos()" />
-</div>
+                                <asp:TextBox ID="txtBusqueda" runat="server" CssClass="form-control me-2" Placeholder="Buscar..." AutoPostBack="false" onkeyup="filterProductos()" />
+                            </div>
                             <div class="col-4 d-flex justify-content-end">
-                                <button class="btn btn-secondary" type="button">Limpiar</button>
+                                <button class="btn btn-secondary" type="button" onclick="clearFilters()">Limpiar</button>
                             </div>
                         </div>
                     </div>
@@ -384,7 +403,8 @@
                                 </HeaderTemplate>
                                 <ItemTemplate>
                                     <div class="row pb-1 fila-producto fila-producto-catalogo"
-                                        data-producto-id='<%# Eval("Articulo_Indice") %>'
+                                        data-producto-id='<%# Eval("Articulo_Indice" )%>'
+                                        data-cat-id='<%# Eval("Articulo_Categoria" )%>'
                                         onclick="seleccionarProductoCatalogo(this)">
                                         <div class="col-7"><span><%# Eval("Articulo_Nombre") %></span></div>
                                         <div class="col-1 text-end"><span><%# Eval("Articulo_Stock") %></span></div>

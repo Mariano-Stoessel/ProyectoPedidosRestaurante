@@ -113,10 +113,12 @@ namespace ProyectoPedidosResto.Views
 
             foreach (var cat in categorias)
             {
-                ddlCategorias.Items.Add(new ListItem(cat.Cat_nombre, cat.Cat_id.ToString()));
+                // Usamos Cat_nombre como Text Y como Value
+                var nombre = cat.Cat_nombre.Trim();
+                ddlCategorias.Items.Add(new ListItem(nombre, nombre));
             }
         }
-        
+
 
 
     }
