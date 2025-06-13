@@ -105,7 +105,7 @@
                 </div>
 
                 <div class="col-5 col-md-3 mb-2 mb-md-2 d-flex justify-content-center align-items-center">
-                    <asp:CheckBox ID="chkMisMesas" runat="server" ClientIDMode="Static" OnCheckedChanged="chkMisMesas_CheckedChanged" />
+                    <asp:CheckBox ID="chkMisMesas" runat="server" ClientIDMode="Static" AutoPostBack="true" OnCheckedChanged="chkMisMesas_CheckedChanged" />
                     <label for="chkMisMesas" class="form-check-label" style="font-size: smaller; margin: .5rem;">Mis mesas</label>
                 </div>
             </div>

@@ -82,7 +82,27 @@ namespace ProyectoPedidosResto.Views
 
         protected void chkMisMesas_CheckedChanged(object sender, EventArgs e)
         {
+            // Obtener el id del mozo logueado desde la sesión
+            int idMozo = 0;
+            if (Session["MozoId"] != null)
+            {
+                int.TryParse(Session["MozoId"].ToString(), out idMozo);
+            }
 
+            var readerMesas = new ReadingTables();
+
+            //Hacerlo por BBDD directo despues
+
+            if (chkMisMesas.Checked && idMozo > 0)
+            {
+                // Filtrar mesas por idMozo
+                Mesas = readerMesas.LeerMesas().Where(m => m.Mesa_IdMozo == idMozo).ToList();
+            }
+            else
+            {
+                // Mostrar todas las mesas
+                Mesas = readerMesas.LeerMesas();
+            }
         }
 
         protected void btnLimpiar_Click(object sender, EventArgs e)

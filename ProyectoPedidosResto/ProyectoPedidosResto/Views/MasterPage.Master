@@ -140,7 +140,7 @@
                                     <div class="d-flex flex-column flex-lg-row align-items-lg-center text-end gap-3 gap-lg-4 usuario-sesion-row">
                                         
                                         <!-- Usuario: texto pequeño y sutil -->
-                                        <asp:Label ID="lblUsuario" runat="server" CssClass="text-white small" Text="Sesión de Maxi" />
+                                        <asp:Label ID="lblUsuario" runat="server" CssClass="text-white small" Text="Sesión de"></asp:Label>
                                         <!-- Cerrar Sesión -->
                                         <asp:Button ID="btnCerrarSesion" runat="server" Text="Cerrar Sesión" CssClass="btn btn-danger" OnClick="btnCerrarSesion_Click"></asp:Button>
                                     </div>

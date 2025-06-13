@@ -29,12 +29,19 @@ namespace ProyectoPedidosResto.Views
 
         protected void btnLogin_Click(object sender, EventArgs e)
         {
-            // Validar usuario
+            // Validar usuario y contraseña
+
+            // Supón que obtienes el nombre del mozo y su id:
+            string mozoNombre = "FACU"; // Aquí deberías obtenerlo de la base de datos
+            int idUsuario = 8; // También deberías obtenerlo de la base de datos
 
             bool loginValido = true; // Simulación
 
             if (loginValido)
             {
+                Session["MozoNombre"] = mozoNombre;
+                Session["MozoId"] = idUsuario;
+
                 Session["UsuarioLogueado"] = txtUsuario.Text;
                 Response.Redirect("Tables.aspx"); // Redirige a la página Tables
             }

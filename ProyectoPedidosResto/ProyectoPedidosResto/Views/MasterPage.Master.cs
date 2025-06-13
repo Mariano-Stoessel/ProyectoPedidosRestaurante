@@ -11,6 +11,11 @@ namespace ProyectoPedidosResto.Views
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["MozoNombre"] != null)
+            {
+                lblUsuario.Text = "Sesión de " + Session["MozoNombre"].ToString();
+            }
+
             // Si el usuario está logueado y no estan en Login, muestra el menú
 
             string currentPage = System.IO.Path.GetFileName(Request.Path).ToLower();
