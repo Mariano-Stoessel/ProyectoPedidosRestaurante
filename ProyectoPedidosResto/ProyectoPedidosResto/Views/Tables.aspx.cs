@@ -125,30 +125,6 @@ namespace ProyectoPedidosResto.Views
                 Mesas = readerMesas.LeerMesasFiltrado(estado, texto);
         }
 
-        protected void btnComanda_Click(object sender, EventArgs e)
-        {
-            // ARREGLAR!! (EL COMMAND ARGUMENT LLEGA VACIO O
-            // CON UN STRING LITERAL DE LO QUE TIENE QUE BUSCAR EN EL FRONT; REVISAR CON Un HIDDEN)
-
-            var btn = (Button)sender;
-            if (!int.TryParse(btn.CommandArgument, out int idMesa))
-            {
-                // Manejar error: id inválido
-                return;
-            }
-
-            var readerMesas = new ReadingTables();
-            var mesa = readerMesas.LeerMesas().FirstOrDefault(m => m.Mesa_Id == idMesa);
-
-            if (mesa != null)
-            {
-                int idMozo = mesa.Mesa_IdMozo ?? 0;
-                string fecha = mesa.Mesa_UltModif?.ToString("yyyy-MM-dd HH:mm:ss");
-                string url = $"Commands.aspx?idMesa={idMesa}&idMozo={idMozo}&fecha={HttpUtility.UrlEncode(fecha)}";
-                Response.Redirect(url);
-            }
-        }
-
         protected void btnAceptarMesa_Click(object sender, EventArgs e)
         {
             var (mesaNumero, idMozo, cantidadPersonas, observaciones) = ObtenerDatosMesa();
@@ -162,13 +138,13 @@ namespace ProyectoPedidosResto.Views
             var (mesaNumero, idMozo, cantidadPersonas, observaciones) = ObtenerDatosMesa();
             ActualizarMesaOcupada(mesaNumero, idMozo, cantidadPersonas, observaciones);
 
-            string url = $"Commands.aspx?idMesa={mesaNumero}&idMozo={idMozo}&cantidadPersonas={cantidadPersonas}&observaciones={HttpUtility.UrlEncode(observaciones)}";
+            string url = $"Commands.aspx?idMesa={mesaNumero}";
             Response.Redirect(url);
         }
 
         private (string mesaNumero, int idMozo, int cantidadPersonas, string observaciones) ObtenerDatosMesa()
         {
-            string mesaNumero = hfMesaId.Value;
+            string mesaNumero = hfMesaSeleccionadaId.Value;
 
             int idMozo = 0;
             int.TryParse(ddlMozos.SelectedValue, out idMozo);

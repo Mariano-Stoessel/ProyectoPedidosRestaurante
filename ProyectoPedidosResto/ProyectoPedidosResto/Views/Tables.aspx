@@ -51,6 +51,10 @@
             hidden.value = valor;
         }
 
+        function redirigirComanda(idMesa) {
+            window.location.href = 'commans.aspx?idMesa=' + encodeURIComponent(idMesa);
+        }
+
         document.addEventListener("DOMContentLoaded", function () {
             var modal = document.getElementById('modalMesaGeneral');
             modal.addEventListener('hidden.bs.modal', function () {
@@ -78,7 +82,7 @@
                 var mozoId = button.getAttribute('data-mozo-id');
 
                 document.getElementById('modalMesaNumero').textContent = mesaId;
-                document.getElementById('<%= hfMesaId.ClientID %>').value = mesaId;
+                document.getElementById('<%= hfMesaSeleccionadaId.ClientID %>').value = mesaId;
 
                 // Si hay datos para cargar (por ejemplo, mesa reservada), los cargas aquí
                 if (personas) {
@@ -181,7 +185,9 @@
                                 <% }
                                     else if (mesa.Mesa_Estado == "OCUPADA")
                                     { %>
-                                <asp:Button runat="server" CssClass="btn btn-primary" Text="Comanda" CommandArgument='<%= mesa.Mesa_Id %>' OnClick="btnComanda_Click" />
+                                <button type="button" class="btn btn-primary" onclick="redirigirComanda(<%= mesa.Mesa_Id %>)">
+                                    Comanda
+                                </button>
                                 <% } %>
                             </div>
                         </div>
@@ -196,7 +202,7 @@
                 <div class="modal-content bg-dark text-white">
                     <div class="modal-header border-secondary justify-content-center">
                         <h1 class="modal-title" id="modalMesaGeneralLabel">Mesa <span id="modalMesaNumero"></span></h1>
-                        <asp:HiddenField ID="hfMesaId" runat="server" />
+                        <asp:HiddenField ID="hfMesaSeleccionadaId" runat="server" />
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
