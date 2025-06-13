@@ -181,7 +181,7 @@
                                 <% }
                                     else if (mesa.Mesa_Estado == "OCUPADA")
                                     { %>
-                                <asp:Button runat="server" CssClass="btn btn-primary" Text="Comanda" CommandName="VerComanda" CommandArgument='<% mesa.Numero %>' OnCommand="Comanda_Command" />
+                                <asp:Button runat="server" CssClass="btn btn-primary" Text="Comanda" CommandArgument='<%= mesa.Mesa_Id %>' OnClick="btnComanda_Click" />
                                 <% } %>
                             </div>
                         </div>
@@ -226,7 +226,7 @@
                     <div class="modal-footer d-flex justify-content-between">
                         <button type="button" class="btn btn-danger flex-fill" data-bs-dismiss="modal">Cancelar</button>
                         <asp:Button ID="btnAceptarMesa" runat="server" CssClass="btn btn-success flex-fill" Text="Aceptar" UseSubmitBehavior="false" OnClick="btnAceptarMesa_Click" />
-                        <a href="Commands.aspx" class="btn btn-primary flex-fill">Tomar comanda</a>
+                        <asp:Button ID="btnTomarComanda" runat="server" CssClass="btn btn-primary flex-fill" Text="Tomar Comanda" OnClick="btnTomarComanda_Click" />
                     </div>
                 </div>
             </div>

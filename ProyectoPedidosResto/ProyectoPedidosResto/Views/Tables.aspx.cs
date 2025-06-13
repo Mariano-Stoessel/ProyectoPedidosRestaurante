@@ -125,31 +125,77 @@ namespace ProyectoPedidosResto.Views
                 Mesas = readerMesas.LeerMesasFiltrado(estado, texto);
         }
 
+        protected void btnComanda_Click(object sender, EventArgs e)
+        {
+            // ARREGLAR!! (EL COMMAND ARGUMENT LLEGA VACIO O
+            // CON UN STRING LITERAL DE LO QUE TIENE QUE BUSCAR EN EL FRONT; REVISAR CON Un HIDDEN)
+
+            var btn = (Button)sender;
+            if (!int.TryParse(btn.CommandArgument, out int idMesa))
+            {
+                // Manejar error: id inválido
+                return;
+            }
+
+            var readerMesas = new ReadingTables();
+            var mesa = readerMesas.LeerMesas().FirstOrDefault(m => m.Mesa_Id == idMesa);
+
+            if (mesa != null)
+            {
+                int idMozo = mesa.Mesa_IdMozo ?? 0;
+                string fecha = mesa.Mesa_UltModif?.ToString("yyyy-MM-dd HH:mm:ss");
+                string url = $"Commands.aspx?idMesa={idMesa}&idMozo={idMozo}&fecha={HttpUtility.UrlEncode(fecha)}";
+                Response.Redirect(url);
+            }
+        }
+
         protected void btnAceptarMesa_Click(object sender, EventArgs e)
         {
-            // Obtener el número de mesa desde el HiddenField
-            string mesaNumero = hfMesaId.Value;
+            var (mesaNumero, idMozo, cantidadPersonas, observaciones) = ObtenerDatosMesa();
+            ActualizarMesaOcupada(mesaNumero, idMozo, cantidadPersonas, observaciones);
 
-            // Obtener el id del mozo seleccionado
-            int idMozo = 0;
-            int.TryParse(ddlMozos.SelectedValue, out idMozo);
-
-            // Obtener cantidad de personas
-            int cantidadPersonas = 1;
-            int.TryParse(Request.Form["hfPersonas"], out cantidadPersonas);
-
-            // Obtener observaciones desde un TextBox (ejemplo: txtObservaciones)
-            string observaciones = txtObservaciones.Text;
-
-            // Aquí puedes usar las variables para guardar en BBDD
-
-            // Recargar la página (sin redirigir a otra)
             Response.Redirect(Request.RawUrl);
         }
 
-        protected void Comanda_Command(object sender, CommandEventArgs e)
+        protected void btnTomarComanda_Click(object sender, EventArgs e)
         {
-            Response.Redirect("commands.aspx");
+            var (mesaNumero, idMozo, cantidadPersonas, observaciones) = ObtenerDatosMesa();
+            ActualizarMesaOcupada(mesaNumero, idMozo, cantidadPersonas, observaciones);
+
+            string url = $"Commands.aspx?idMesa={mesaNumero}&idMozo={idMozo}&cantidadPersonas={cantidadPersonas}&observaciones={HttpUtility.UrlEncode(observaciones)}";
+            Response.Redirect(url);
+        }
+
+        private (string mesaNumero, int idMozo, int cantidadPersonas, string observaciones) ObtenerDatosMesa()
+        {
+            string mesaNumero = hfMesaId.Value;
+
+            int idMozo = 0;
+            int.TryParse(ddlMozos.SelectedValue, out idMozo);
+
+            int cantidadPersonas = 1;
+            int.TryParse(Request.Form["hfPersonas"], out cantidadPersonas);
+
+            string observaciones = txtObservaciones.Text;
+
+            return (mesaNumero, idMozo, cantidadPersonas, observaciones);
+        }
+
+        private void ActualizarMesaOcupada(string mesaNumero, int idMozo, int cantidadPersonas, string observaciones)
+        {
+            var readerMesas = new ReadingTables();
+            var mesas = readerMesas.LeerMesas();
+            var mesa = mesas.FirstOrDefault(m => m.Mesa_Id.ToString() == mesaNumero);
+            if (mesa != null)
+            {
+                mesa.Mesa_Estado = "OCUPADA";
+                mesa.Mesa_IdMozo = idMozo;
+                mesa.Mesa_Mozo = ddlMozos.SelectedItem.Text;
+                mesa.Mesa_CantPer = cantidadPersonas.ToString();
+                mesa.Mesa_Obs = observaciones;
+
+                readerMesas.ActualizarMesa(mesa);
+            }
         }
     }
 }

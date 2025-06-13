@@ -119,5 +119,36 @@ namespace ProyectoPedidosResto.Models
 
             return mesas;
         }
+
+        public void ActualizarMesa(Table mesa)
+        {
+            var acceso = new DataAccess.AccesoDatos();
+            string consultaSql = "UPDATE Mesas SET Mesa_Estado = @estado, Mesa_IdMozo = @idMozo, Mesa_Mozo = @mozo, Mesa_CantPer = @cantPer, Mesa_Obs = @obs, Mesa_UltModif = NOW() WHERE Mesa_Id = @id";
+
+            try
+            {
+                acceso.SetearConsulta(consultaSql);
+
+                acceso.SetearParametro("@id", mesa.Mesa_Id);
+                acceso.SetearParametro("@estado", mesa.Mesa_Estado);
+                acceso.SetearParametro("@idMozo", mesa.Mesa_IdMozo);
+                acceso.SetearParametro("@mozo", mesa.Mesa_Mozo);
+                acceso.SetearParametro("@cantPer", mesa.Mesa_CantPer);
+                acceso.SetearParametro("@obs", mesa.Mesa_Obs);
+
+                acceso.ejecutarAccion();
+
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Error al actualizar mesas: " + ex.Message);
+                throw;
+            }
+            finally
+            {
+                acceso.CerrarConexion();
+
+            }
+        }
     }
 }
