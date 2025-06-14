@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using ProyectoPedidosResto.Models;
 
 namespace ProyectoPedidosResto.Views
 {
@@ -19,7 +20,7 @@ namespace ProyectoPedidosResto.Views
             // Si el usuario está logueado y no estan en Login, muestra el menú
 
             string currentPage = System.IO.Path.GetFileName(Request.Path).ToLower();
-            if (currentPage == "login.aspx" || Session["UsuarioLogueado"] == null)
+            if (currentPage == "login.aspx" || Session["MozoId"] == null)
             {
                 pnlHamburguesa.Visible = false;
                 pnlCollapse.Visible = false;
@@ -33,10 +34,16 @@ namespace ProyectoPedidosResto.Views
 
         protected void btnCerrarSesion_Click(object sender, EventArgs e)
         {
-            // cambio de estado de usuario en la BBDD
+            if (Session["MozoId"] != null)
+            {
+                int mozoId = (int)Session["MozoId"];
+                var readerMozos = new ReadingWaiters();
+                readerMozos.CambiarEstadoMozo(mozoId, "NO");
+            }
 
+            Session.Clear();
+            Session.Abandon();
 
-            Session.Remove("UsuarioLogueado"); // borra estado de usuario
             Response.Redirect("Login.aspx", false);
         }
     }

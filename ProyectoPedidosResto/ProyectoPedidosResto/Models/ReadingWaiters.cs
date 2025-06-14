@@ -43,5 +43,22 @@ namespace ProyectoPedidosResto.Models
 
             return mozos;
         }
+
+        public void CambiarEstadoMozo(int mozoId, string estado)
+        {
+            var acceso = new DataAccess.AccesoDatos();
+            string consultaSql = "UPDATE mozos SET Mozo_Activo = @estado WHERE Mozo_Id = @id";
+            try
+            {
+                acceso.SetearConsulta(consultaSql);
+                acceso.SetearParametro("@estado", estado);
+                acceso.SetearParametro("@id", mozoId);
+                acceso.EjecutarLectura();
+            }
+            finally
+            {
+                acceso.CerrarConexion();
+            }
+        }
     }
 }
