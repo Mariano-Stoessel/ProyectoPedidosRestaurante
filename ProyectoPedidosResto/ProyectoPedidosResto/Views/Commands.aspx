@@ -176,6 +176,8 @@
             if (element.classList.contains('selected')) {
                 element.classList.remove('selected');
                 document.getElementById('<%= hfProductoSeleccionado.ClientID %>').value = '';
+                document.getElementById('<%= hfNombreProductoSeleccionado.ClientID %>').value = '';
+
                 return;
             }
             document.querySelectorAll('.fila-producto-catalogo.selected').forEach(function (fila) {
@@ -183,6 +185,8 @@
             });
             element.classList.add('selected');
             document.getElementById('<%= hfProductoSeleccionado.ClientID %>').value = element.getAttribute('data-producto-id');
+            document.getElementById('<%=hfNombreProductoSeleccionado.ClientID %>').value = element.getAttribute('data-producto-nombre');
+            document.getElementById('<%=hfPrecioProductoSeleccionado.ClientID %>').value = element.getAttribute('data-precio-producto');
         }
 
         function crearBarraControlPedidoLista(element) {
@@ -408,6 +412,8 @@
                                     <div class="row pb-1 fila-producto fila-producto-catalogo"
                                         data-producto-id='<%# Eval("Articulo_Indice" )%>'
                                         data-cat-id='<%# Eval("Articulo_Categoria" )%>'
+                                        data-producto-nombre='<%# Eval("Articulo_Nombre")%>'
+                                        data-precio-producto='<%# Eval("Articulo_Precio")%>'
                                         onclick="seleccionarProductoCatalogo(this)">
                                         <div class="col-7"><span><%# Eval("Articulo_Nombre") %></span></div>
                                         <div class="col-1 text-end"><span><%# Eval("Articulo_Stock") %></span></div>
@@ -416,6 +422,8 @@
                                 </ItemTemplate>
                             </asp:Repeater>
                             <asp:HiddenField ID="hfProductoSeleccionado" runat="server" />
+                            <asp:HiddenField ID="hfNombreProductoSeleccionado" runat="server" />
+                            <asp:HiddenField ID="hfPrecioProductoSeleccionado" runat="server" />
                         </div>
                     </div>
 
@@ -435,11 +443,7 @@
 
                     <div class="d-flex justify-content-between">
                         <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Volver</button>
-                        <asp:Button ID="btnAgregarProducto" runat="server"
-                            CssClass="btn btn-success"
-                            Text="Agregar"
-                            OnClientClick="guardarCantidadCatalogo();"
-                            OnClick="btnAgregarProducto_Click" />
+                        <asp:Button ID="btnAgregarProducto" runat="server" CssClass="btn btn-success" Text="Agregar" OnClientClick="guardarCantidadCatalogo();" OnClick="btnAgregarProducto_Click" />
                     </div>
                 </div>
             </div>

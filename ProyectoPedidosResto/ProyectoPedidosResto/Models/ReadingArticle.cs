@@ -40,5 +40,6 @@ namespace ProyectoPedidosResto.Models
 
             return articulos;
         }
+        
     }
 }

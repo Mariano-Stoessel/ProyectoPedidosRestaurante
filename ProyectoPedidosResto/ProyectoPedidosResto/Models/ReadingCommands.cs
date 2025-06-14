@@ -2,10 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.SqlClient;
 using System.EnterpriseServices;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Web;
+using static ProyectoPedidosResto.Models.DataAccess;
 
 namespace ProyectoPedidosResto.Models
 {
@@ -30,7 +32,7 @@ namespace ProyectoPedidosResto.Models
                         Com_Indice = acceso.Lector.GetInt32(0),
                         Com_MesaId = acceso.Lector.GetInt32(1),
                         ArticuloNombre=acceso.Lector.IsDBNull(2) ? null : acceso.Lector.GetString(2),
-                        Com_Cant =  acceso.Lector.GetInt32(3),
+                        Com_Cant = acceso.Lector.IsDBNull(3) ? null :  acceso.Lector.GetString(3),
                         Com_Unitario= acceso.Lector.GetDecimal(4),
                         Com_Estado = acceso.Lector.IsDBNull(5) ? null : acceso.Lector.GetString(5),
 
@@ -50,6 +52,41 @@ namespace ProyectoPedidosResto.Models
             }
 
             return Comandas;
+        }
+
+        public void InsertarComanda(Command comanda)
+        {
+
+            var Comandas = comanda;
+            var acceso = new DataAccess.AccesoDatos();
+                string query = @"INSERT INTO mesa_comandas (Com_MesaId, Com_Id_Art, Com_Cant, Com_Hora, Com_Detalle, Com_Estado, Com_Unitario)
+                                 VALUES (@mesaId, @articuloId, @cantidad, @hora, @Detalle, @Estado, @Unitario)";          
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.SetearConsulta(query);
+
+                datos.SetearParametro("@mesaId", comanda.Com_MesaId);
+                datos.SetearParametro("@articuloId", comanda.ArticuloIndice);
+                datos.SetearParametro("@cantidad", comanda.Com_Cant);
+                datos.SetearParametro("@hora", DateTime.Now.ToString("HH:mm:ss"));
+                datos.SetearParametro("@Detalle", comanda.ArticuloNombre);
+                datos.SetearParametro("@Estado", comanda.Com_Estado = "PEDIDO");
+                datos.SetearParametro("@Unitario", comanda.Com_Unitario.ToString());
+                
+
+                datos.ejecutarAccion();
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                datos.CerrarConexion();
+            }
         }
 
 

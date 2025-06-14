@@ -1,4 +1,5 @@
 ﻿using Microsoft.Ajax.Utilities;
+using Org.BouncyCastle.Crypto;
 using ProyectoPedidosResto.Domain;
 using ProyectoPedidosResto.Models;
 using System;
@@ -51,11 +52,12 @@ namespace ProyectoPedidosResto.Views
                 //CargarMozo(idMesa);
 
                 // Calcula el total usando la lista de la sesión
-                var productosListaSesion = commands;
-                TotalPedido = productosListaSesion.Sum(p => p.Com_Cant * p.Com_Unitario);
-                lblTotal.Text = "$" + TotalPedido.ToString("N2");
+                CargarTotal();
+                
             }
         }
+
+        
         
 
         protected void btnEliminarProducto_Click(object sender, EventArgs e)
@@ -75,11 +77,33 @@ namespace ProyectoPedidosResto.Views
                 // Puedes usarlo para actualizar el producto seleccionado
             }
         }
-
+        private void CargarTotal()
+        {
+            var productosListaSesion = commands;
+            TotalPedido = productosListaSesion.Sum(p => int.Parse(p.Com_Cant) * p.Com_Unitario);
+            lblTotal.Text = "$" + TotalPedido.ToString("N2");
+        }
         protected void btnAgregarProducto_Click(object sender, EventArgs e)
         {
-            string idProducto = hfProductoSeleccionado.Value;
+            int idProducto = int.Parse(hfProductoSeleccionado.Value);
+            string NombreProducto = hfNombreProductoSeleccionado.Value.ToString();
             string cantidad = hfCantidad.Value;
+            String precioUnitario = hfPrecioProductoSeleccionado.Value;
+            var insertcomandas = new ReadingCommands();
+            Command comanda = new Command();
+            comanda.Com_MesaId= int.Parse(Request.QueryString["idMesa"]);
+            comanda.ArticuloIndice = idProducto;
+            comanda.ArticuloNombre = NombreProducto;
+            comanda.Com_Cant = cantidad;
+            comanda.Com_Unitario = decimal.Parse(cantidad.ToString()) * decimal.Parse(precioUnitario);
+            insertcomandas.InsertarComanda(comanda);
+            CargarProductosLista(comanda.Com_MesaId.ToString());
+            CargarTotal();
+
+
+
+
+
             // Tu lógica para agregar el producto al pedido
         }
         protected void BtnVolver_Click(object sender, EventArgs e)

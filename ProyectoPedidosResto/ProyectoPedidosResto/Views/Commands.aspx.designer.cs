@@ -150,6 +150,24 @@ namespace ProyectoPedidosResto.Views
         protected global::System.Web.UI.WebControls.HiddenField hfProductoSeleccionado;
 
         /// <summary>
+        /// Control hfNombreProductoSeleccionado.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfNombreProductoSeleccionado;
+
+        /// <summary>
+        /// Control hfPrecioProductoSeleccionado.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfPrecioProductoSeleccionado;
+
+        /// <summary>
         /// Control hfCantidad.
         /// </summary>
         /// <remarks>
