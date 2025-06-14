@@ -52,7 +52,7 @@
         }
 
         function redirigirComanda(idMesa) {
-            window.location.href = 'commans.aspx?idMesa=' + encodeURIComponent(idMesa);
+            window.location.href = 'commands.aspx?idMesa=' + encodeURIComponent(idMesa);
         }
 
         document.addEventListener("DOMContentLoaded", function () {
