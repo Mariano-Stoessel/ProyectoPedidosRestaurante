@@ -258,7 +258,10 @@
         <div class="estadoPedido pb-2 mb-3">
             <div class="row mb-2">
                 <div class="col-4">
-                    <h6>Mesa 1</h6>
+                    <div class="mb-2">
+                        <strong>Mesa:</strong>
+                        <asp:Label ID="lblIdMesa" runat="server" CssClass="text-white"></asp:Label>
+                    </div>
                 </div>
                 <div class="col-8 text-end">
                     <h6>Wanchope Avila</h6>
@@ -286,13 +289,13 @@
                     </HeaderTemplate>
                     <ItemTemplate>
                         <div class="row pb-1 fila-producto fila-producto-lista"
-                            data-producto-id='<%# Eval("Id") %>'
+                            data-producto-id='<%# Eval("Com_Indice") %>'
                             onclick="seleccionarProductoLista(this)">
-                            <div class="col-7"><span><%# Eval("Nombre") %></span></div>
-                            <div class="col-1 text-end"><span><%# Eval("Cantidad") %></span></div>
+                            <div class="col-7"><span><%# Eval("ArticuloNombre") %></span></div>
+                            <div class="col-1 text-end"><span><%# Eval("Com_Cant") %></span></div>
                             <div class="col text-end">
                                 <span>
-                                    <%# (Convert.ToInt32(Eval("Cantidad")) * Convert.ToDecimal(Eval("PrecioUnitario"))).ToString("N2") %>
+                                    <%# (Convert.ToInt32(Eval("Com_Cant")) * Convert.ToDecimal(Eval("Com_Unitario"))).ToString("N2") %>
                                 </span>
                             </div>
                         </div>
