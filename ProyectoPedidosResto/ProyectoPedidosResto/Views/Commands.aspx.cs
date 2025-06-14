@@ -31,6 +31,7 @@ namespace ProyectoPedidosResto.Views
     public partial class Commands : System.Web.UI.Page
     {
         List<Article> articulos = new List<Article>();
+        List<Command> commands = new List<Command>();
 
         public decimal TotalPedido { get; set; }
 
@@ -38,28 +39,24 @@ namespace ProyectoPedidosResto.Views
         {
             if (!IsPostBack)
             {
+                string idMesa = Request.QueryString["idMesa"];
+                if (!string.IsNullOrEmpty(idMesa)) lblIdMesa.Text = idMesa;
+                
                 CargarCategorias();
          
                 CargarProductos();
 
-                //Lista de productos pedidos (ejemplo)
-                var productosLista = new List<ProductoLista>
-                {
-                    new ProductoLista { Id = 1, Nombre = "Coca cola 1.5 L", Cantidad = 2, PrecioUnitario = 5000 },
-                    new ProductoLista { Id = 2, Nombre = "Milanesa c/ guarnición", Cantidad = 1, PrecioUnitario = 15000 },
-                    new ProductoLista { Id = 3, Nombre = "Sorrentinos Promo", Cantidad = 1, PrecioUnitario = 20000 },
-                    new ProductoLista { Id = 4, Nombre = "Fanta 1 L", Cantidad = 2, PrecioUnitario = 900 },
-                    new ProductoLista { Id = 5, Nombre = "Mini combo burger", Cantidad = 2, PrecioUnitario = 8000 }
-                };
-                Session["productosLista"] = productosLista;
-                CargarProductosLista();
+                CargarProductosLista(idMesa);
+
+                //CargarMozo(idMesa);
 
                 // Calcula el total usando la lista de la sesión
-                var productosListaSesion = Session["productosLista"] as List<ProductoLista>;
-                TotalPedido = productosListaSesion.Sum(p => p.Cantidad * p.PrecioUnitario);
+                var productosListaSesion = commands;
+                TotalPedido = productosListaSesion.Sum(p => p.Com_Cant * p.Com_Unitario);
                 lblTotal.Text = "$" + TotalPedido.ToString("N2");
             }
         }
+        
 
         protected void btnEliminarProducto_Click(object sender, EventArgs e)
         {
@@ -97,12 +94,18 @@ namespace ProyectoPedidosResto.Views
             rptProductos.DataSource = articulos;
             rptProductos.DataBind();
         }
-        private void CargarProductosLista()
+        private void CargarProductosLista(string idMesa)
         {
-            var productosLista = Session["productosLista"] as List<ProductoLista>;
-            rptProductosLista.DataSource = productosLista;
+            var reader = new ReadingCommands();
+            int IdMesa = Convert.ToInt32(idMesa);
+            commands = reader.LeerCommands(IdMesa);
+            rptProductosLista.DataSource = commands;
             rptProductosLista.DataBind();
         }
+       /* private void CargarMozo(String idmozo)
+        {
+
+        }*/
         private void CargarCategorias()
         {
             var reader = new ReadingCategory();
