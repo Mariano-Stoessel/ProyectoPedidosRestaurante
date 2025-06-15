@@ -88,6 +88,27 @@ namespace ProyectoPedidosResto.Models
                 datos.CerrarConexion();
             }
         }
+        public void ElimiarCommands(int idcomanda)
+        {          
+            var acceso = new DataAccess.AccesoDatos();
+            string consultaSql = "DELETE FROM mesa_comandas WHERE Com_Indice = @comindice ";
+
+            try
+            {
+                acceso.SetearConsulta(consultaSql);
+                acceso.SetearParametro("@comindice", idcomanda);
+                acceso.EjecutarLectura();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Error al borrar Comandas: " + ex.Message);
+                throw;
+            }
+            finally
+            {
+                acceso.CerrarConexion();
+            }           
+        }
 
 
     }

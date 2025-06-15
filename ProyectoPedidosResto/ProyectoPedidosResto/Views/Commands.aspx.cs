@@ -62,10 +62,11 @@ namespace ProyectoPedidosResto.Views
 
         protected void btnEliminarProducto_Click(object sender, EventArgs e)
         {
-            string idSeleccionado = hfProductoListaSeleccionado.Value;
-            // Aquí puedes usar idSeleccionado para eliminar el producto de la lista
-            // Ejemplo:
-            // EliminarProductoDeLista(idSeleccionado);
+            int Idcomanda = int.Parse(hfProductoListaSeleccionado.Value);
+            var borrarcomanda = new ReadingCommands();
+            borrarcomanda.ElimiarCommands(Idcomanda);
+            CargarProductosLista(lblIdMesa.Text);
+            CargarTotal();
         }
 
         protected void btnAceptarCantidad_Click(object sender, EventArgs e)
@@ -88,10 +89,38 @@ namespace ProyectoPedidosResto.Views
             int idProducto = int.Parse(hfProductoSeleccionado.Value);
             string NombreProducto = hfNombreProductoSeleccionado.Value.ToString();
             string cantidad = hfCantidad.Value;
-            String precioUnitario = hfPrecioProductoSeleccionado.Value;
+            string precioUnitario = hfPrecioProductoSeleccionado.Value;
+            InsertarComandas(idProducto, NombreProducto, cantidad, precioUnitario);
+
+            /*var reader = new ReadingCommands();
+            bool productoEncontrado = false;
+            int IdMesa = Convert.ToInt32(Request.QueryString["idMesa"]);
+            commands = reader.LeerCommands(IdMesa);
+            foreach (var item in commands)
+            {
+                if (item.ArticuloNombre == NombreProducto && item.Com_MesaId == IdMesa)
+                {
+                    // Si el producto ya está en la lista, actualiza la cantidad
+                    int nuevaCantidad = int.Parse(item.Com_Cant) + int.Parse(cantidad);
+                    item.Com_Cant = nuevaCantidad.ToString();
+                    item.Com_Unitario = nuevaCantidad * decimal.Parse(precioUnitario);
+                    CargarProductosLista(item.Com_MesaId.ToString());
+                    CargarTotal();
+                    productoEncontrado = true;
+                    return;
+                }
+            }
+            if (productoEncontrado == false)
+            {
+                InsertarComandas(idProducto, NombreProducto, cantidad, precioUnitario);
+
+            } */
+        }
+        private void InsertarComandas(int idProducto, string NombreProducto, string cantidad, string precioUnitario)
+        {
             var insertcomandas = new ReadingCommands();
             Command comanda = new Command();
-            comanda.Com_MesaId= int.Parse(Request.QueryString["idMesa"]);
+            comanda.Com_MesaId = int.Parse(Request.QueryString["idMesa"]);
             comanda.ArticuloIndice = idProducto;
             comanda.ArticuloNombre = NombreProducto;
             comanda.Com_Cant = cantidad;
@@ -99,12 +128,6 @@ namespace ProyectoPedidosResto.Views
             insertcomandas.InsertarComanda(comanda);
             CargarProductosLista(comanda.Com_MesaId.ToString());
             CargarTotal();
-
-
-
-
-
-            // Tu lógica para agregar el producto al pedido
         }
         protected void BtnVolver_Click(object sender, EventArgs e)
         {
@@ -122,6 +145,7 @@ namespace ProyectoPedidosResto.Views
         {
             var reader = new ReadingCommands();
             int IdMesa = Convert.ToInt32(idMesa);
+
             commands = reader.LeerCommands(IdMesa);
             rptProductosLista.DataSource = commands;
             rptProductosLista.DataBind();
