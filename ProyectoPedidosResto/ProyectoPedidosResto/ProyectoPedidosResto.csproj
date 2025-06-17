@@ -197,6 +197,7 @@
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Views\Commands.aspx" />
+    <Content Include="Views\Default.aspx" />
     <Content Include="Views\Login.aspx" />
     <Content Include="Views\Tables.aspx" />
     <Content Include="Web.config" />
@@ -231,9 +232,17 @@
     </Compile>
     <Compile Include="Views\Commands.aspx.cs">
       <DependentUpon>Commands.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Views\Commands.aspx.designer.cs">
       <DependentUpon>Commands.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>

@@ -18,6 +18,14 @@ namespace ProyectoPedidosResto.Views
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                Response.Redirect("Login.aspx");
+                return;
+            }
+
+            validarUsuarioActivo();
+
             if (!IsPostBack)
             {
                 cargarDatos(); // Cargar datos de mesas y mozos al iniciar la página
@@ -191,6 +199,38 @@ namespace ProyectoPedidosResto.Views
                 mesa.Mesa_Obs = observaciones;
 
                 readerMesas.ActualizarMesa(mesa);
+            }
+        }
+        private void validarUsuarioActivo()
+        {
+            if (Session["MozoId"] == null)
+            {
+                var authCookie = Request.Cookies[System.Web.Security.FormsAuthentication.FormsCookieName];
+                if (authCookie != null)
+                {
+                    var ticket = System.Web.Security.FormsAuthentication.Decrypt(authCookie.Value);
+                    if (ticket != null)
+                    {
+                        int mozoId = int.Parse(ticket.UserData);
+                        string mozoNombre = ticket.Name;
+
+                        // Validar el mozo en la base de datos antes de restaurar la sesión
+                        var readerMozos = new ReadingWaiters();
+                        var mozo = readerMozos.LeerMozos().FirstOrDefault(m => m.Mozo_Id == mozoId);
+
+                        if (mozo == null || mozo.Mozo_Activo != "SI")
+                        {
+                            // Si el mozo no existe o no está activo, cerrar sesión y redirigir
+                            System.Web.Security.FormsAuthentication.SignOut();
+                            Session.Clear();
+                            Response.Redirect("Login.aspx");
+                            return;
+                        }
+
+                        Session["MozoId"] = mozoId;
+                        Session["MozoNombre"] = mozoNombre;
+                    }
+                }
             }
         }
     }

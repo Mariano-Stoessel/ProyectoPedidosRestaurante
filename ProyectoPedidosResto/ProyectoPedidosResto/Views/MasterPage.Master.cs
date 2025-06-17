@@ -44,6 +44,9 @@ namespace ProyectoPedidosResto.Views
             Session.Clear();
             Session.Abandon();
 
+            // Cerrar sesión de Forms Authentication
+            System.Web.Security.FormsAuthentication.SignOut();
+
             Response.Redirect("Login.aspx", false);
         }
     }

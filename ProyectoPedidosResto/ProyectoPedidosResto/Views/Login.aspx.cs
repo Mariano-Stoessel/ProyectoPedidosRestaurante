@@ -16,7 +16,28 @@ namespace ProyectoPedidosResto.Views
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (IsPostBack) { }
+            if (User.Identity.IsAuthenticated)
+            {
+                var authCookie = Request.Cookies[System.Web.Security.FormsAuthentication.FormsCookieName];
+                if (authCookie != null)
+                {
+                    var ticket = System.Web.Security.FormsAuthentication.Decrypt(authCookie.Value);
+                    if (ticket != null)
+                    {
+                        string[] userData = ticket.UserData.Split('|');
+                        int mozoId = int.Parse(userData[0]);
+                        string mozoNombre = userData[1];
+
+                        Session["MozoId"] = mozoId;
+                        Session["MozoNombre"] = mozoNombre;
+                    }
+                }
+
+
+                Response.Redirect("Tables.aspx");
+                return;
+            }
+
             if (!IsPostBack)
             {
                 ddlEmpresas.Items.Add(new ListItem("Empresa 1", "1"));
@@ -45,8 +66,32 @@ namespace ProyectoPedidosResto.Views
                 var readerMozos = new ReadingWaiters();
                 readerMozos.CambiarEstadoMozo(resultado.MozoId, "SI");
 
+                string userData = $"{resultado.MozoId}|{resultado.MozoNombre}";
+
+                // Crea el ticket de autenticación
+                var ticket = new System.Web.Security.FormsAuthenticationTicket(
+                    1,
+                    resultado.MozoNombre,
+                    DateTime.Now,
+                    DateTime.Now.AddHours(8),
+                    true,
+                    userData
+                );
+
+                // Encripta el ticket
+                string encryptedTicket = System.Web.Security.FormsAuthentication.Encrypt(ticket);
+
+                // Crea la cookie
+                var cookie = new HttpCookie(System.Web.Security.FormsAuthentication.FormsCookieName, encryptedTicket)
+                {
+                    Expires = ticket.Expiration,
+                    HttpOnly = true
+                };
+                Response.Cookies.Add(cookie);
+
                 Session["MozoId"] = resultado.MozoId;
                 Session["MozoNombre"] = resultado.MozoNombre;
+
                 Response.Redirect("Tables.aspx");
             }
             else
