@@ -4,12 +4,14 @@ using ProyectoPedidosResto.Domain;
 using ProyectoPedidosResto.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Web;
 using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
 
 namespace ProyectoPedidosResto.Views
 {
@@ -52,11 +54,7 @@ namespace ProyectoPedidosResto.Views
 
         protected void btnEliminarProducto_Click(object sender, EventArgs e)
         {
-            int Idcomanda = int.Parse(hfProductoListaSeleccionado.Value);
-            var borrarcomanda = new ReadingCommands();
-            borrarcomanda.ElimiarCommands(Idcomanda);
-            CargarProductosLista(lblIdMesa.Text);
-            CargarTotal();
+            EliminarComanda();
         }
 
         protected void btnAceptarCantidad_Click(object sender, EventArgs e)
@@ -64,9 +62,33 @@ namespace ProyectoPedidosResto.Views
             int nuevaCantidad;
             if (int.TryParse(hfNuevaCantidad.Value, out nuevaCantidad))
             {
+                if (nuevaCantidad == 0) { EliminarComanda(); } else
+                {
+                ActualizarCantidad(nuevaCantidad);
+                }
+
+
                 // Aquí tienes el valor de la cantidad elegida en el modal
                 // Puedes usarlo para actualizar el producto seleccionado
             }
+        }
+        private void ActualizarCantidad(int nuevaCantidad) {
+            var buscarprecioArticulo = new ReadingArticle();
+            decimal Com_Unitario = buscarprecioArticulo.LeerPrecioArticulos_X_Nombre((hfArticuloNombreoListaSeleccionado.Value).ToString());
+            string nuevacantidad = nuevaCantidad.ToString();
+            int idcomanda = int.Parse(hfProductoListaSeleccionado.Value);
+            var actualizarCantidad = new ReadingCommands();
+            actualizarCantidad.ActualizarCantidad(nuevacantidad, idcomanda, Com_Unitario);
+            CargarProductosLista(lblIdMesa.Text);
+            CargarTotal();
+        }
+        private void EliminarComanda()
+        {
+            int Idcomanda = int.Parse(hfProductoListaSeleccionado.Value);
+            var borrarcomanda = new ReadingCommands();
+            borrarcomanda.ElimiarCommands(Idcomanda);
+            CargarProductosLista(lblIdMesa.Text);
+            CargarTotal();
         }
 
         private void CargarTotal()
@@ -83,29 +105,6 @@ namespace ProyectoPedidosResto.Views
             string precioUnitario = hfPrecioProductoSeleccionado.Value;
             InsertarComandas(idProducto, NombreProducto, cantidad, precioUnitario);
 
-            /*var reader = new ReadingCommands();
-            bool productoEncontrado = false;
-            int IdMesa = Convert.ToInt32(Request.QueryString["idMesa"]);
-            commands = reader.LeerCommands(IdMesa);
-            foreach (var item in commands)
-            {
-                if (item.ArticuloNombre == NombreProducto && item.Com_MesaId == IdMesa)
-                {
-                    // Si el producto ya está en la lista, actualiza la cantidad
-                    int nuevaCantidad = int.Parse(item.Com_Cant) + int.Parse(cantidad);
-                    item.Com_Cant = nuevaCantidad.ToString();
-                    item.Com_Unitario = nuevaCantidad * decimal.Parse(precioUnitario);
-                    CargarProductosLista(item.Com_MesaId.ToString());
-                    CargarTotal();
-                    productoEncontrado = true;
-                    return;
-                }
-            }
-            if (productoEncontrado == false)
-            {
-                InsertarComandas(idProducto, NombreProducto, cantidad, precioUnitario);
-
-            } */
         }
         private void InsertarComandas(int idProducto, string NombreProducto, string cantidad, string precioUnitario)
         {

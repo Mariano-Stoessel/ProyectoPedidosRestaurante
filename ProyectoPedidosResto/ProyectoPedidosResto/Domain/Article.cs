@@ -13,7 +13,7 @@ namespace ProyectoPedidosResto.Domain
             Articulo_Indice = -1;
             Articulo_Nombre = string.Empty;
             Articulo_Stock = string.Empty;
-            Articulo_Precio = string.Empty;
+            Articulo_Precio = 0m;
             Articulo_Categoria = string.Empty;
             Estado = true;
 
@@ -21,7 +21,7 @@ namespace ProyectoPedidosResto.Domain
         public int Articulo_Indice { get; set; }
         public string Articulo_Nombre { get; set; }
         public string Articulo_Stock { get; set; }
-        public string Articulo_Precio { get; set; }
+        public decimal Articulo_Precio { get; set; }
         public string Articulo_Categoria { get; set; }
         public bool Estado { get; set; }
 

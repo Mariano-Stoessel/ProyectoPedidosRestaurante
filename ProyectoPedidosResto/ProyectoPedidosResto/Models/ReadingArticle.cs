@@ -1,6 +1,7 @@
 ﻿using ProyectoPedidosResto.Domain;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 
@@ -28,7 +29,7 @@ namespace ProyectoPedidosResto.Models
                         Articulo_Stock = acceso.Lector.GetString(2),
                         
                         Articulo_Categoria = acceso.Lector.GetString(3),
-                        Articulo_Precio = acceso.Lector.GetString(4)
+                        Articulo_Precio = acceso.Lector.GetDecimal(4)
                     };
                     articulos.Add(articulo);
                 }
@@ -40,6 +41,34 @@ namespace ProyectoPedidosResto.Models
 
             return articulos;
         }
-        
+        public decimal LeerPrecioArticulos_X_Nombre(string NombreArticulo)
+        {
+            
+            var articulos = new Article();
+            var acceso = new DataAccess.AccesoDatos();
+            string consultaSql = " SELECT Articulo_Precio FROM mega.articulos WHERE Articulo_Nombre = @NombreArticulo ";
+
+            try
+            {
+                acceso.SetearConsulta(consultaSql);
+                acceso.SetearParametro("@NombreArticulo", NombreArticulo);
+                acceso.EjecutarLectura();
+
+                while (acceso.Lector.Read())
+                {
+                    var articulo = new Article
+                    {
+                        Articulo_Precio = acceso.Lector.GetDecimal(0),
+                    };
+                    articulos=articulo;
+                }
+            }
+            finally
+            {
+                acceso.CerrarConexion();
+            }
+            
+            return articulos.Articulo_Precio;
+        }
     }
 }

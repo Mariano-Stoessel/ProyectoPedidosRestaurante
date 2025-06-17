@@ -169,6 +169,8 @@
             });
             element.classList.add('selected');
             document.getElementById('<%= hfProductoListaSeleccionado.ClientID %>').value = element.getAttribute('data-producto-id');
+            document.getElementById('<%= hfArticuloNombreoListaSeleccionado.ClientID %>').value = element.getAttribute('data-Nombre-Articulo');
+
             crearBarraControlPedidoLista(element);
         }
 
@@ -294,6 +296,7 @@
                     <ItemTemplate>
                         <div class="row pb-1 fila-producto fila-producto-lista"
                             data-producto-id='<%# Eval("Com_Indice") %>'
+                            data-Nombre-Articulo='<%# Eval("ArticuloNombre") %>'
                             onclick="seleccionarProductoLista(this)">
                             <div class="col-7"><span><%# Eval("ArticuloNombre") %></span></div>
                             <div class="col-1 text-end"><span><%# Eval("Com_Cant") %></span></div>
@@ -306,6 +309,7 @@
                     </ItemTemplate>
                 </asp:Repeater>
                 <asp:HiddenField ID="hfProductoListaSeleccionado" runat="server" />
+                <asp:HiddenField ID="hfArticuloNombreoListaSeleccionado" runat="server" />
             </div>
         </div>
         <div class="controlPedido">

@@ -109,6 +109,30 @@ namespace ProyectoPedidosResto.Models
                 acceso.CerrarConexion();
             }           
         }
+        public void ActualizarCantidad(string nuevacantidad, int idcomanda, decimal total)
+        {
+            var acceso = new DataAccess.AccesoDatos();
+            string consultaSql = "UPDATE mega.mesa_comandas SET Com_Cant = @nuevacantidad, Com_Unitario = @ComUnitario WHERE Com_Indice = @comindice ";
+
+            try
+            {
+                acceso.SetearConsulta(consultaSql);
+                acceso.SetearParametro("@nuevacantidad", nuevacantidad);
+                acceso.SetearParametro("@comindice", idcomanda);
+                acceso.SetearParametro("@ComUnitario", total.ToString());
+
+                acceso.EjecutarLectura();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Error al Actualizar Comandas: " + ex.Message);
+                throw;
+            }
+            finally
+            {
+                acceso.CerrarConexion();
+            }
+        }
 
 
     }
