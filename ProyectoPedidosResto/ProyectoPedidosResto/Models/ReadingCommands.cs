@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Web;
 using static ProyectoPedidosResto.Models.DataAccess;
 
+
 namespace ProyectoPedidosResto.Models
 {
     public class ReadingCommands
@@ -109,10 +110,10 @@ namespace ProyectoPedidosResto.Models
                 acceso.CerrarConexion();
             }           
         }
-        public void ActualizarCantidad(string nuevacantidad, int idcomanda, decimal total)
+        public void ActualizarCantidadYEstado(string nuevacantidad, int idcomanda, decimal total, string estado)
         {
             var acceso = new DataAccess.AccesoDatos();
-            string consultaSql = "UPDATE mega.mesa_comandas SET Com_Cant = @nuevacantidad, Com_Unitario = @ComUnitario WHERE Com_Indice = @comindice ";
+            string consultaSql = "UPDATE mega.mesa_comandas SET Com_Cant = @nuevacantidad, Com_Unitario = @ComUnitario, Com_Estado = @estado WHERE Com_Indice = @comindice ";
 
             try
             {
@@ -120,6 +121,7 @@ namespace ProyectoPedidosResto.Models
                 acceso.SetearParametro("@nuevacantidad", nuevacantidad);
                 acceso.SetearParametro("@comindice", idcomanda);
                 acceso.SetearParametro("@ComUnitario", total.ToString());
+                acceso.SetearParametro("@estado", estado);
 
                 acceso.EjecutarLectura();
             }

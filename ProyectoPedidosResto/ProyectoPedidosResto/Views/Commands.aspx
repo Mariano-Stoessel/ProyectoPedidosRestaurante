@@ -294,9 +294,9 @@
                         </div>
                     </HeaderTemplate>
                     <ItemTemplate>
-                        <div class="row pb-1 fila-producto fila-producto-lista"
+                        <div class='row pb-1 fila-producto fila-producto-lista <%# Eval("Com_Estado").ToString() == "PREPARACION" ? "bg-warning" : Eval("Com_Estado").ToString() == "ENTREGADO" ? "bg-success" : "" %>'
                             data-producto-id='<%# Eval("Com_Indice") %>'
-                            data-Nombre-Articulo='<%# Eval("ArticuloNombre") %>'
+                            data-nombre-articulo='<%# Eval("ArticuloNombre") %>'
                             onclick="seleccionarProductoLista(this)">
                             <div class="col-7"><span><%# Eval("ArticuloNombre") %></span></div>
                             <div class="col-1 text-end"><span><%# Eval("Com_Cant") %></span></div>
@@ -306,6 +306,7 @@
                                 </span>
                             </div>
                         </div>
+
                     </ItemTemplate>
                 </asp:Repeater>
                 <asp:HiddenField ID="hfProductoListaSeleccionado" runat="server" />
@@ -364,6 +365,17 @@
                             <button type="button" class="btn btn-primary" onclick="cambiarCantidad(1)" tabindex="-1">+</button>
                         </div>
                         <asp:HiddenField ID="hfNuevaCantidad" runat="server" />
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <label class="me-2">Estado:</label>
+                        <div class="input-group">
+                            <asp:DropDownList ID="ddlEstado" runat="server" class="form-control bg-primary text-white text-center"  >
+                                <asp:ListItem Text="PREPARACION" />
+                                <asp:ListItem Text="ENTREGADO" />
+                                <asp:ListItem Text="PEDIDO" />
+                            </asp:DropDownList>
+                        </div>
+                        <asp:HiddenField ID="HiddenField1" runat="server" />
                     </div>
                     <div class="d-flex justify-content-between">
                         <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Cancelar</button>

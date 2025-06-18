@@ -11,7 +11,7 @@ using System.Web;
 using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
+using ComandsDomain = ProyectoPedidosResto.Domain.Command;
 
 namespace ProyectoPedidosResto.Views
 {
@@ -19,8 +19,8 @@ namespace ProyectoPedidosResto.Views
     public partial class Commands : System.Web.UI.Page
     {
         List<Article> articulos = new List<Article>();
-        List<Command> commands = new List<Command>();
-
+       // List<Command> commands = new List<Command>();
+        public List<ComandsDomain> commands { get; set; } = new List<ComandsDomain>();
         public decimal TotalPedido { get; set; }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -77,8 +77,9 @@ namespace ProyectoPedidosResto.Views
             decimal Com_Unitario = buscarprecioArticulo.LeerPrecioArticulos_X_Nombre((hfArticuloNombreoListaSeleccionado.Value).ToString());
             string nuevacantidad = nuevaCantidad.ToString();
             int idcomanda = int.Parse(hfProductoListaSeleccionado.Value);
+            string estado = ddlEstado.SelectedValue;
             var actualizarCantidad = new ReadingCommands();
-            actualizarCantidad.ActualizarCantidad(nuevacantidad, idcomanda, Com_Unitario);
+            actualizarCantidad.ActualizarCantidadYEstado(nuevacantidad, idcomanda, Com_Unitario, estado);
             CargarProductosLista(lblIdMesa.Text);
             CargarTotal();
         }
