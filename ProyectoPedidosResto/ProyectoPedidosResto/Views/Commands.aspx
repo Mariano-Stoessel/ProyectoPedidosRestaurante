@@ -270,7 +270,7 @@
                     </div>
                 </div>
                 <div class="col-8 text-end">
-                    <h6>Wanchope Avila</h6>
+                    <asp:Label ID="lblMozo" runat="server" CssClass="text-white small" Text="Mesa de "></asp:Label>
                 </div>
             </div>
             <div class="row m-0">

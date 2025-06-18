@@ -19,17 +19,14 @@ namespace ProyectoPedidosResto.Views
     public partial class Commands : System.Web.UI.Page
     {
         List<Article> articulos = new List<Article>();
-       // List<Command> commands = new List<Command>();
+        Waiter mozo = new Waiter();
+        // List<Command> commands = new List<Command>();
         public List<ComandsDomain> commands { get; set; } = new List<ComandsDomain>();
         public decimal TotalPedido { get; set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!User.Identity.IsAuthenticated)
-            {
-                Response.Redirect("Login.aspx");
-                return;
-            }
+            
 
             validarUsuarioActivo();
 
@@ -43,6 +40,7 @@ namespace ProyectoPedidosResto.Views
                 CargarProductos();
 
                 CargarProductosLista(idMesa);
+                Mozo_A_Cargo();
 
                 //CargarMozo(idMesa);
 
@@ -50,6 +48,11 @@ namespace ProyectoPedidosResto.Views
                 CargarTotal();
 
             }
+        }
+        private void Mozo_A_Cargo()
+        {
+            ReadingTables readingTables = new ReadingTables();
+            lblMozo.Text = "Mozo a cargo: " + readingTables.BuscarIdMozo(int.Parse(lblIdMesa.Text), lblMozo.Text);
         }
 
         protected void btnEliminarProducto_Click(object sender, EventArgs e)

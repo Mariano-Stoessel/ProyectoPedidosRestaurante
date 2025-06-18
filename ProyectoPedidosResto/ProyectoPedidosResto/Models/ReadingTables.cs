@@ -46,6 +46,36 @@ namespace ProyectoPedidosResto.Models
             return mesas;
         }
 
+        public string BuscarIdMozo(int id, string nombremozo)
+        {
+            Table mesas = new Table();
+            var acceso = new DataAccess.AccesoDatos();
+            string consultaSql = "SELECT Mesa_Mozo FROM mega.mesas WHERE Mesa_Id = @idmesa";
+
+            try
+            {
+                acceso.SetearConsulta(consultaSql);
+                acceso.SetearParametro("@idmesa", id);
+                acceso.EjecutarLectura();
+
+                while (acceso.Lector.Read())
+                {
+                    nombremozo= acceso.Lector.GetString(0);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Error al leer mesas: " + ex.Message);
+                throw;
+            }
+            finally
+            {
+                acceso.CerrarConexion();
+            }
+
+            return nombremozo;
+        }
+
         public List<Table> LeerMesasFiltrado(string estado = null, string texto = null)
         {
             var mesas = new List<Table>();

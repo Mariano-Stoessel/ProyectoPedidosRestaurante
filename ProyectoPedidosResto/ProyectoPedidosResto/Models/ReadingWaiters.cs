@@ -43,7 +43,7 @@ namespace ProyectoPedidosResto.Models
 
             return mozos;
         }
-
+        
         public void CambiarEstadoMozo(int mozoId, string estado)
         {
             var acceso = new DataAccess.AccesoDatos();
