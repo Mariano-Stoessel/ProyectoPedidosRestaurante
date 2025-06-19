@@ -26,9 +26,39 @@ namespace ProyectoPedidosResto.Views
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+            if (!User.Identity.IsAuthenticated)
+            {
+                var authCookie = Request.Cookies[System.Web.Security.FormsAuthentication.FormsCookieName];
+                if (authCookie != null)
+                {
+                    try
+                    {
+                        var ticket = System.Web.Security.FormsAuthentication.Decrypt(authCookie.Value);
+                        if (ticket != null)
+                        {
+                            int mozoId;
+                            if (int.TryParse(ticket.UserData, out mozoId))
+                            {
+                                var readerMozos = new ReadingWaiters();
+                                readerMozos.CambiarEstadoMozo(mozoId, "NO");
+                            }
+                        }
+                    }
+                    catch { /* Ignorar errores de cookie corrupta */ }
+                }
+
+                Response.Redirect("Login.aspx");
+                return;
+            }
 
             validarUsuarioActivo();
+
+            if (!EsMesaValidaYNoLibre())
+            {
+                Response.Redirect("Tables.aspx");
+                Context.ApplicationInstance.CompleteRequest();
+                return;
+            }
 
             if (!IsPostBack)
             {
@@ -49,10 +79,27 @@ namespace ProyectoPedidosResto.Views
 
             }
         }
+
+        // Valida que la mesa exista y no esté libre
+        private bool EsMesaValidaYNoLibre()
+        {
+            string idMesaStr = Request.QueryString["idMesa"];
+            int mesaId;
+            if (string.IsNullOrEmpty(idMesaStr) || !int.TryParse(idMesaStr, out mesaId) || mesaId <= 0)
+                return false;
+
+            var readerMesas = new ReadingTables();
+            var mesa = readerMesas.LeerMesas().FirstOrDefault(m => m.Mesa_Id == mesaId);
+            if (mesa == null) return false; // No existe
+            if (mesa.Mesa_Estado == "LIBRE") return false; // Está libre
+
+            return true;
+        }
+
         private void Mozo_A_Cargo()
         {
             ReadingTables readingTables = new ReadingTables();
-            lblMozo.Text = "Mozo a cargo: " + readingTables.BuscarIdMozo(int.Parse(lblIdMesa.Text), lblMozo.Text);
+            lblMozo.Text = "Mozo: " + readingTables.BuscarIdMozo(int.Parse(lblIdMesa.Text), lblMozo.Text);
         }
 
         protected void btnEliminarProducto_Click(object sender, EventArgs e)
@@ -65,9 +112,10 @@ namespace ProyectoPedidosResto.Views
             int nuevaCantidad;
             if (int.TryParse(hfNuevaCantidad.Value, out nuevaCantidad))
             {
-                if (nuevaCantidad == 0) { EliminarComanda(); } else
+                if (nuevaCantidad == 0) { EliminarComanda(); }
+                else
                 {
-                ActualizarCantidad(nuevaCantidad);
+                    ActualizarCantidad(nuevaCantidad);
                 }
 
 
@@ -75,7 +123,8 @@ namespace ProyectoPedidosResto.Views
                 // Puedes usarlo para actualizar el producto seleccionado
             }
         }
-        private void ActualizarCantidad(int nuevaCantidad) {
+        private void ActualizarCantidad(int nuevaCantidad)
+        {
             var buscarprecioArticulo = new ReadingArticle();
             decimal Com_Unitario = buscarprecioArticulo.LeerPrecioArticulos_X_Nombre((hfArticuloNombreoListaSeleccionado.Value).ToString());
             string nuevacantidad = nuevaCantidad.ToString();

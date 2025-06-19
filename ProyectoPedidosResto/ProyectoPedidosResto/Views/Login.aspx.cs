@@ -73,7 +73,8 @@ namespace ProyectoPedidosResto.Views
                     1,
                     resultado.MozoNombre,
                     DateTime.Now,
-                    DateTime.Now.AddHours(8),
+                    // DateTime.Now.AddHours(8),
+                    DateTime.Now.AddMinutes(1),
                     true,
                     userData
                 );

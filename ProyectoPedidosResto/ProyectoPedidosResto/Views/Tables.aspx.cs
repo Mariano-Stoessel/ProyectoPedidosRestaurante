@@ -20,6 +20,25 @@ namespace ProyectoPedidosResto.Views
         {
             if (!User.Identity.IsAuthenticated)
             {
+                var authCookie = Request.Cookies[System.Web.Security.FormsAuthentication.FormsCookieName];
+                if (authCookie != null)
+                {
+                    try
+                    {
+                        var ticket = System.Web.Security.FormsAuthentication.Decrypt(authCookie.Value);
+                        if (ticket != null)
+                        {
+                            int mozoId;
+                            if (int.TryParse(ticket.UserData, out mozoId))
+                            {
+                                var readerMozos = new ReadingWaiters();
+                                readerMozos.CambiarEstadoMozo(mozoId, "NO");
+                            }
+                        }
+                    }
+                    catch { /* Ignorar errores de cookie corrupta */ }
+                }
+
                 Response.Redirect("Login.aspx");
                 return;
             }

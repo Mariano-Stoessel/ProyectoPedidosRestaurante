@@ -270,16 +270,11 @@
                     </div>
                 </div>
                 <div class="col-8 text-end">
-                    <asp:Label ID="lblMozo" runat="server" CssClass="text-white small" Text="Mesa de "></asp:Label>
+                    <asp:Label ID="lblMozo" runat="server" CssClass="text-white small" Text="Mozo: "></asp:Label>
                 </div>
             </div>
             <div class="row m-0">
-                <asp:DropDownList ID="ddlEstadoPedido" runat="server" CssClass="form-select bg-primary text-white text-center">
-                    <asp:ListItem Text="Estado del Pedido" Value="" Disabled="true" Selected="true"></asp:ListItem>
-                    <asp:ListItem Text="Pendiente" Value="1"></asp:ListItem>
-                    <asp:ListItem Text="En preparación" Value="2"></asp:ListItem>
-                    <asp:ListItem Text="Servido" Value="3"></asp:ListItem>
-                </asp:DropDownList>
+                <asp:Button ID="btnCambiarMesa" runat="server" CssClass="btn btn-primary text-white text-center" Text="Cambiar de mesa" />
             </div>
         </div>
         <div class="listaPedido pb-2">
