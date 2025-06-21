@@ -311,11 +311,7 @@
         <div class="controlPedido">
             <div id="controlPedidoBarraContainer" class="mb-0">
                 <div id="controlPedidoBarra" class="controlPedido-barra align-items-center justify-content-between mb-3" style="display: none;">
-                    <asp:Button ID="btnEliminarProducto" runat="server"
-                        CssClass="btn btn-eliminar me-2"
-                        Text="Eliminar"
-                        OnClick="btnEliminarProducto_Click"
-                        Style="display: none;" />
+                    <button type="button" class="btn btn-eliminar me-2" data-bs-toggle="modal" data-bs-target="#ModalEliminarArticulo">Eliminar</button>
                     <asp:Button ID="btnModificarProducto" runat="server"
                         CssClass="btn btn-modificar me-2"
                         Text="Modificar"
@@ -364,7 +360,7 @@
                     <div class="d-flex align-items-center justify-content-between mb-3">
                         <label class="me-2">Estado:</label>
                         <div class="input-group">
-                            <asp:DropDownList ID="ddlEstado" runat="server" class="form-control bg-primary text-white text-center"  >
+                            <asp:DropDownList ID="ddlEstado" runat="server" class="form-control bg-primary text-white text-center">
                                 <asp:ListItem Text="PREPARACION" />
                                 <asp:ListItem Text="ENTREGADO" />
                                 <asp:ListItem Text="PEDIDO" />
@@ -375,6 +371,26 @@
                     <div class="d-flex justify-content-between">
                         <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Cancelar</button>
                         <asp:Button ID="btnAceptarCantidad" runat="server" CssClass="btn btn-success" Text="Aceptar" OnClientClick="return guardarCantidadYPostback();" OnClick="btnAceptarCantidad_Click" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal para Eliminar Articulo -->
+    <div class="modal fade" id="ModalEliminarArticulo" tabindex="-1" aria-labelledby="modalModificarCantidadLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-cantidad">
+            <div class="modal-content bg-dark text-white">
+                <div class="modal-header border-0 justify-content-center pb-1">
+                    <h4 class="modal-title" id="modalEliminarArticuloLabel">Eliminar</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <p class="modal-eliminar-texto">¿Estás seguro que deseas eliminar el artículo seleccionado?</p>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button class="btn btn-danger" data-bs-dismiss="modal" type="button">NO</button>
+                        <asp:Button ID="btnEliminarProducto" runat="server" CssClass="btn btn-success me-2" Text="SI" OnClick="btnEliminarProducto_Click" Style="display: none;" />
+
                     </div>
                 </div>
             </div>
