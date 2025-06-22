@@ -72,8 +72,6 @@ namespace ProyectoPedidosResto.Views
                 CargarProductosLista(idMesa);
                 Mozo_A_Cargo();
 
-                //CargarMozo(idMesa);
-
                 // Calcula el total usando la lista de la sesión
                 CargarTotal();
 
@@ -107,7 +105,7 @@ namespace ProyectoPedidosResto.Views
             EliminarComanda();
         }
 
-        protected void btnAceptarCantidad_Click(object sender, EventArgs e)
+        protected void btnModificarProducto_Click(object sender, EventArgs e)
         {
             int nuevaCantidad;
             if (int.TryParse(hfNuevaCantidad.Value, out nuevaCantidad))
@@ -118,9 +116,6 @@ namespace ProyectoPedidosResto.Views
                     ActualizarCantidad(nuevaCantidad);
                 }
 
-
-                // Aquí tienes el valor de la cantidad elegida en el modal
-                // Puedes usarlo para actualizar el producto seleccionado
             }
         }
         private void ActualizarCantidad(int nuevaCantidad)
@@ -130,6 +125,7 @@ namespace ProyectoPedidosResto.Views
             string nuevacantidad = nuevaCantidad.ToString();
             int idcomanda = int.Parse(hfProductoListaSeleccionado.Value);
             string estado = ddlEstado.SelectedValue;
+
             var actualizarCantidad = new ReadingCommands();
             actualizarCantidad.ActualizarCantidadYEstado(nuevacantidad, idcomanda, Com_Unitario, estado);
             CargarProductosLista(lblIdMesa.Text);

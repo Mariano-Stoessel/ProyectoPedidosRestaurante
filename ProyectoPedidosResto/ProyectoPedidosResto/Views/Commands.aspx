@@ -45,14 +45,27 @@
         }
 
             .fila-producto.selected {
-                background-color: #0d6efd !important;
                 color: #fff;
                 border-radius: 0.3125rem;
                 margin-left: -0.5rem;
                 margin-right: -0.5rem;
                 width: calc(100% + 1rem);
                 padding: 0 1rem;
+                position: relative;
             }
+
+                .fila-producto.selected::after {
+                    content: "";
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(255,255,255,0.35); /* Ajusta la opacidad a tu gusto */
+                    border-radius: 0.3125rem;
+                    pointer-events: none; /* Permite hacer clic en la fila */
+                    z-index: 2;
+                }
 
         .controlPedido-barra {
             background-color: #777777;
@@ -154,9 +167,6 @@
             filterProductos();
         }
 
-
-
-
         function seleccionarProductoLista(element) {
             if (element.classList.contains('selected')) {
                 element.classList.remove('selected');
@@ -215,6 +225,13 @@
                 var spans = fila.querySelectorAll('span');
                 var cantidad = spans.length > 1 ? spans[1].textContent.trim() : "1";
                 document.getElementById('lblCantidadLista').textContent = cantidad;
+
+                // Obtén el estado desde el atributo data-estado
+                var estado = fila.getAttribute('data-estado');
+                if (estado) {
+                    document.getElementById('<%= ddlEstado.ClientID %>').value = estado;
+                }
+
                 $('#ModalModificarCantidad').modal('show');
             }
         }
@@ -292,6 +309,7 @@
                         <div class='row pb-1 fila-producto fila-producto-lista <%# Eval("Com_Estado").ToString() == "PREPARACION" ? "bg-warning" : Eval("Com_Estado").ToString() == "ENTREGADO" ? "bg-success" : "" %>'
                             data-producto-id='<%# Eval("Com_Indice") %>'
                             data-nombre-articulo='<%# Eval("ArticuloNombre") %>'
+                            data-estado='<%# Eval("Com_Estado") %>'
                             onclick="seleccionarProductoLista(this)">
                             <div class="col-7"><span><%# Eval("ArticuloNombre") %></span></div>
                             <div class="col-1 text-end"><span><%# Eval("Com_Cant") %></span></div>
@@ -340,7 +358,7 @@
         </div>
     </div>
 
-    <!-- Modal para modificar cantidad -->
+    <!-- Modal para modificar -->
     <div class="modal fade" id="ModalModificarCantidad" tabindex="-1" aria-labelledby="modalModificarCantidadLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-cantidad">
             <div class="modal-content bg-dark text-white">
@@ -361,16 +379,16 @@
                         <label class="me-2">Estado:</label>
                         <div class="input-group">
                             <asp:DropDownList ID="ddlEstado" runat="server" class="form-control bg-primary text-white text-center">
+                                <asp:ListItem Text="PEDIDO" />
                                 <asp:ListItem Text="PREPARACION" />
                                 <asp:ListItem Text="ENTREGADO" />
-                                <asp:ListItem Text="PEDIDO" />
                             </asp:DropDownList>
                         </div>
                         <asp:HiddenField ID="HiddenField1" runat="server" />
                     </div>
                     <div class="d-flex justify-content-between">
                         <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Cancelar</button>
-                        <asp:Button ID="btnAceptarCantidad" runat="server" CssClass="btn btn-success" Text="Aceptar" OnClientClick="return guardarCantidadYPostback();" OnClick="btnAceptarCantidad_Click" />
+                        <asp:Button ID="btnAceptarCantidad" runat="server" CssClass="btn btn-success" Text="Aceptar" OnClientClick="return guardarCantidadYPostback();" OnClick="btnModificarProducto_Click" />
                     </div>
                 </div>
             </div>

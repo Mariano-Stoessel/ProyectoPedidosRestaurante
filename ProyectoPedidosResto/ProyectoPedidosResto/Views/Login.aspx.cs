@@ -68,13 +68,15 @@ namespace ProyectoPedidosResto.Views
 
                 string userData = $"{resultado.MozoId}|{resultado.MozoNombre}";
 
+                int tiempoExpiracion = 1;
+
                 // Crea el ticket de autenticación
                 var ticket = new System.Web.Security.FormsAuthenticationTicket(
                     1,
                     resultado.MozoNombre,
                     DateTime.Now,
-                    // DateTime.Now.AddHours(8),
-                    DateTime.Now.AddMinutes(1),
+                    // DateTime.Now.AddHours(tiempoExpiracion),
+                    DateTime.Now.AddMinutes(tiempoExpiracion),
                     true,
                     userData
                 );
@@ -92,6 +94,20 @@ namespace ProyectoPedidosResto.Views
 
                 Session["MozoId"] = resultado.MozoId;
                 Session["MozoNombre"] = resultado.MozoNombre;
+
+                // Iniciar el "cronómetro" en el servidor en paralelo
+                int mozoId = resultado.MozoId;
+                DateTime expiration = ticket.Expiration;
+                System.Threading.Tasks.Task.Run(() =>
+                {
+                    TimeSpan waitTime = expiration - DateTime.Now;
+                    if (waitTime.TotalMilliseconds > 0)
+                        System.Threading.Thread.Sleep(waitTime);
+
+                    // Cambiar el estado del mozo en la base de datos después de que expire la cookie
+                    var readerMozosBg = new ReadingWaiters();
+                    readerMozosBg.CambiarEstadoMozo(mozoId, "NO");
+                });
 
                 Response.Redirect("Tables.aspx");
             }
