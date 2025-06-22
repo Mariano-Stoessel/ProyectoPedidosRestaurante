@@ -24,12 +24,12 @@ namespace ProyectoPedidosResto.Models
                 {
                     var articulo = new Article
                     {
-                        Articulo_Indice = acceso.Lector.GetInt32(0),
-                        Articulo_Nombre = acceso.Lector.GetString(1),
-                        Articulo_Stock = acceso.Lector.GetString(2),
-                        
-                        Articulo_Categoria = acceso.Lector.GetString(3),
-                        Articulo_Precio = acceso.Lector.GetDecimal(4)
+                        Articulo_Indice = acceso.Lector.IsDBNull(0) ? 0 : acceso.Lector.GetInt32(0),
+                        Articulo_Nombre = acceso.Lector.IsDBNull(1) ? string.Empty : acceso.Lector.GetString(1),
+                        Articulo_Stock = acceso.Lector.IsDBNull(2) ? string.Empty : acceso.Lector[2].ToString(),
+                        Articulo_Categoria = acceso.Lector.IsDBNull(3) ? string.Empty : acceso.Lector.GetString(3),
+                        Articulo_Precio = acceso.Lector.IsDBNull(0) ? 0m : Convert.ToDecimal(acceso.Lector[0])
+
                     };
                     articulos.Add(articulo);
                 }
@@ -46,7 +46,7 @@ namespace ProyectoPedidosResto.Models
             
             var articulos = new Article();
             var acceso = new DataAccess.AccesoDatos();
-            string consultaSql = " SELECT Articulo_Precio FROM mega.articulos WHERE Articulo_Nombre = @NombreArticulo ";
+            string consultaSql = " SELECT Articulo_Precio FROM articulos WHERE Articulo_Nombre = @NombreArticulo ";
 
             try
             {
@@ -58,7 +58,7 @@ namespace ProyectoPedidosResto.Models
                 {
                     var articulo = new Article
                     {
-                        Articulo_Precio = acceso.Lector.GetDecimal(0),
+                        Articulo_Precio = acceso.Lector.IsDBNull(0) ? 0m : Convert.ToDecimal(acceso.Lector[0]),
                     };
                     articulos=articulo;
                 }

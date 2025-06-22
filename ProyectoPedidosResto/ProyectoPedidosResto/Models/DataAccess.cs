@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Threading.Tasks;
-using MySql.Data.MySqlClient; // Cambiado para MySQL
+using System.Data.SqlClient; // Cambiado para SQL Server
+using System.Configuration; // Para leer Web.config
 
 namespace ProyectoPedidosResto.Models
 {
@@ -11,19 +12,20 @@ namespace ProyectoPedidosResto.Models
     {
         public class AccesoDatos
         {
-            private MySqlConnection conexion;
-            private MySqlCommand comando;
-            private MySqlDataReader lector;
+            private SqlConnection conexion;
+            private SqlCommand comando;
+            private SqlDataReader lector;
 
-            public MySqlDataReader Lector
+            public SqlDataReader Lector
             {
                 get { return lector; }
             }
 
             public AccesoDatos()
             {
-                conexion = new MySqlConnection("Server=localhost;Port=3306;Database=mega;Uid=root;Pwd=meko;");
-                comando = new MySqlCommand();
+                string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                conexion = new SqlConnection(connectionString);
+                comando = new SqlCommand();
             }
             public void SetearConsulta(string consulta)
             {

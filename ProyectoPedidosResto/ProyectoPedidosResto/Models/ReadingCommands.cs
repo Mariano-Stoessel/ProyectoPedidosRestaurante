@@ -18,7 +18,7 @@ namespace ProyectoPedidosResto.Models
         {
             var Comandas = new List<Command>();
             var acceso = new DataAccess.AccesoDatos();
-            string consultaSql = "SELECT Com_Indice, Com_MesaId, Com_Detalle, Com_Cant, Com_Unitario, Com_Estado FROM mesa_comandas where Com_MesaId=@idmesa ORDER BY Com_Detalle ASC ";
+            string consultaSql = "SELECT Com_Indice, Com_MesaId, Com_Detalle, Com_Cant, Com_Unitario, Com_Estado FROM mesa_comandas where Com_MesaId = @idmesa ORDER BY Com_Detalle ASC ";
 
             try
             {
@@ -34,10 +34,8 @@ namespace ProyectoPedidosResto.Models
                         Com_MesaId = acceso.Lector.GetInt32(1),
                         ArticuloNombre=acceso.Lector.IsDBNull(2) ? null : acceso.Lector.GetString(2),
                         Com_Cant = acceso.Lector.IsDBNull(3) ? null :  acceso.Lector.GetString(3),
-                        Com_Unitario= acceso.Lector.GetDecimal(4),
+                        Com_Unitario = acceso.Lector.IsDBNull(4) ? 0m : Convert.ToDecimal(acceso.Lector[4]),
                         Com_Estado = acceso.Lector.IsDBNull(5) ? null : acceso.Lector.GetString(5),
-
-
                     };
                     Comandas.Add(comandas);
                 }
@@ -113,7 +111,7 @@ namespace ProyectoPedidosResto.Models
         public void ActualizarCantidadYEstado(string nuevacantidad, int idcomanda, decimal total, string estado)
         {
             var acceso = new DataAccess.AccesoDatos();
-            string consultaSql = "UPDATE mega.mesa_comandas SET Com_Cant = @nuevacantidad, Com_Unitario = @ComUnitario, Com_Estado = @estado WHERE Com_Indice = @comindice ";
+            string consultaSql = "UPDATE mesa_comandas SET Com_Cant = @nuevacantidad, Com_Unitario = @ComUnitario, Com_Estado = @estado WHERE Com_Indice = @comindice ";
 
             try
             {

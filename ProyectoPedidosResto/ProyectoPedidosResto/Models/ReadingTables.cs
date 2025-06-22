@@ -50,7 +50,7 @@ namespace ProyectoPedidosResto.Models
         {
             Table mesas = new Table();
             var acceso = new DataAccess.AccesoDatos();
-            string consultaSql = "SELECT Mesa_Mozo FROM mega.mesas WHERE Mesa_Id = @idmesa";
+            string consultaSql = "SELECT Mesa_Mozo FROM mesas WHERE Mesa_Id = @idmesa";
 
             try
             {
