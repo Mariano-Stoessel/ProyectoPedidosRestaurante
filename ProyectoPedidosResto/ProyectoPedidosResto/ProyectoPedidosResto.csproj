@@ -171,9 +171,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Commands.css" />
+    <Content Include="Content\Login.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\Tables.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\Tables.js" />
+    <Content Include="Scripts\Commands.js" />
     <Content Include="Scripts\WebForms\DetailsView.js" />
     <Content Include="Scripts\WebForms\Focus.js" />
     <Content Include="Scripts\WebForms\GridView.js" />

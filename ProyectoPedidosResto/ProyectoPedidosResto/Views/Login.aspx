@@ -1,28 +1,13 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/MasterPage.Master" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="ProyectoPedidosResto.Views.Login" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <style>
-        .login-container {
-            display: flex;
-            justify-content: center;
-            height: 65vh;
-            margin: 4rem;
-        }
-
-        .text-tiny {
-            font-size: 0.8rem;
-            line-height: 1.1rem !important;
-            display: block !important;
-            margin-bottom: 0 !important;
-            padding: 1rem !important;
-        }
-    </style>
+    <link href="<%= ResolveUrl("~/Content/Login.css") %>" rel="stylesheet" type="text/css" />
 </asp:Content>
 
 <asp:Content ID="ContentLogin" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
     <div class="login-container">
-        <div class="text-center" style="width: 300px;">
+        <div class="text-center">
             <h1 class="text-primary fw-bold mb-5">Iniciar sesión</h1>
 
             <asp:DropDownList ID="ddlEmpresas" runat="server" CssClass="form-control mb-2" OnSelectedIndexChanged="ddlEmpresas_SelectedIndexChanged">
