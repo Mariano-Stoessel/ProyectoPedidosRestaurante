@@ -33,15 +33,6 @@ namespace ProyectoPedidosResto.Views
         protected global::System.Web.UI.WebControls.Label lblMozo;
 
         /// <summary>
-        /// btnCambiarMesa control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnCambiarMesa;
-
-        /// <summary>
         /// rptProductosLista control.
         /// </summary>
         /// <remarks>
@@ -94,6 +85,24 @@ namespace ProyectoPedidosResto.Views
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button BtnVolver;
+
+        /// <summary>
+        /// ddlMesasLibres control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlMesasLibres;
+
+        /// <summary>
+        /// btnAceptarCambiarMesa control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnAceptarCambiarMesa;
 
         /// <summary>
         /// hfNuevaCantidad control.

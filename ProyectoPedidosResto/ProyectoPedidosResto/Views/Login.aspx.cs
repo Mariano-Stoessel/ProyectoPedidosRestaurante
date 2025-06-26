@@ -68,7 +68,7 @@ namespace ProyectoPedidosResto.Views
 
                 string userData = $"{resultado.MozoId}|{resultado.MozoNombre}";
 
-                int tiempoExpiracion = 1;
+                int tiempoExpiracion = 10;
 
                 // Crea el ticket de autenticación
                 var ticket = new System.Web.Security.FormsAuthenticationTicket(

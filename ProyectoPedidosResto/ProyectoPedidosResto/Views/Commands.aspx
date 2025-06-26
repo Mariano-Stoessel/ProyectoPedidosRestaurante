@@ -7,6 +7,11 @@
             padding-top: 0 !important;
         }
 
+        select option[disabled] {
+            color: #aaa;
+            background: #333;
+        }
+
         .product-list {
             background-color: #2b2b2b;
             border-radius: 0.5rem;
@@ -291,7 +296,7 @@
                 </div>
             </div>
             <div class="row m-0">
-                <asp:Button ID="btnCambiarMesa" runat="server" CssClass="btn btn-primary text-white text-center" Text="Cambiar de mesa" />
+                <button type="button" class="btn btn-primary text-white text-center" data-bs-toggle="modal" data-bs-target="#ModalCambiarMesa">Cambiar de mesa</button>
             </div>
         </div>
         <div class="listaPedido pb-2">
@@ -358,6 +363,29 @@
         </div>
     </div>
 
+    <!-- Modal para cambiar mesa -->
+    <div class="modal fade" id="ModalCambiarMesa" tabindex="-1" aria-labelledby="modalCambiarMesaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-cantidad">
+            <div class="modal-content bg-dark text-white">
+                <div class="modal-header border-0 justify-content-center pb-1">
+                    <h4 class="modal-title" id="modalCambiarMesaLabel">Cambiar Mesa</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row d-flex align-items-center justify-content-between mb-3">
+                        <label class="me-2">Mesas:</label>
+                        <div class="input-group">
+                            <asp:DropDownList ID="ddlMesasLibres" runat="server" class="form-control bg-primary text-white text-center" Style="border: none;" />
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Cancelar</button>
+                        <asp:Button ID="btnAceptarCambiarMesa" runat="server" CssClass="btn btn-success" Text="Aceptar" OnClick="btnAceptarCambiarMesa_Click" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal para modificar -->
     <div class="modal fade" id="ModalModificarCantidad" tabindex="-1" aria-labelledby="modalModificarCantidadLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-cantidad">
@@ -378,7 +406,7 @@
                     <div class="d-flex align-items-center justify-content-between mb-3">
                         <label class="me-2">Estado:</label>
                         <div class="input-group">
-                            <asp:DropDownList ID="ddlEstado" runat="server" class="form-control bg-primary text-white text-center">
+                            <asp:DropDownList ID="ddlEstado" runat="server" class="form-control bg-primary text-white text-center" Style="border: none;">
                                 <asp:ListItem Text="PEDIDO" />
                                 <asp:ListItem Text="PREPARACION" />
                                 <asp:ListItem Text="ENTREGADO" />
@@ -403,11 +431,11 @@
                 </div>
                 <div class="modal-body">
                     <div>
-                        <p class="modal-eliminar-texto">¿Estás seguro que deseas eliminar el artículo seleccionado?</p>
+                        <p class="modal-eliminar-texto text-center">¿Eliminar este artículo?</p>
                     </div>
                     <div class="d-flex justify-content-between">
-                        <button class="btn btn-danger" data-bs-dismiss="modal" type="button">NO</button>
-                        <asp:Button ID="btnEliminarProducto" runat="server" CssClass="btn btn-success me-2" Text="SI" OnClick="btnEliminarProducto_Click" Style="display: none;" />
+                        <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Cancelar</button>
+                        <asp:Button ID="btnEliminarProducto" runat="server" CssClass="btn btn-success" Text="Aceptar" OnClick="btnEliminarProducto_Click" Style="display: none;" />
 
                     </div>
                 </div>
@@ -460,8 +488,8 @@
                                         data-producto-nombre='<%# Eval("Articulo_Nombre")%>'
                                         data-precio-producto='<%# Eval("Articulo_Precio")%>'
                                         onclick="seleccionarProductoCatalogo(this)">
-                                        <div class="col-7"><span><%# Eval("Articulo_Nombre") %></span></div>
-                                        <div class="col-1 text-end"><span><%# Eval("Articulo_Stock") %></span></div>
+                                        <div class="col-6"><span><%# Eval("Articulo_Nombre") %></span></div>
+                                        <div class="col-2 text-end"><span><%# Eval("Articulo_Stock") %></span></div>
                                         <div class="col text-end"><span><span><%# Convert.ToDecimal(Eval("Articulo_Precio")).ToString("N2") %></span></div>
                                     </div>
                                 </ItemTemplate>

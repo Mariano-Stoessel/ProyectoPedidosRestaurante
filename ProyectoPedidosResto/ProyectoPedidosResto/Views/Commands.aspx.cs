@@ -70,11 +70,35 @@ namespace ProyectoPedidosResto.Views
                 CargarProductos();
 
                 CargarProductosLista(idMesa);
+
+                CargarMesasLibres();
+
                 Mozo_A_Cargo();
 
                 // Calcula el total usando la lista de la sesión
                 CargarTotal();
 
+            }
+
+            if (Request.QueryString["cambioMesa"] == "ok")
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "alertCambioMesa",
+                    "alert('¡Cambio de mesa exitoso!');", true);
+            }
+        }
+
+        private void CargarMesasLibres()
+        {
+            var reader = new ReadingTables();
+            var mesas = reader.LeerMesas(); // Devuelve todas las mesas
+
+            ddlMesasLibres.Items.Clear();
+            foreach (var mesa in mesas)
+            {
+                var item = new ListItem($"Mesa {mesa.Mesa_Id} ({mesa.Mesa_Estado})", mesa.Mesa_Id.ToString());
+                if (!string.Equals(mesa.Mesa_Estado, "LIBRE", StringComparison.OrdinalIgnoreCase))
+                    item.Attributes.Add("disabled", "disabled");
+                ddlMesasLibres.Items.Add(item);
             }
         }
 
@@ -135,7 +159,7 @@ namespace ProyectoPedidosResto.Views
         {
             int Idcomanda = int.Parse(hfProductoListaSeleccionado.Value);
             var borrarcomanda = new ReadingCommands();
-            borrarcomanda.ElimiarCommands(Idcomanda);
+            borrarcomanda.EliminarCommands(Idcomanda);
             CargarProductosLista(lblIdMesa.Text);
             CargarTotal();
         }
@@ -240,6 +264,45 @@ namespace ProyectoPedidosResto.Views
                     }
                 }
             }
+        }
+
+        protected void btnAceptarCambiarMesa_Click(object sender, EventArgs e)
+        {
+            int mesaActualId = int.Parse(lblIdMesa.Text);
+            int mesaNuevaId = int.Parse(ddlMesasLibres.SelectedValue);
+
+            var readerCommands = new ReadingCommands();
+            readerCommands.CambiarMesaComandas(mesaActualId, mesaNuevaId);
+
+            var readerTables = new ReadingTables();
+            var mesas = readerTables.LeerMesas();
+
+            var mesaNueva = mesas.FirstOrDefault(m => m.Mesa_Id == mesaNuevaId);
+            var mesaAnterior = mesas.FirstOrDefault(m => m.Mesa_Id == mesaActualId);
+
+            if (mesaNueva != null && mesaAnterior != null)
+            {
+                mesaNueva.Mesa_Estado = "OCUPADA";
+                mesaNueva.Mesa_IdMozo = mesaAnterior.Mesa_IdMozo;
+                mesaNueva.Mesa_Mozo = mesaAnterior.Mesa_Mozo;
+                mesaNueva.Mesa_CantPer = mesaAnterior.Mesa_CantPer;
+                mesaNueva.Mesa_Obs = mesaAnterior.Mesa_Obs;
+                mesaNueva.Mesa_UltModif = DateTime.Now; // Actualizar la fecha de última modificación
+                readerTables.ActualizarMesa(mesaNueva);
+            }
+
+            if (mesaAnterior != null)
+            {
+                mesaAnterior.Mesa_Estado = "LIBRE";
+                mesaAnterior.Mesa_IdMozo = null;
+                mesaAnterior.Mesa_Mozo = null;
+                mesaAnterior.Mesa_CantPer = null;
+                mesaAnterior.Mesa_Obs = null;
+                mesaAnterior.Mesa_UltModif = null; // Actualizar la fecha de última modificación??
+                readerTables.ActualizarMesa(mesaAnterior);
+            }
+
+            Response.Redirect($"Commands.aspx?idMesa={mesaNuevaId}&cambioMesa=ok");
         }
     }
 }
