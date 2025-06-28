@@ -194,6 +194,7 @@ namespace ProyectoPedidosResto.Views
         }
         protected void BtnVolver_Click(object sender, EventArgs e)
         {
+            
             Response.Redirect("Tables.aspx");
         }
 

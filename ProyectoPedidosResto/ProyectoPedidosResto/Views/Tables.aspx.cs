@@ -47,9 +47,17 @@ namespace ProyectoPedidosResto.Views
 
             if (!IsPostBack)
             {
+
+
                 cargarDatos(); // Cargar datos de mesas y mozos al iniciar la página
 
                 cargarDdl(); // Cargar Filtros de estado y datos en los DropDownList
+                if (Session["Mismesascheck"] != null && (bool)Session["Mismesascheck"])
+                {
+                    FiltrarMisMesas();
+
+
+                }
 
             }
         }
@@ -84,6 +92,37 @@ namespace ProyectoPedidosResto.Views
             var readerMozos = new ReadingWaiters();
             Mozos = readerMozos.LeerMozos();
         }
+        private void FiltrarMisMesas()
+        {
+
+            bool mesacheck = false;
+            if (Session["Mismesascheck"] != null) mesacheck = (bool)Session["Mismesascheck"];
+            if (mesacheck == true) chkMisMesas.Checked = true;
+            // Obtener el id del mozo logueado desde la sesión
+            int idMozo = 0;
+            if (Session["MozoId"] != null)
+            {
+                int.TryParse(Session["MozoId"].ToString(), out idMozo);
+            }
+
+            var readerMesas = new ReadingTables();
+
+            //Hacerlo por BBDD directo despues
+
+            if (chkMisMesas.Checked && idMozo > 0)
+            {
+                // Filtrar mesas por idMozo
+                Mesas = readerMesas.LeerMesas().Where(m => m.Mesa_IdMozo == idMozo).ToList();
+                mesacheck = true;
+                Session["Mismesascheck"] = mesacheck;
+            }
+            else
+            {
+                // Mostrar todas las mesas
+                Mesas = readerMesas.LeerMesas();
+                mesacheck = false;
+            }
+        }
 
         protected void ddlFiltros_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -109,27 +148,7 @@ namespace ProyectoPedidosResto.Views
 
         protected void chkMisMesas_CheckedChanged(object sender, EventArgs e)
         {
-            // Obtener el id del mozo logueado desde la sesión
-            int idMozo = 0;
-            if (Session["MozoId"] != null)
-            {
-                int.TryParse(Session["MozoId"].ToString(), out idMozo);
-            }
-
-            var readerMesas = new ReadingTables();
-
-            //Hacerlo por BBDD directo despues
-
-            if (chkMisMesas.Checked && idMozo > 0)
-            {
-                // Filtrar mesas por idMozo
-                Mesas = readerMesas.LeerMesas().Where(m => m.Mesa_IdMozo == idMozo).ToList();
-            }
-            else
-            {
-                // Mostrar todas las mesas
-                Mesas = readerMesas.LeerMesas();
-            }
+            FiltrarMisMesas();
         }
 
         protected void btnLimpiar_Click(object sender, EventArgs e)
