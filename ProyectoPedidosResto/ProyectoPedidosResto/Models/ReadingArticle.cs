@@ -13,7 +13,7 @@ namespace ProyectoPedidosResto.Models
         {
             var articulos = new List<Article>();
             var acceso = new DataAccess.AccesoDatos();
-            string consultaSql = " SELECT Articulo_Indice, Articulo_Nombre, Articulo_Stock, Articulo_Categoria, Articulo_Precio FROM Articulos ORDER BY Articulo_Nombre ASC ";
+            string consultaSql = " SELECT Articulo_Indice, Articulo_Nombre, Articulo_Stock, Articulo_Categoria, Articulo_Precio FROM Articulos WHERE Articulo_Stock > 0 ORDER BY Articulo_Nombre ASC ";
 
             try
             {
