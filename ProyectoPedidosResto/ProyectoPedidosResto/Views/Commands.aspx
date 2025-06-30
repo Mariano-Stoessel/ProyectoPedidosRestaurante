@@ -2,6 +2,20 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="<%= ResolveUrl("~/Content/Commands.css") %>" rel="stylesheet" type="text/css" />
+    <script type="text/javascript">
+        var ddlCategoriasId = '<%= ddlCategorias.ClientID %>';
+        var txtBusquedaId = '<%= txtBusqueda.ClientID %>';
+        var hfProductoListaSeleccionadoId = '<%= hfProductoListaSeleccionado.ClientID %>';
+        var hfArticuloNombreoListaSeleccionadoId = '<%= hfArticuloNombreoListaSeleccionado.ClientID %>';
+        var hfProductoSeleccionadoId = '<%= hfProductoSeleccionado.ClientID %>';
+        var hfNombreProductoSeleccionadoId = '<%= hfNombreProductoSeleccionado.ClientID %>';
+        var hfPrecioProductoSeleccionadoId = '<%= hfPrecioProductoSeleccionado.ClientID %>';
+        var btnEliminarProductoId = '<%= btnEliminarProducto.ClientID %>';
+        var btnModificarProductoId = '<%= btnModificarProducto.ClientID %>';
+        var ddlEstadoId = '<%= ddlEstado.ClientID %>';
+        var hfNuevaCantidadId = '<%= hfNuevaCantidad.ClientID %>';
+        var hfCantidadId = '<%= hfCantidad.ClientID %>';
+    </script>
     <script src="<%= ResolveUrl("~/Scripts/Commands.js") %>"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </asp:Content>

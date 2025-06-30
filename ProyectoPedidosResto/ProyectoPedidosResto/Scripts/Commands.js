@@ -1,18 +1,15 @@
-﻿var categoria = document.getElementById('<%= ddlCategorias.ClientID %>').value.toLowerCase();
-var catId = row.getAttribute('data-cat-id').toLowerCase();
-var okCat = !categoria || categoria === catId;
-document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('<%= txtBusqueda.ClientID %>')
+﻿document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById(txtBusquedaId)
         .addEventListener('keyup', filterProductos);
-    document.getElementById('<%= ddlCategorias.ClientID %>')
+    document.getElementById(ddlCategoriasId)
         .addEventListener('change', filterProductos);
     $('#ModalComandas').on('shown.bs-modal shown.bs.modal', filterProductos);
 });
 
 
 function filterProductos() {
-    var filtro = document.getElementById('<%= txtBusqueda.ClientID %>').value.toLowerCase();
-    var categoria = document.getElementById('<%= ddlCategorias.ClientID %>').value;
+    var filtro = document.getElementById(txtBusquedaId).value.toLowerCase();
+    var categoria = document.getElementById(ddlCategoriasId).value;
 
     document.querySelectorAll('.fila-producto-catalogo').forEach(function (row) {
         var nombre = row.querySelector('.col-7 span').textContent.toLowerCase();
@@ -28,8 +25,8 @@ function filterProductos() {
 }
 function clearFilters() {
     // 1) reseteo textbox y dropdown a “Todos” (value="")
-    document.getElementById('<%= txtBusqueda.ClientID %>').value = '';
-    document.getElementById('<%= ddlCategorias.ClientID %>').value = '';
+    document.getElementById(txtBusquedaId).value = '';
+    document.getElementById(ddlCategoriasId).value = '';
     // 2) reaplico el filtrado para mostrar todo
     filterProductos();
 }
@@ -37,7 +34,7 @@ function clearFilters() {
 function seleccionarProductoLista(element) {
     if (element.classList.contains('selected')) {
         element.classList.remove('selected');
-        document.getElementById('<%= hfProductoListaSeleccionado.ClientID %>').value = '';
+        document.getElementById(hfProductoListaSeleccionadoId).value = '';
         eliminarBarraControlPedido();
         return;
     }
@@ -45,8 +42,8 @@ function seleccionarProductoLista(element) {
         fila.classList.remove('selected');
     });
     element.classList.add('selected');
-    document.getElementById('<%= hfProductoListaSeleccionado.ClientID %>').value = element.getAttribute('data-producto-id');
-    document.getElementById('<%= hfArticuloNombreoListaSeleccionado.ClientID %>').value = element.getAttribute('data-Nombre-Articulo');
+    document.getElementById(hfProductoListaSeleccionadoId).value = element.getAttribute('data-producto-id');
+    document.getElementById(hfArticuloNombreoListaSeleccionadoId).value = element.getAttribute('data-Nombre-Articulo');
 
     crearBarraControlPedidoLista(element);
 }
@@ -54,8 +51,8 @@ function seleccionarProductoLista(element) {
 function seleccionarProductoCatalogo(element) {
     if (element.classList.contains('selected')) {
         element.classList.remove('selected');
-        document.getElementById('<%= hfProductoSeleccionado.ClientID %>').value = '';
-        document.getElementById('<%= hfNombreProductoSeleccionado.ClientID %>').value = '';
+        document.getElementById(hfProductoSeleccionadoId).value = '';
+        document.getElementById(hfNombreProductoSeleccionadoId).value = '';
 
         return;
     }
@@ -63,26 +60,26 @@ function seleccionarProductoCatalogo(element) {
         fila.classList.remove('selected');
     });
     element.classList.add('selected');
-    document.getElementById('<%= hfProductoSeleccionado.ClientID %>').value = element.getAttribute('data-producto-id');
-    document.getElementById('<%=hfNombreProductoSeleccionado.ClientID %>').value = element.getAttribute('data-producto-nombre');
-    document.getElementById('<%=hfPrecioProductoSeleccionado.ClientID %>').value = element.getAttribute('data-precio-producto');
+    document.getElementById(hfProductoSeleccionadoId).value = element.getAttribute('data-producto-id');
+    document.getElementById(hfNombreProductoSeleccionadoId).value = element.getAttribute('data-producto-nombre');
+    document.getElementById(hfPrecioProductoSeleccionadoId).value = element.getAttribute('data-precio-producto');
 }
 
 function crearBarraControlPedidoLista(element) {
     var barra = document.getElementById('controlPedidoBarra');
     if (barra) barra.style.display = 'flex';
-    var btnEliminar = document.getElementById('<%= btnEliminarProducto.ClientID %>');
+    var btnEliminar = document.getElementById(btnEliminarProductoId);
     if (btnEliminar) btnEliminar.style.display = 'inline-block';
-    var btnModificar = document.getElementById('<%= btnModificarProducto.ClientID %>');
+    var btnModificar = document.getElementById(btnModificarProductoId);
     if (btnModificar) btnModificar.style.display = 'inline-block';
 }
 
 function eliminarBarraControlPedido() {
     var barra = document.getElementById('controlPedidoBarra');
     if (barra) barra.style.display = 'none';
-    var btnEliminar = document.getElementById('<%= btnEliminarProducto.ClientID %>');
+    var btnEliminar = document.getElementById(btnEliminarProductoId);
     if (btnEliminar) btnEliminar.style.display = 'none';
-    var btnModificar = document.getElementById('<%= btnModificarProducto.ClientID %>');
+    var btnModificar = document.getElementById(btnModificarProductoId);
     if (btnModificar) btnModificar.style.display = 'none';
 }
 
@@ -96,7 +93,7 @@ function abrirModalModificarCantidad() {
         // Obtén el estado desde el atributo data-estado
         var estado = fila.getAttribute('data-estado');
         if (estado) {
-            document.getElementById('<%= ddlEstado.ClientID %>').value = estado;
+            document.getElementById(ddlEstadoId).value = estado;
         }
 
         $('#ModalModificarCantidad').modal('show');
@@ -104,10 +101,7 @@ function abrirModalModificarCantidad() {
 }
 function abrirModalAgregarProducto() {
     document.getElementById('lblCantidad').textContent = '1';
-    document.getElementById('<%= hfCantidad.ClientID %>').value = '1';
-    // Si usas Bootstrap 5, puedes abrir el modal así:
-    // var modal = new bootstrap.Modal(document.getElementById('ModalComandas'));
-    // modal.show();
+    document.getElementById(hfCantidadId).value = '1';
 }
 
 function cambiarCantidad(delta) {
@@ -128,11 +122,11 @@ function cambiarCantidadCatalogo(delta) {
 
 function guardarCantidadYPostback() {
     var valor = document.getElementById('lblCantidadLista').textContent;
-    document.getElementById('<%= hfNuevaCantidad.ClientID %>').value = valor;
+    document.getElementById(hfNuevaCantidadId).value = valor;
     // Permite el postback
     return true;
 }
 function guardarCantidadCatalogo() {
     var valor = document.getElementById('lblCantidad').textContent;
-    document.getElementById('<%= hfCantidad.ClientID %>').value = valor;
+    document.getElementById(hfCantidadId).value = valor;
 }

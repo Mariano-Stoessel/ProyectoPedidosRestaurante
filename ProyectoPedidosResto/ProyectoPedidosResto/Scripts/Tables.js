@@ -19,11 +19,11 @@ document.addEventListener("DOMContentLoaded", function () {
     var modal = document.getElementById('modalMesaGeneral');
     modal.addEventListener('hidden.bs.modal', function () {
         // Resetea el DropDownList de mozos
-        var ddl = document.getElementById('<%= ddlMozos.ClientID %>');
+        var ddl = document.getElementById(ddlMozosId);
         if (ddl) ddl.selectedIndex = 0;
 
         // Resetea el campo de observaciones
-        var obs = document.getElementById('<%= txtObservaciones.ClientID %>');
+        var obs = document.getElementById(txtObservacionesId);
         if (obs) obs.value = '';
 
         // Resetea la cantidad de personas
@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var mozoId = button.getAttribute('data-mozo-id');
 
         document.getElementById('modalMesaNumero').textContent = mesaId;
-        document.getElementById('<%= hfMesaSeleccionadaId.ClientID %>').value = mesaId;
+        document.getElementById(hfMesaSeleccionadaId).value = mesaId;
 
         // Si hay datos para cargar (por ejemplo, mesa reservada), los cargas aquí
         if (personas) {
@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById('hfPersonas').value = personas;
         }
         if (mozoId) {
-            var ddlMozos = document.getElementById('<%= ddlMozos.ClientID %>');
+            var ddlMozos = document.getElementById(ddlMozosId);
             if (ddlMozos) ddlMozos.value = mozoId;
         }
     });

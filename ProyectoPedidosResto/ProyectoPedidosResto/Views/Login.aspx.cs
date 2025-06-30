@@ -1,14 +1,8 @@
-﻿using ProyectoPedidosResto.Domain;
-using ProyectoPedidosResto.Models;
+﻿using ProyectoPedidosResto.Models;
+using ProyectoPedidosResto.Utils;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using System.Web;
-using System.Web.Services.Description;
-using System.Web.UI;
 using System.Web.UI.WebControls;
-
 
 namespace ProyectoPedidosResto.Views
 {
@@ -16,24 +10,13 @@ namespace ProyectoPedidosResto.Views
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (User.Identity.IsAuthenticated)
+            if (AuthHelper.UsuarioAutenticado())
             {
-                var authCookie = Request.Cookies[System.Web.Security.FormsAuthentication.FormsCookieName];
-                if (authCookie != null)
+                var (mozoId, mozoNombre) = AuthHelper.ObtenerMozoDesdeTicket();
+                if (mozoId.HasValue && !string.IsNullOrEmpty(mozoNombre))
                 {
-                    var ticket = System.Web.Security.FormsAuthentication.Decrypt(authCookie.Value);
-                    if (ticket != null)
-                    {
-                        string[] userData = ticket.UserData.Split('|');
-                        int mozoId = int.Parse(userData[0]);
-                        string mozoNombre = userData[1];
-
-                        Session["MozoId"] = mozoId;
-                        Session["MozoNombre"] = mozoNombre;
-                    }
+                    AuthHelper.SetearMozoSession(mozoId.Value, mozoNombre);
                 }
-
-
                 Response.Redirect("Tables.aspx");
                 return;
             }
@@ -48,7 +31,7 @@ namespace ProyectoPedidosResto.Views
 
         protected void ddlEmpresas_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            // Lógica para cambio de empresa si aplica
         }
 
         protected void btnLogin_Click(object sender, EventArgs e)
@@ -92,8 +75,7 @@ namespace ProyectoPedidosResto.Views
                 };
                 Response.Cookies.Add(cookie);
 
-                Session["MozoId"] = resultado.MozoId;
-                Session["MozoNombre"] = resultado.MozoNombre;
+                AuthHelper.SetearMozoSession(resultado.MozoId, resultado.MozoNombre);
 
                 // Iniciar el "cronómetro" en el servidor en paralelo
                 int mozoId = resultado.MozoId;

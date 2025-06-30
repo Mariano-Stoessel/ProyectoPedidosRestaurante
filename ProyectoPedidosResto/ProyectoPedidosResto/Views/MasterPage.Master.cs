@@ -1,11 +1,6 @@
-﻿using ProyectoPedidosResto.Domain;
-using ProyectoPedidosResto.Models;
+﻿using ProyectoPedidosResto.Models;
+using ProyectoPedidosResto.Utils;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace ProyectoPedidosResto.Views
 {
@@ -18,12 +13,8 @@ namespace ProyectoPedidosResto.Views
                 lblUsuario.Text = "Sesión de " + Session["MozoNombre"].ToString();
             }
 
-            // Si el usuario está logueado y no estan en Login, muestra el menú
-
             string currentPage = System.IO.Path.GetFileName(Request.Path).ToLower();
-            bool isAuthenticated = HttpContext.Current.User != null &&
-                               HttpContext.Current.User.Identity != null &&
-                               HttpContext.Current.User.Identity.IsAuthenticated;
+            bool isAuthenticated = AuthHelper.UsuarioAutenticado();
 
             if (currentPage == "login.aspx" || Session["MozoId"] == null || !isAuthenticated)
             {
@@ -50,11 +41,7 @@ namespace ProyectoPedidosResto.Views
                 readerMozos.CambiarEstadoMozo(mozoId, "NO");
             }
 
-            Session.Clear();
-            Session.Abandon();
-
-            // Cerrar sesión de Forms Authentication
-            System.Web.Security.FormsAuthentication.SignOut();
+            AuthHelper.LimpiarYCerrarSesion();
 
             Response.Redirect("Login.aspx", false);
         }

@@ -2,6 +2,11 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="<%= ResolveUrl("~/Content/Tables.css") %>" rel="stylesheet" type="text/css" />
+    <script type="text/javascript">
+        var ddlMozosId = '<%= ddlMozos.ClientID %>';
+        var txtObservacionesId = '<%= txtObservaciones.ClientID %>';
+        var hfMesaSeleccionadaId = '<%= hfMesaSeleccionadaId.ClientID %>';
+</script>
     <script src="<%= ResolveUrl("~/Scripts/Tables.js") %>"></script>
 </asp:Content>
 <asp:Content ID="ContentTables" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
