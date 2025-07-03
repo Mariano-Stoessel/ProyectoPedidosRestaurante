@@ -198,8 +198,6 @@ D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\P
 D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\System.Numerics.Vectors.xml
 D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\System.Runtime.CompilerServices.Unsafe.xml
 D:\COSAS MARIANO\Proyecto Maxi\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\System.Threading.Tasks.Extensions.xml
-F:\Proyectos GitHub\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\obj\Debug\ProyectoPedidosResto.csproj.AssemblyReference.cache
-F:\Proyectos GitHub\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\obj\Debug\ProyectoPedidosResto.csproj.CoreCompileInputs.cache
 F:\Proyectos GitHub\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\ProyectoPedidosResto.dll.config
 F:\Proyectos GitHub\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\ProyectoPedidosResto.dll
 F:\Proyectos GitHub\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\ProyectoPedidosResto.pdb
@@ -311,6 +309,8 @@ F:\Proyectos GitHub\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedi
 F:\Proyectos GitHub\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\System.Web.Helpers.xml
 F:\Proyectos GitHub\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\System.Web.Mvc.xml
 F:\Proyectos GitHub\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+F:\Proyectos GitHub\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\obj\Debug\ProyectoPedidosResto.csproj.AssemblyReference.cache
+F:\Proyectos GitHub\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\obj\Debug\ProyectoPedidosResto.csproj.CoreCompileInputs.cache
 F:\Proyectos GitHub\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\obj\Debug\Proyecto.206FA42B.Up2Date
 F:\Proyectos GitHub\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\obj\Debug\ProyectoPedidosResto.dll
 F:\Proyectos GitHub\ProyectoPedidosRestaurante\ProyectoPedidosResto\ProyectoPedidosResto\obj\Debug\ProyectoPedidosResto.pdb

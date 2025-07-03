@@ -74,7 +74,7 @@ namespace ProyectoPedidosResto.Models
                 datos.SetearParametro("@Unitario", comanda.Com_Unitario.ToString());
                 
 
-                datos.ejecutarAccion();
+                datos.EjecutarAccion();
 
             }
             catch (Exception ex)
@@ -87,7 +87,7 @@ namespace ProyectoPedidosResto.Models
                 datos.CerrarConexion();
             }
         }
-        public void ElimiarCommands(int idcomanda)
+        public void EliminarCommands(int idcomanda)
         {          
             var acceso = new DataAccess.AccesoDatos();
             string consultaSql = "DELETE FROM mesa_comandas WHERE Com_Indice = @comindice ";
@@ -134,6 +134,27 @@ namespace ProyectoPedidosResto.Models
             }
         }
 
+        internal void CambiarMesaComandas(int mesaActualId, int mesaNuevaId)
+        {
+            var acceso = new DataAccess.AccesoDatos();
+            string consultaSql = "UPDATE mesa_comandas SET Com_MesaId = @nuevaMesaId WHERE Com_MesaId = @mesaActualId";
 
+            try
+            {
+                acceso.SetearConsulta(consultaSql);
+                acceso.SetearParametro("@nuevaMesaId", mesaNuevaId);
+                acceso.SetearParametro("@mesaActualId", mesaActualId);
+                acceso.EjecutarAccion();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Error al Actualizar Comandas: " + ex.Message);
+                throw;
+            }
+            finally
+            {
+                acceso.CerrarConexion();
+            }
+        }
     }
 }

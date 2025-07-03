@@ -1,14 +1,9 @@
-﻿using Microsoft.Ajax.Utilities;
-using Org.BouncyCastle.Crypto;
-using ProyectoPedidosResto.Domain;
+﻿using ProyectoPedidosResto.Domain;
 using ProyectoPedidosResto.Models;
+using ProyectoPedidosResto.Utils;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Web;
-using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using ComandsDomain = ProyectoPedidosResto.Domain.Command;
@@ -26,25 +21,13 @@ namespace ProyectoPedidosResto.Views
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!User.Identity.IsAuthenticated)
+            if (!AuthHelper.UsuarioAutenticado())
             {
-                var authCookie = Request.Cookies[System.Web.Security.FormsAuthentication.FormsCookieName];
-                if (authCookie != null)
+                var (mozoId, _) = AuthHelper.ObtenerMozoDesdeTicket();
+                if (mozoId.HasValue)
                 {
-                    try
-                    {
-                        var ticket = System.Web.Security.FormsAuthentication.Decrypt(authCookie.Value);
-                        if (ticket != null)
-                        {
-                            int mozoId;
-                            if (int.TryParse(ticket.UserData, out mozoId))
-                            {
-                                var readerMozos = new ReadingWaiters();
-                                readerMozos.CambiarEstadoMozo(mozoId, "NO");
-                            }
-                        }
-                    }
-                    catch { /* Ignorar errores de cookie corrupta */ }
+                    var readerMozos = new ReadingWaiters();
+                    readerMozos.CambiarEstadoMozo(mozoId.Value, "NO");
                 }
 
                 Response.Redirect("Login.aspx");
@@ -66,19 +49,115 @@ namespace ProyectoPedidosResto.Views
                 if (!string.IsNullOrEmpty(idMesa)) lblIdMesa.Text = idMesa;
 
                 CargarCategorias();
-
                 CargarProductos();
-
                 CargarProductosLista(idMesa);
+                CargarMesasLibres();
                 Mozo_A_Cargo();
-
-                // Calcula el total usando la lista de la sesión
                 CargarTotal();
+
+            }
+
+            if (Request.QueryString["cambioMesa"] == "ok")
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "alertCambioMesa",
+                    "alert('¡Cambio de mesa exitoso!');", true);
+            }
+        }
+
+        protected void btnEliminarProducto_Click(object sender, EventArgs e)
+        {
+            EliminarComanda();
+        }
+
+        protected void btnModificarProducto_Click(object sender, EventArgs e)
+        {
+            int nuevaCantidad;
+            if (int.TryParse(hfNuevaCantidad.Value, out nuevaCantidad))
+            {
+                if (nuevaCantidad == 0) { EliminarComanda(); }
+                else
+                {
+                    ActualizarCantidad(nuevaCantidad);
+                }
 
             }
         }
 
-        // Valida que la mesa exista y no esté libre
+        protected void btnAgregarProducto_Click(object sender, EventArgs e)
+        {
+            if (!int.TryParse(hfProductoSeleccionado.Value, out int idProducto))
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "alertIdProducto",
+                    $"alert('Error: El producto seleccionado no es válido. Valor: {hfProductoSeleccionado.Value}');", true);
+                return;
+            }
+            string NombreProducto = hfNombreProductoSeleccionado.Value.ToString();
+            string cantidad = hfCantidad.Value;
+            string precioUnitario = hfPrecioProductoSeleccionado.Value;
+            InsertarComandas(idProducto, NombreProducto, cantidad, precioUnitario);
+
+        }
+
+        protected void BtnVolver_Click(object sender, EventArgs e)
+        {
+
+            Response.Redirect("Tables.aspx");
+        }
+
+        protected void btnAceptarCambiarMesa_Click(object sender, EventArgs e)
+        {
+            int mesaActualId = int.Parse(lblIdMesa.Text);
+            int mesaNuevaId = int.Parse(ddlMesasLibres.SelectedValue);
+
+            var readerCommands = new ReadingCommands();
+            readerCommands.CambiarMesaComandas(mesaActualId, mesaNuevaId);
+
+            var readerTables = new ReadingTables();
+            var mesas = readerTables.LeerMesas();
+
+            var mesaNueva = mesas.FirstOrDefault(m => m.Mesa_Id == mesaNuevaId);
+            var mesaAnterior = mesas.FirstOrDefault(m => m.Mesa_Id == mesaActualId);
+
+            if (mesaNueva != null && mesaAnterior != null)
+            {
+                mesaNueva.Mesa_Estado = "OCUPADA";
+                mesaNueva.Mesa_IdMozo = mesaAnterior.Mesa_IdMozo;
+                mesaNueva.Mesa_Mozo = mesaAnterior.Mesa_Mozo;
+                mesaNueva.Mesa_CantPer = mesaAnterior.Mesa_CantPer;
+                mesaNueva.Mesa_Obs = mesaAnterior.Mesa_Obs;
+                mesaNueva.Mesa_UltModif = DateTime.Now; // Actualizar la fecha de última modificación
+                readerTables.ActualizarMesa(mesaNueva);
+            }
+
+            if (mesaAnterior != null)
+            {
+                mesaAnterior.Mesa_Estado = "LIBRE";
+                mesaAnterior.Mesa_IdMozo = null;
+                mesaAnterior.Mesa_Mozo = null;
+                mesaAnterior.Mesa_CantPer = null;
+                mesaAnterior.Mesa_Obs = null;
+                mesaAnterior.Mesa_UltModif = null; // Actualizar la fecha de última modificación??
+                readerTables.ActualizarMesa(mesaAnterior);
+            }
+
+            Response.Redirect($"Commands.aspx?idMesa={mesaNuevaId}&cambioMesa=ok");
+        }
+
+        private void CargarMesasLibres()
+        {
+            var reader = new ReadingTables();
+            var mesas = reader.LeerMesas(); // Devuelve todas las mesas
+
+            ddlMesasLibres.Items.Clear();
+            foreach (var mesa in mesas)
+            {
+                var item = new ListItem($"Mesa {mesa.Mesa_Id} ({mesa.Mesa_Estado})", mesa.Mesa_Id.ToString());
+                if (!string.Equals(mesa.Mesa_Estado, "LIBRE", StringComparison.OrdinalIgnoreCase))
+                    item.Attributes.Add("disabled", "disabled");
+                ddlMesasLibres.Items.Add(item);
+            }
+        }
+
         private bool EsMesaValidaYNoLibre()
         {
             string idMesaStr = Request.QueryString["idMesa"];
@@ -100,24 +179,6 @@ namespace ProyectoPedidosResto.Views
             lblMozo.Text = "Mozo: " + readingTables.BuscarIdMozo(int.Parse(lblIdMesa.Text), lblMozo.Text);
         }
 
-        protected void btnEliminarProducto_Click(object sender, EventArgs e)
-        {
-            EliminarComanda();
-        }
-
-        protected void btnModificarProducto_Click(object sender, EventArgs e)
-        {
-            int nuevaCantidad;
-            if (int.TryParse(hfNuevaCantidad.Value, out nuevaCantidad))
-            {
-                if (nuevaCantidad == 0) { EliminarComanda(); }
-                else
-                {
-                    ActualizarCantidad(nuevaCantidad);
-                }
-
-            }
-        }
         private void ActualizarCantidad(int nuevaCantidad)
         {
             var buscarprecioArticulo = new ReadingArticle();
@@ -131,11 +192,12 @@ namespace ProyectoPedidosResto.Views
             CargarProductosLista(lblIdMesa.Text);
             CargarTotal();
         }
+
         private void EliminarComanda()
         {
             int Idcomanda = int.Parse(hfProductoListaSeleccionado.Value);
             var borrarcomanda = new ReadingCommands();
-            borrarcomanda.ElimiarCommands(Idcomanda);
+            borrarcomanda.EliminarCommands(Idcomanda);
             CargarProductosLista(lblIdMesa.Text);
             CargarTotal();
         }
@@ -146,15 +208,7 @@ namespace ProyectoPedidosResto.Views
             TotalPedido = productosListaSesion.Sum(p => int.Parse(p.Com_Cant) * p.Com_Unitario);
             lblTotal.Text = "$" + TotalPedido.ToString("N2");
         }
-        protected void btnAgregarProducto_Click(object sender, EventArgs e)
-        {
-            int idProducto = int.Parse(hfProductoSeleccionado.Value);
-            string NombreProducto = hfNombreProductoSeleccionado.Value.ToString();
-            string cantidad = hfCantidad.Value;
-            string precioUnitario = hfPrecioProductoSeleccionado.Value;
-            InsertarComandas(idProducto, NombreProducto, cantidad, precioUnitario);
 
-        }
         private void InsertarComandas(int idProducto, string NombreProducto, string cantidad, string precioUnitario)
         {
             var insertcomandas = new ReadingCommands();
@@ -167,10 +221,6 @@ namespace ProyectoPedidosResto.Views
             insertcomandas.InsertarComanda(comanda);
             CargarProductosLista(comanda.Com_MesaId.ToString());
             CargarTotal();
-        }
-        protected void BtnVolver_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("Tables.aspx");
         }
 
         private void CargarProductos()
@@ -189,10 +239,7 @@ namespace ProyectoPedidosResto.Views
             rptProductosLista.DataSource = commands;
             rptProductosLista.DataBind();
         }
-        /* private void CargarMozo(String idmozo)
-         {
 
-         }*/
         private void CargarCategorias()
         {
             var reader = new ReadingCategory();
@@ -213,32 +260,25 @@ namespace ProyectoPedidosResto.Views
         {
             if (Session["MozoId"] == null)
             {
-                var authCookie = Request.Cookies[System.Web.Security.FormsAuthentication.FormsCookieName];
-                if (authCookie != null)
+                var (mozoId, mozoNombre) = AuthHelper.ObtenerMozoDesdeTicket();
+                if (!mozoId.HasValue)
                 {
-                    var ticket = System.Web.Security.FormsAuthentication.Decrypt(authCookie.Value);
-                    if (ticket != null)
-                    {
-                        int mozoId = int.Parse(ticket.UserData);
-                        string mozoNombre = ticket.Name;
-
-                        // Validar el mozo en la base de datos antes de restaurar la sesión
-                        var readerMozos = new ReadingWaiters();
-                        var mozo = readerMozos.LeerMozos().FirstOrDefault(m => m.Mozo_Id == mozoId);
-
-                        if (mozo == null || mozo.Mozo_Activo != "SI")
-                        {
-                            // Si el mozo no existe o no está activo, cerrar sesión y redirigir
-                            System.Web.Security.FormsAuthentication.SignOut();
-                            Session.Clear();
-                            Response.Redirect("Login.aspx");
-                            return;
-                        }
-
-                        Session["MozoId"] = mozoId;
-                        Session["MozoNombre"] = mozoNombre;
-                    }
+                    AuthHelper.LimpiarYCerrarSesion();
+                    Response.Redirect("Login.aspx");
+                    return;
                 }
+
+                var readerMozos = new ReadingWaiters();
+                var mozo = readerMozos.LeerMozos().FirstOrDefault(m => m.Mozo_Id == mozoId.Value);
+
+                if (mozo == null || mozo.Mozo_Activo != "SI")
+                {
+                    AuthHelper.LimpiarYCerrarSesion();
+                    Response.Redirect("Login.aspx");
+                    return;
+                }
+
+                AuthHelper.SetearMozoSession(mozoId.Value, mozoNombre);
             }
         }
     }

@@ -166,7 +166,7 @@ namespace ProyectoPedidosResto.Models
                 acceso.SetearParametro("@cantPer", mesa.Mesa_CantPer);
                 acceso.SetearParametro("@obs", mesa.Mesa_Obs);
 
-                acceso.ejecutarAccion();
+                acceso.EjecutarAccion();
 
             }
             catch (Exception ex)

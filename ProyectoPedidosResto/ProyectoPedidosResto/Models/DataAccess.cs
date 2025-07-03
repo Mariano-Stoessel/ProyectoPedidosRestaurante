@@ -51,7 +51,7 @@ namespace ProyectoPedidosResto.Models
                 }
             }
 
-            public void ejecutarAccion()
+            public void EjecutarAccion()
             {
                 comando.Connection = conexion;
                 try
