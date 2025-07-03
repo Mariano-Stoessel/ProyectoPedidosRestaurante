@@ -177,6 +177,7 @@
     <Content Include="Content\Tables.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\Site.js" />
     <Content Include="Scripts\Tables.js" />
     <Content Include="Scripts\Commands.js" />
     <Content Include="Scripts\WebForms\DetailsView.js" />
