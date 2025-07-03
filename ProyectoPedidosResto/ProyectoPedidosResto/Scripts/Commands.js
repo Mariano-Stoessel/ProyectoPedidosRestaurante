@@ -1,25 +1,24 @@
 ﻿document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById(txtBusquedaId)
-        .addEventListener('keyup', filterProductos);
-    document.getElementById(ddlCategoriasId)
-        .addEventListener('change', filterProductos);
-    $('#ModalComandas').on('shown.bs-modal shown.bs.modal', filterProductos);
+    var ddlCategorias = document.getElementById(window.ddlCategoriasId);
+    var txtBusqueda = document.getElementById(window.txtBusquedaId);
+
+    if (ddlCategorias) {
+        ddlCategorias.addEventListener('change', filterProductos);
+    }
+    if (txtBusqueda) {
+        txtBusqueda.addEventListener('keyup', filterProductos);
+    }
 });
 
-
 function filterProductos() {
-    var filtro = document.getElementById(txtBusquedaId).value.toLowerCase();
-    var categoria = document.getElementById(ddlCategoriasId).value;
+    var filtro = document.getElementById(window.txtBusquedaId).value.toLowerCase();
+    var categoria = document.getElementById(window.ddlCategoriasId).value;
 
     document.querySelectorAll('.fila-producto-catalogo').forEach(function (row) {
-        var nombre = row.querySelector('.col-7 span').textContent.toLowerCase();
+        var nombre = row.querySelector('.col-6 span').textContent.toLowerCase();
         var catId = row.getAttribute('data-cat-id');
-
-        // okTexto: pasa si está vacío el buscador o coincide el texto
         var okTexto = !filtro || nombre.indexOf(filtro) > -1;
-        // okCat: pasa si “Todos” (value="") o coincide la categoría
         var okCat = (!categoria || categoria === catId);
-
         row.style.display = (okTexto && okCat) ? '' : 'none';
     });
 }
