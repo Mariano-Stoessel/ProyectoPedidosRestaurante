@@ -70,7 +70,18 @@ namespace ProyectoPedidosResto.Views
 
             // Llamar al método que filtra desde la base de datos
             var readerMesas = new ReadingTables();
-            Mesas = readerMesas.LeerMesasFiltrado(estado, texto);
+            var mesasFiltradas = readerMesas.LeerMesasFiltrado(estado, texto);
+
+            if (chkMisMesas.Checked && Session["MozoId"] != null)
+            {
+                int idMozo;
+                if (int.TryParse(Session["MozoId"].ToString(), out idMozo))
+                {
+                    mesasFiltradas = mesasFiltradas.Where(m => m.Mesa_IdMozo == idMozo).ToList();
+                }
+            }
+
+            Mesas = mesasFiltradas;
         }
 
         protected void chkMisMesas_CheckedChanged(object sender, EventArgs e)
