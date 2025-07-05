@@ -15,9 +15,14 @@
         var ddlEstadoId = '<%= ddlEstado.ClientID %>';
         var hfNuevaCantidadId = '<%= hfNuevaCantidad.ClientID %>';
         var hfCantidadId = '<%= hfCantidad.ClientID %>';
+        var ddlEstadoId = '<%= ddlEstado.ClientID %>';
+        
     </script>
-    <script src="<%= ResolveUrl("~/Scripts/Commands.js") %>"></script>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="<%= ResolveUrl("~/Scripts/Commands.js") %>"></script>
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
@@ -197,14 +202,15 @@
                     <div class="controlPedido">
                         <div class="row mb-3">
                             <div class="col-12">
-                                <asp:DropDownList ID="ddlCategorias" runat="server" CssClass="form-select me-2 bg-primary text-white text-center" AutoPostBack="false" onchange="filterProductos()">
-                                    <asp:ListItem Text="Todos" Value="" Selected="True"></asp:ListItem>
+                                <asp:DropDownList ID="ddlCategorias" runat="server" CssClass="form-select me-2 bg-primary text-white text-center" AutoPostBack="false"
+                                    onchange="filterProductos('<%= txtBusqueda.ClientID %>', '<%= ddlCategorias.ClientID %>')">
                                 </asp:DropDownList>
                             </div>
                         </div>
                         <div class="row pb-3">
                             <div class="col-8">
-                                <asp:TextBox ID="txtBusqueda" runat="server" CssClass="form-control me-2" Placeholder="Buscar..." AutoPostBack="false" onkeyup="filterProductos()" />
+                                <asp:TextBox ID="txtBusqueda" runat="server" CssClass="form-control me-2" Placeholder="Buscar..." AutoPostBack="false"
+                                    onkeyup="filterProductos('<%= txtBusqueda.ClientID %>', '<%= ddlCategorias.ClientID %>')" />
                             </div>
                             <div class="col-4 d-flex justify-content-end">
                                 <button class="btn btn-secondary" type="button" onclick="clearFilters()">Limpiar</button>
@@ -263,5 +269,6 @@
                 </div>
             </div>
         </div>
+
     </div>
 </asp:Content>
