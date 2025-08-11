@@ -8,15 +8,68 @@ namespace ProyectoPedidosResto.Views
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["MozoNombre"] != null)
-            {
-                lblUsuario.Text = "Sesión de " + Session["MozoNombre"].ToString();
-            }
+            // Leer datos de la cookie usando AuthHelper
+            var (mozoId, mozoNombre, mozoLogin) = AuthHelper.LeerMozoCookie();
+            bool cookieValida = mozoId.HasValue && !string.IsNullOrEmpty(mozoNombre) && mozoLogin.HasValue &&
+                        AuthHelper.LoginNoExpirado(mozoLogin.Value);
 
             string currentPage = System.IO.Path.GetFileName(Request.Path).ToLower();
-            bool isAuthenticated = AuthHelper.UsuarioAutenticado();
+            Console.WriteLine(currentPage);
 
-            if (currentPage == "login.aspx" || Session["MozoId"] == null || !isAuthenticated)
+            // 1. Si está en login y la cookie es válida, redirigir a Tables.aspx
+            if (currentPage == "login" && cookieValida)
+            {
+                Response.Redirect("~/Views/Tables.aspx");
+                return;
+            }
+
+            // 2. Si la cookie es válida, mostrar datos y continuar
+            if (cookieValida)
+            {
+                lblUsuario.Text = "Sesión de " + mozoNombre;
+            }
+            else if (Session["MozoId"] != null && Session["MozoNombre"] != null && Session["MozoFecha"] != null)
+            {
+                // 3. Fallback: validar la sesión
+                int sessionMozoId = (int)Session["MozoId"];
+                string sessionMozoNombre = Session["MozoNombre"].ToString();
+                DateTime sessionMozoFecha = (DateTime)Session["MozoFecha"];
+
+                if (AuthHelper.LoginNoExpirado(sessionMozoFecha))
+                {
+                    lblUsuario.Text = "Sesión de " + sessionMozoNombre;
+
+                    // Si está en login y la sesión es válida, redirigir a Tables.aspx
+                    if (currentPage == "login")
+                    {
+                        Response.Redirect("~/Views/Tables.aspx");
+                        return;
+                    }
+                }
+                else
+                {
+                    // Sesión expirada
+                    AuthHelper.LimpiarMozosInactivos();
+                    AuthHelper.LimpiarYCerrarSesion();
+                    Response.Redirect("~/Views/Login.aspx?expirado=1");
+                    return;
+                }
+            }
+            else if (currentPage == "login")
+            {
+                return;
+            }
+            else
+            {
+                // Ningún mecanismo válido, limpiar y redirigir
+                AuthHelper.LimpiarMozosInactivos();
+                AuthHelper.LimpiarYCerrarSesion();
+                Response.Redirect("~/Views/Login.aspx?expirado=1");
+                return;
+            }
+
+            // Mostrar/ocultar controles según estado
+            if (currentPage == "login")
             {
                 pnlHamburguesa.Visible = false;
                 pnlCollapse.Visible = false;

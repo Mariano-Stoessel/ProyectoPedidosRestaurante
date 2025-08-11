@@ -60,5 +60,22 @@ namespace ProyectoPedidosResto.Models
                 acceso.CerrarConexion();
             }
         }
+
+        public void GuardarFechaLogin(int mozoId, DateTime loginTime)
+        {
+            var acceso = new DataAccess.AccesoDatos();
+            string consultaSql = "UPDATE mozos SET Mozo_Fecha = @fecha WHERE Mozo_Id = @id";
+            try
+            {
+                acceso.SetearConsulta(consultaSql);
+                acceso.SetearParametro("@fecha", loginTime);
+                acceso.SetearParametro("@id", mozoId);
+                acceso.EjecutarLectura();
+            }
+            finally
+            {
+                acceso.CerrarConexion();
+            }
+        }
     }
 }
