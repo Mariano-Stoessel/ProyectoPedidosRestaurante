@@ -7,7 +7,7 @@ namespace ProyectoPedidosResto.Utils
 {
     public static class AuthHelper
     {
-        public const int MinutesToExpire = 480; // 8 horas en minutos
+        public const int MinutesToExpire = 1; // 480 = 8 horas en minutos
 
         public static void SetearMozoSession(int mozoId, string mozoNombre, DateTime now)
         {
@@ -60,7 +60,7 @@ namespace ProyectoPedidosResto.Utils
             return (mozoId, mozoNombre, mozoLogin);
         }
 
-        public static void LimpiarMozosInactivos()
+        public static void LimpiarMozosInactivos() //AGREGAR EN BASE DE DATOS MOZO_FECHA
         {
             var readerMozos = new ReadingWaiters();
             var mozos = readerMozos.LeerMozos();
@@ -83,6 +83,19 @@ namespace ProyectoPedidosResto.Utils
         {
             // Valida si el login aún no expiró según MinutesToExpire
             return (DateTime.Now - loginTime).TotalMinutes < MinutesToExpire;
+        }
+
+        public static void ResetearMozosActivos()
+        {
+            var readerMozos = new ReadingWaiters();
+            var mozos = readerMozos.LeerMozos();
+            foreach (var mozo in mozos)
+            {
+                if (mozo.Mozo_Activo == "SI")
+                {
+                    readerMozos.CambiarEstadoMozo(mozo.Mozo_Id, "NO");
+                }
+            }
         }
     }
 }

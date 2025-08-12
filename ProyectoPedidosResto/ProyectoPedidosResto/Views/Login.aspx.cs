@@ -10,7 +10,7 @@ namespace ProyectoPedidosResto.Views
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Request.QueryString["expirado"] == "1")
+            if (Request.QueryString["exp"] == "1")
             {
                 lblMensaje.Text = "Tu sesión ha expirado. Por favor, vuelve a iniciar sesión.";
             }

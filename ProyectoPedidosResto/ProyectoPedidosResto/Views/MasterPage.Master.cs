@@ -8,13 +8,19 @@ namespace ProyectoPedidosResto.Views
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            string currentPage = System.IO.Path.GetFileName(Request.Path).ToLower();
+
+            // Mostrar/ocultar controles según estado de página
+            bool esLogin = currentPage == "login";
+            pnlHamburguesa.Visible = !esLogin;
+            pnlCollapse.Visible = !esLogin;
+            lblUsuario.Visible = !esLogin;
+            btnCerrarSesion.Visible = !esLogin;
+
             // Leer datos de la cookie usando AuthHelper
             var (mozoId, mozoNombre, mozoLogin) = AuthHelper.LeerMozoCookie();
             bool cookieValida = mozoId.HasValue && !string.IsNullOrEmpty(mozoNombre) && mozoLogin.HasValue &&
                         AuthHelper.LoginNoExpirado(mozoLogin.Value);
-
-            string currentPage = System.IO.Path.GetFileName(Request.Path).ToLower();
-            Console.WriteLine(currentPage);
 
             // 1. Si está en login y la cookie es válida, redirigir a Tables.aspx
             if (currentPage == "login" && cookieValida)
@@ -51,37 +57,22 @@ namespace ProyectoPedidosResto.Views
                     // Sesión expirada
                     AuthHelper.LimpiarMozosInactivos();
                     AuthHelper.LimpiarYCerrarSesion();
-                    Response.Redirect("~/Views/Login.aspx?expirado=1");
+                    Response.Redirect("~/Views/Login.aspx?exp=1");
                     return;
                 }
             }
-            else if (currentPage == "login")
-            {
-                return;
-            }
             else
             {
+                if (currentPage == "login")
+                {
+                    AuthHelper.LimpiarMozosInactivos();
+                    return;
+                }
                 // Ningún mecanismo válido, limpiar y redirigir
                 AuthHelper.LimpiarMozosInactivos();
                 AuthHelper.LimpiarYCerrarSesion();
                 Response.Redirect("~/Views/Login.aspx?expirado=1");
                 return;
-            }
-
-            // Mostrar/ocultar controles según estado
-            if (currentPage == "login")
-            {
-                pnlHamburguesa.Visible = false;
-                pnlCollapse.Visible = false;
-                lblUsuario.Visible = false;
-                btnCerrarSesion.Visible = false;
-            }
-            else
-            {
-                pnlHamburguesa.Visible = true;
-                pnlCollapse.Visible = true;
-                lblUsuario.Visible = true;
-                btnCerrarSesion.Visible = true;
             }
         }
 
