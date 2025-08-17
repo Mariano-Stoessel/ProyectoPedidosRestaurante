@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient; // Cambiado para MySQL
+using ProyectoPedidosResto.Domain;
 
 namespace ProyectoPedidosResto.Models
 {
@@ -22,8 +23,26 @@ namespace ProyectoPedidosResto.Models
 
             public AccesoDatos()
             {
-                conexion = new MySqlConnection("Server=localhost;Port=3306;Database=mega;Uid=root;Pwd=meko;");
+                conexion = new MySqlConnection("Server=localhost;Port=3306;Database=restaurantedb;Uid=root;Pwd=meko;");
                 comando = new MySqlCommand();
+            }
+
+            public AccesoDatos(User user)
+            {
+                var csb = new MySqlConnectionStringBuilder
+                {
+                    Server = string.IsNullOrWhiteSpace(user.IP) ? "localhost" : user.IP,
+                    Database = user.DatabaseName,
+                    UserID = user.UsuarioDB,
+                    Password = user.Password,
+                    SslMode = 0
+                };
+
+                // Si tenés el puerto como string:
+                if (uint.TryParse(user.Port, out var p)) csb.Port = p; else csb.Port = 3306;
+
+                conexion = new MySqlConnection(csb.ConnectionString);
+                comando = new MySqlCommand { Connection = conexion };
             }
             public void SetearConsulta(string consulta)
             {

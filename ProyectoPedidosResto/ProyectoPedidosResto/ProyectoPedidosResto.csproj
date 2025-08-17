@@ -216,6 +216,7 @@
     <Compile Include="Domain\Article.cs" />
     <Compile Include="Domain\Category.cs" />
     <Compile Include="Domain\Command.cs" />
+    <Compile Include="Domain\RegisterAccess.cs" />
     <Compile Include="Domain\Table.cs" />
     <Compile Include="Domain\User.cs" />
     <Compile Include="Domain\Waiter.cs" />
@@ -226,7 +227,9 @@
     <Compile Include="Models\ReadingArticle.cs" />
     <Compile Include="Models\ReadingCategory.cs" />
     <Compile Include="Models\ReadingCommands.cs" />
+    <Compile Include="Models\ReadingRegisterAccess.cs" />
     <Compile Include="Models\ReadingTables.cs" />
+    <Compile Include="Models\ReadingUser.cs" />
     <Compile Include="Models\ReadingWaiters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\AuthHelper.cs" />
