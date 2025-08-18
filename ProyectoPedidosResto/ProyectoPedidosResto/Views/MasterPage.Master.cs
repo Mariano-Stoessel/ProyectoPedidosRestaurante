@@ -1,4 +1,5 @@
-﻿using ProyectoPedidosResto.Models;
+﻿using ProyectoPedidosResto.Domain;
+using ProyectoPedidosResto.Models;
 using ProyectoPedidosResto.Utils;
 using System;
 
@@ -11,6 +12,15 @@ namespace ProyectoPedidosResto.Views
             if (Session["MozoNombre"] != null)
             {
                 lblUsuario.Text = "Sesión de " + Session["MozoNombre"].ToString();
+            }
+            if (!IsPostBack)
+            {
+            if (Session["UsuarioSeleccionado"] != null)
+            {
+                    CargarDatosEmpresa();
+            }
+            else { lblEmpresa.Text = "Sistemas MH"; imgLogo.ImageUrl = "/logos/Default.png"; }
+
             }
 
             string currentPage = System.IO.Path.GetFileName(Request.Path).ToLower();
@@ -44,6 +54,25 @@ namespace ProyectoPedidosResto.Views
             AuthHelper.LimpiarYCerrarSesion();
 
             Response.Redirect("Login.aspx", false);
+        }
+
+        private void CargarDatosEmpresa()
+        {
+            var usuarioSeleccionado = Session["UsuarioSeleccionado"] as User;
+            if (usuarioSeleccionado != null)
+            {
+                // Cambia la ruta según la propiedad de la empresa/usuario
+                imgLogo.ImageUrl = string.IsNullOrEmpty(usuarioSeleccionado.Logo)
+                    ? "~/logos/Default.png"
+                    : usuarioSeleccionado.Logo;
+
+                lblEmpresa.Text = usuarioSeleccionado.Nombre;
+            }
+            else
+            {
+                imgLogo.ImageUrl = "~/logos/Default.png";
+                lblEmpresa.Text = "Sistemas MH";
+            }
         }
     }
 }

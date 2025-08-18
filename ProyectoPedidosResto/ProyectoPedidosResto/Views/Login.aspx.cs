@@ -32,11 +32,6 @@ namespace ProyectoPedidosResto.Views
 
         protected void ddlEmpresas_SelectedIndexChanged(object sender, EventArgs e)
         {
-         
-        }
-
-        protected void btnLogin_Click(object sender, EventArgs e)
-        {
             // Obtener el nombre seleccionado
             string nombreSeleccionado = ddlEmpresas.SelectedValue;
 
@@ -49,7 +44,13 @@ namespace ProyectoPedidosResto.Views
             {
                 // Guardar el usuario en la sesión
                 Session["UsuarioSeleccionado"] = usuarioSeleccionado;
+                Response.Redirect(Request.RawUrl);
             }
+        }
+
+        protected void btnLogin_Click(object sender, EventArgs e)
+        {
+          
 
             // Validar usuario y contraseña
             string usuario = txtUsuario.Text.Trim().ToUpper();
@@ -143,6 +144,8 @@ namespace ProyectoPedidosResto.Views
             var reader = new ReadingUser();
             List<User> usuarios = reader.LeerUsuarios();
             ddlEmpresas.Items.Clear();
+            ddlEmpresas.Items.Add(new ListItem("Seleccione su empresa", ""));
+
             foreach (var user in usuarios)
             {
                 // Usamos Cat_nombre como Text Y como Value
