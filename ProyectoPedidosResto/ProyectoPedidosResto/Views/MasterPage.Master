@@ -32,7 +32,7 @@
 
                             <!-- IZQUIERDA: Logo + Empresa -->
                             <div class="logo-container">
-                                <asp:Image ID="imgLogo" runat="server" CssClass="logo-placeholder" ImageUrl="~/Content/logo.png" AlternateText="Logo" />
+                                <asp:Image ID="imgLogo" runat="server" CssClass="logo-placeholder" ImageUrl="~/logos/Default.png" AlternateText="Logo" OnPreRender="imgLogo_PreRender"/>
                                 <asp:Label ID="lblEmpresa" runat="server" Text="Empresa"></asp:Label>
                             </div>
 

@@ -74,5 +74,10 @@ namespace ProyectoPedidosResto.Views
                 lblEmpresa.Text = "Sistemas MH";
             }
         }
+
+        protected void imgLogo_PreRender(object sender, EventArgs e)
+        {
+            imgLogo.Attributes["onerror"] = "this.onerror=null;this.src='" + ResolveUrl("~/logos/Default.png") + "';";
+        }
     }
 }
