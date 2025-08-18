@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Web;
 
 namespace ProyectoPedidosResto.Models
 {
@@ -9,8 +10,12 @@ namespace ProyectoPedidosResto.Models
     {
         public List<Table> LeerMesas()
         {
+            // Recuperar el usuario seleccionado de la sesión
+            var user = HttpContext.Current.Session["UsuarioSeleccionado"] as User;
+            if (user == null)
+                throw new InvalidOperationException("No se encontró el usuario seleccionado en la sesión.");
+            var acceso = new DataAccess.AccesoDatos(user);
             var mesas = new List<Table>();
-            var acceso = new DataAccess.AccesoDatos();
             string consultaSql = "SELECT Mesa_Id, Mesa_Estado, Mesa_Mozo, Mesa_IdMozo, Mesa_CantPer, Mesa_Obs, Mesa_UltModif FROM mesas";
 
             try
@@ -48,8 +53,12 @@ namespace ProyectoPedidosResto.Models
 
         public string BuscarIdMozo(int id, string nombremozo)
         {
+            // Recuperar el usuario seleccionado de la sesión
+            var user = HttpContext.Current.Session["UsuarioSeleccionado"] as User;
+            if (user == null)
+                throw new InvalidOperationException("No se encontró el usuario seleccionado en la sesión.");
+            var acceso = new DataAccess.AccesoDatos(user);
             Table mesas = new Table();
-            var acceso = new DataAccess.AccesoDatos();
             string consultaSql = "SELECT Mesa_Mozo FROM mega.mesas WHERE Mesa_Id = @idmesa";
 
             try
@@ -78,8 +87,12 @@ namespace ProyectoPedidosResto.Models
 
         public List<Table> LeerMesasFiltrado(string estado = null, string texto = null)
         {
+            // Recuperar el usuario seleccionado de la sesión
+            var user = HttpContext.Current.Session["UsuarioSeleccionado"] as User;
+            if (user == null)
+                throw new InvalidOperationException("No se encontró el usuario seleccionado en la sesión.");
+            var acceso = new DataAccess.AccesoDatos(user);
             var mesas = new List<Table>();
-            var acceso = new DataAccess.AccesoDatos();
             var condiciones = new List<string>();
             int mesaNumero = 0;
             bool esNumero = !string.IsNullOrEmpty(texto) && int.TryParse(texto, out mesaNumero);
@@ -152,7 +165,11 @@ namespace ProyectoPedidosResto.Models
 
         public void ActualizarMesa(Table mesa)
         {
-            var acceso = new DataAccess.AccesoDatos();
+            // Recuperar el usuario seleccionado de la sesión
+            var user = HttpContext.Current.Session["UsuarioSeleccionado"] as User;
+            if (user == null)
+                throw new InvalidOperationException("No se encontró el usuario seleccionado en la sesión.");
+            var acceso = new DataAccess.AccesoDatos(user);
             string consultaSql = "UPDATE Mesas SET Mesa_Estado = @estado, Mesa_IdMozo = @idMozo, Mesa_Mozo = @mozo, Mesa_CantPer = @cantPer, Mesa_Obs = @obs, Mesa_UltModif = NOW() WHERE Mesa_Id = @id";
 
             try

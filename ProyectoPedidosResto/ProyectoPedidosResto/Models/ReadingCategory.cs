@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Remoting.Messaging;
+using System.Web;
 
 namespace ProyectoPedidosResto.Models
 {
@@ -9,8 +10,12 @@ namespace ProyectoPedidosResto.Models
     {
         public List<Category> LeerCategorias()
         {
+            // Recuperar el usuario seleccionado de la sesión
+            var user = HttpContext.Current.Session["UsuarioSeleccionado"] as User;
+            if (user == null)
+                throw new InvalidOperationException("No se encontró el usuario seleccionado en la sesión.");
+            var acceso = new DataAccess.AccesoDatos(user);
             var categorias = new List<Category>();
-            var acceso = new DataAccess.AccesoDatos();
             string consultaSql = "SELECT Cat_Id, Cat_Nombre FROM categorias ORDER BY Cat_Nombre ASC ";
 
             try

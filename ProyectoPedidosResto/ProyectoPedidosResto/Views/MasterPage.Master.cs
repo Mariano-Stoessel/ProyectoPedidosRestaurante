@@ -1,4 +1,5 @@
-﻿using ProyectoPedidosResto.Models;
+﻿using ProyectoPedidosResto.Domain;
+using ProyectoPedidosResto.Models;
 using ProyectoPedidosResto.Utils;
 using System;
 
@@ -27,6 +28,15 @@ namespace ProyectoPedidosResto.Views
             {
                 Response.Redirect("~/Views/Tables.aspx");
                 return;
+            }
+            if (!IsPostBack)
+            {
+            if (Session["UsuarioSeleccionado"] != null)
+            {
+                    CargarDatosEmpresa();
+            }
+            else { lblEmpresa.Text = "Sistemas MH"; imgLogo.ImageUrl = "/logos/Default.png"; }
+
             }
 
             // 2. Si la cookie es válida, mostrar datos y continuar
@@ -88,6 +98,25 @@ namespace ProyectoPedidosResto.Views
             AuthHelper.LimpiarYCerrarSesion();
 
             Response.Redirect("Login.aspx", false);
+        }
+
+        private void CargarDatosEmpresa()
+        {
+            var usuarioSeleccionado = Session["UsuarioSeleccionado"] as User;
+            if (usuarioSeleccionado != null)
+            {
+                // Cambia la ruta según la propiedad de la empresa/usuario
+                imgLogo.ImageUrl = string.IsNullOrEmpty(usuarioSeleccionado.Logo)
+                    ? "~/logos/Default.png"
+                    : usuarioSeleccionado.Logo;
+
+                lblEmpresa.Text = usuarioSeleccionado.Nombre;
+            }
+            else
+            {
+                imgLogo.ImageUrl = "~/logos/Default.png";
+                lblEmpresa.Text = "Sistemas MH";
+            }
         }
     }
 }

@@ -11,8 +11,13 @@ namespace ProyectoPedidosResto.Models
     {
         public List<Article> LeerArticulos()
         {
-            var articulos = new List<Article>();
-            var acceso = new DataAccess.AccesoDatos();
+            // Recuperar el usuario seleccionado de la sesión
+            var user = HttpContext.Current.Session["UsuarioSeleccionado"] as User;
+            if (user == null)
+                throw new InvalidOperationException("No se encontró el usuario seleccionado en la sesión.");
+
+           List<Article> articulos = new List<Article>();
+            var acceso = new DataAccess.AccesoDatos(user);
             string consultaSql = " SELECT Articulo_Indice, Articulo_Nombre, Articulo_Stock, Articulo_Categoria, Articulo_Precio FROM Articulos WHERE Articulo_Stock > 0 ORDER BY Articulo_Nombre ASC ";
 
             try
@@ -43,9 +48,13 @@ namespace ProyectoPedidosResto.Models
         }
         public decimal LeerPrecioArticulos_X_Nombre(string NombreArticulo)
         {
-            
+            // Recuperar el usuario seleccionado de la sesión
+            var user = HttpContext.Current.Session["UsuarioSeleccionado"] as User;
+            if (user == null)
+                throw new InvalidOperationException("No se encontró el usuario seleccionado en la sesión.");
+
             var articulos = new Article();
-            var acceso = new DataAccess.AccesoDatos();
+            var acceso = new DataAccess.AccesoDatos(user);
             string consultaSql = " SELECT Articulo_Precio FROM mega.articulos WHERE Articulo_Nombre = @NombreArticulo ";
 
             try

@@ -1,8 +1,11 @@
-﻿using ProyectoPedidosResto.Models;
+﻿using ProyectoPedidosResto.Domain;
+using ProyectoPedidosResto.Models;
 using ProyectoPedidosResto.Utils;
 using System;
+using System.Collections.Generic;
 using System.Web;
 using System.Web.UI.WebControls;
+
 
 namespace ProyectoPedidosResto.Views
 {
@@ -17,19 +20,32 @@ namespace ProyectoPedidosResto.Views
 
             if (!IsPostBack)
             {
-                ddlEmpresas.Items.Add(new ListItem("Empresa 1", "1"));
-                ddlEmpresas.Items.Add(new ListItem("Empresa 2", "2"));
-                ddlEmpresas.Items.Add(new ListItem("Empresa 3", "3"));
+                cargarusuarios();
             }
         }
 
         protected void ddlEmpresas_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Lógica para cambio de empresa si aplica
+            // Obtener el nombre seleccionado
+            string nombreSeleccionado = ddlEmpresas.SelectedValue;
+
+            // Buscar el usuario correspondiente
+            var reader = new ReadingUser();
+            List<User> usuarios = reader.LeerUsuarios();
+            User usuarioSeleccionado = usuarios.Find(u => u.Nombre.Trim().Equals(nombreSeleccionado, StringComparison.OrdinalIgnoreCase));
+
+            if (usuarioSeleccionado != null)
+            {
+                // Guardar el usuario en la sesión
+                Session["UsuarioSeleccionado"] = usuarioSeleccionado;
+                Response.Redirect(Request.RawUrl);
+            }
         }
 
         protected void btnLogin_Click(object sender, EventArgs e)
         {
+          
+
             // Validar usuario y contraseña
             string usuario = txtUsuario.Text.Trim().ToUpper();
             string contrasena = txtPassword.Text.Trim();
@@ -82,5 +98,19 @@ namespace ProyectoPedidosResto.Views
             }
             return (false, 0, null, "Usuario o contraseña incorrectos.");
         }
+        protected void cargarusuarios()
+        {
+            var reader = new ReadingUser();
+            List<User> usuarios = reader.LeerUsuarios();
+            ddlEmpresas.Items.Clear();
+            ddlEmpresas.Items.Add(new ListItem("Seleccione su empresa", ""));
+
+            foreach (var user in usuarios)
+            {
+                // Usamos Cat_nombre como Text Y como Value
+                var nombre = user.Nombre.Trim();
+                ddlEmpresas.Items.Add(new ListItem(nombre, nombre));
+            }
+        }
+        }
     }
-}

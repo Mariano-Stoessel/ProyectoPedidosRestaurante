@@ -10,8 +10,12 @@ namespace ProyectoPedidosResto.Models
     {
         public List<Waiter> LeerMozos()
         {
+            // Recuperar el usuario seleccionado de la sesión
+            var user = HttpContext.Current.Session["UsuarioSeleccionado"] as User;
+            if (user == null)
+                throw new InvalidOperationException("No se encontró el usuario seleccionado en la sesión.");
+            var acceso = new DataAccess.AccesoDatos(user);
             var mozos = new List<Waiter>();
-            var acceso = new DataAccess.AccesoDatos();
             string consultaSql = "SELECT Mozo_Id, Mozo_Nombre, Mozo_Activo, Mozo_Contrasena FROM mozos ORDER BY Mozo_Nombre ASC ";
 
             try
@@ -46,7 +50,11 @@ namespace ProyectoPedidosResto.Models
         
         public void CambiarEstadoMozo(int mozoId, string estado)
         {
-            var acceso = new DataAccess.AccesoDatos();
+            // Recuperar el usuario seleccionado de la sesión
+            var user = HttpContext.Current.Session["UsuarioSeleccionado"] as User;
+            if (user == null)
+                throw new InvalidOperationException("No se encontró el usuario seleccionado en la sesión.");
+            var acceso = new DataAccess.AccesoDatos(user);
             string consultaSql = "UPDATE mozos SET Mozo_Activo = @estado WHERE Mozo_Id = @id";
             try
             {
