@@ -13,15 +13,9 @@ namespace ProyectoPedidosResto.Views
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (AuthHelper.UsuarioAutenticado())
+            if (Request.QueryString["exp"] == "1")
             {
-                var (mozoId, mozoNombre) = AuthHelper.ObtenerMozoDesdeTicket();
-                if (mozoId.HasValue && !string.IsNullOrEmpty(mozoNombre))
-                {
-                    AuthHelper.SetearMozoSession(mozoId.Value, mozoNombre);
-                }
-                Response.Redirect("Tables.aspx");
-                return;
+                lblMensaje.Text = "Tu sesión ha expirado. Por favor, vuelve a iniciar sesión.";
             }
 
             if (!IsPostBack)
@@ -65,47 +59,12 @@ namespace ProyectoPedidosResto.Views
                 var readerMozos = new ReadingWaiters();
                 readerMozos.CambiarEstadoMozo(resultado.MozoId, "SI");
 
-                string userData = $"{resultado.MozoId}|{resultado.MozoNombre}";
+                // Guarda el inicio de sesión
+                DateTime loginTime = DateTime.Now;
+                readerMozos.GuardarFechaLogin(resultado.MozoId, loginTime);
 
-                int tiempoExpiracion = 10;
-
-                // Crea el ticket de autenticación
-                var ticket = new System.Web.Security.FormsAuthenticationTicket(
-                    1,
-                    resultado.MozoNombre,
-                    DateTime.Now,
-                    // DateTime.Now.AddHours(tiempoExpiracion),
-                    DateTime.Now.AddMinutes(tiempoExpiracion),
-                    true,
-                    userData
-                );
-
-                // Encripta el ticket
-                string encryptedTicket = System.Web.Security.FormsAuthentication.Encrypt(ticket);
-
-                // Crea la cookie
-                var cookie = new HttpCookie(System.Web.Security.FormsAuthentication.FormsCookieName, encryptedTicket)
-                {
-                    Expires = ticket.Expiration,
-                    HttpOnly = true
-                };
-                Response.Cookies.Add(cookie);
-
-                AuthHelper.SetearMozoSession(resultado.MozoId, resultado.MozoNombre);
-
-                // Iniciar el "cronómetro" en el servidor en paralelo
-                int mozoId = resultado.MozoId;
-                DateTime expiration = ticket.Expiration;
-                System.Threading.Tasks.Task.Run(() =>
-                {
-                    TimeSpan waitTime = expiration - DateTime.Now;
-                    if (waitTime.TotalMilliseconds > 0)
-                        System.Threading.Thread.Sleep(waitTime);
-
-                    // Cambiar el estado del mozo en la base de datos después de que expire la cookie
-                    var readerMozosBg = new ReadingWaiters();
-                    readerMozosBg.CambiarEstadoMozo(mozoId, "NO");
-                });
+                AuthHelper.SetearMozoSession(resultado.MozoId, resultado.MozoNombre, loginTime);
+                AuthHelper.CrearMozoCookie(resultado.MozoId, resultado.MozoNombre, loginTime);
 
                 Response.Redirect("Tables.aspx");
             }

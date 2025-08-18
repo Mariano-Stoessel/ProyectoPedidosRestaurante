@@ -21,21 +21,6 @@ namespace ProyectoPedidosResto.Views
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!AuthHelper.UsuarioAutenticado())
-            {
-                var (mozoId, _) = AuthHelper.ObtenerMozoDesdeTicket();
-                if (mozoId.HasValue)
-                {
-                    var readerMozos = new ReadingWaiters();
-                    readerMozos.CambiarEstadoMozo(mozoId.Value, "NO");
-                }
-
-                Response.Redirect("Login.aspx");
-                return;
-            }
-
-            validarUsuarioActivo();
-
             if (!EsMesaValidaYNoLibre())
             {
                 Response.Redirect("Tables.aspx");
@@ -253,32 +238,6 @@ namespace ProyectoPedidosResto.Views
                 // Usamos Cat_nombre como Text Y como Value
                 var nombre = cat.Cat_nombre.Trim();
                 ddlCategorias.Items.Add(new ListItem(nombre, nombre));
-            }
-        }
-
-        private void validarUsuarioActivo()
-        {
-            if (Session["MozoId"] == null)
-            {
-                var (mozoId, mozoNombre) = AuthHelper.ObtenerMozoDesdeTicket();
-                if (!mozoId.HasValue)
-                {
-                    AuthHelper.LimpiarYCerrarSesion();
-                    Response.Redirect("Login.aspx");
-                    return;
-                }
-
-                var readerMozos = new ReadingWaiters();
-                var mozo = readerMozos.LeerMozos().FirstOrDefault(m => m.Mozo_Id == mozoId.Value);
-
-                if (mozo == null || mozo.Mozo_Activo != "SI")
-                {
-                    AuthHelper.LimpiarYCerrarSesion();
-                    Response.Redirect("Login.aspx");
-                    return;
-                }
-
-                AuthHelper.SetearMozoSession(mozoId.Value, mozoNombre);
             }
         }
     }
