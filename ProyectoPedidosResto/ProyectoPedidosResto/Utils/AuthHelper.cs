@@ -7,7 +7,7 @@ namespace ProyectoPedidosResto.Utils
 {
     public static class AuthHelper
     {
-        public const int MinutesToExpire = 1; // 480 = 8 horas en minutos
+        public const int MinutesToExpire = 480; // 480 = 8 horas en minutos
 
         public static void SetearMozoSession(int mozoId, string mozoNombre, DateTime now)
         {
@@ -60,7 +60,7 @@ namespace ProyectoPedidosResto.Utils
             return (mozoId, mozoNombre, mozoLogin);
         }
 
-        public static void LimpiarMozosInactivos() //AGREGAR EN BASE DE DATOS MOZO_FECHA
+        public static void LimpiarMozosInactivos() //AGREGAR EN BASE DE DATOS MOZO_FECHA O REVISAR COMO ANOTAR EN BD EL HORARIO DE INGRESO PARA QUE NO SE EXPIRE EL MOZO
         {
             var readerMozos = new ReadingWaiters();
             var mozos = readerMozos.LeerMozos();

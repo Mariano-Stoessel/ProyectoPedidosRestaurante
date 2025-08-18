@@ -18,6 +18,16 @@ namespace ProyectoPedidosResto.Views
             lblUsuario.Visible = !esLogin;
             btnCerrarSesion.Visible = !esLogin;
 
+            if (!IsPostBack)
+            {
+                if (Session["UsuarioSeleccionado"] != null)
+                {
+                    CargarDatosEmpresa();
+                }
+                else { lblEmpresa.Text = "Sistemas MH"; imgLogo.ImageUrl = "/logos/Default.png"; }
+
+            }
+
             // Leer datos de la cookie usando AuthHelper
             var (mozoId, mozoNombre, mozoLogin) = AuthHelper.LeerMozoCookie();
             bool cookieValida = mozoId.HasValue && !string.IsNullOrEmpty(mozoNombre) && mozoLogin.HasValue &&
@@ -28,15 +38,6 @@ namespace ProyectoPedidosResto.Views
             {
                 Response.Redirect("~/Views/Tables.aspx");
                 return;
-            }
-            if (!IsPostBack)
-            {
-            if (Session["UsuarioSeleccionado"] != null)
-            {
-                    CargarDatosEmpresa();
-            }
-            else { lblEmpresa.Text = "Sistemas MH"; imgLogo.ImageUrl = "/logos/Default.png"; }
-
             }
 
             // 2. Si la cookie es válida, mostrar datos y continuar
@@ -65,7 +66,7 @@ namespace ProyectoPedidosResto.Views
                 else
                 {
                     // Sesión expirada
-                    AuthHelper.LimpiarMozosInactivos();
+                    AuthHelper.LimpiarMozosInactivos(); // REVISAR SI EXISTE BD PARA SU RESOLUCION
                     AuthHelper.LimpiarYCerrarSesion();
                     Response.Redirect("~/Views/Login.aspx?exp=1");
                     return;
@@ -79,7 +80,7 @@ namespace ProyectoPedidosResto.Views
                     return;
                 }
                 // Ningún mecanismo válido, limpiar y redirigir
-                AuthHelper.LimpiarMozosInactivos();
+                AuthHelper.LimpiarMozosInactivos(); // REVISAR SI EXISTE BD PARA SU RESOLUCION
                 AuthHelper.LimpiarYCerrarSesion();
                 Response.Redirect("~/Views/Login.aspx?expirado=1");
                 return;
