@@ -21,6 +21,10 @@ namespace ProyectoPedidosResto.Views
             if (!IsPostBack)
             {
                 cargarusuarios();
+                if (Session["UsuarioSeleccionado"] != null)
+                {
+                    ddlEmpresas.SelectedValue = ((User)Session["UsuarioSeleccionado"]).Nombre.Trim();
+                }
             }
         }
 
@@ -58,6 +62,15 @@ namespace ProyectoPedidosResto.Views
                 // Cambiar estado a activo aquí
                 var readerMozos = new ReadingWaiters();
                 readerMozos.CambiarEstadoMozo(resultado.MozoId, "SI");
+
+                //Guardar el ingreso del mozo
+                RegisterAccess registrousuario = new RegisterAccess();
+                registrousuario.NombreMozo = resultado.MozoNombre;
+                registrousuario.IdUsuario = ((User)Session["UsuarioSeleccionado"]).IdUsuario;
+                registrousuario.Fecha = DateTime.Now;
+                var readerIngregos = new ReadingRegisterAccess();
+                readerIngregos.RegistrarIngresoSiNoExiste(registrousuario);
+
 
                 // Guarda el inicio de sesión
                 DateTime loginTime = DateTime.Now;
@@ -99,7 +112,7 @@ namespace ProyectoPedidosResto.Views
             return (false, 0, null, "Usuario o contraseña incorrectos.");
         }
         protected void cargarusuarios()
-        {
+        {         
             var reader = new ReadingUser();
             List<User> usuarios = reader.LeerUsuarios();
             ddlEmpresas.Items.Clear();
@@ -111,6 +124,8 @@ namespace ProyectoPedidosResto.Views
                 var nombre = user.Nombre.Trim();
                 ddlEmpresas.Items.Add(new ListItem(nombre, nombre));
             }
+           
+            
         }
         }
     }

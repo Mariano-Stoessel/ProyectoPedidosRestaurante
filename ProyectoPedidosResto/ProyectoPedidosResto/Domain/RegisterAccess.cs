@@ -10,6 +10,7 @@ namespace ProyectoPedidosResto.Domain
         public int IdIngreso { get; set; }
         public string NombreMozo { get; set; }
         public int IdUsuario { get; set; }     // FK a Usuarios.IdUsuario (representa el restaurant/usuario)
-        public DateTime Fecha { get; set; }
+        public DateTime Fecha { get; set; }   
     }
+
 }

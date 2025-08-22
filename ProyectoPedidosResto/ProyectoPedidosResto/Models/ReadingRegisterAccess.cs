@@ -11,12 +11,8 @@ namespace ProyectoPedidosResto.Models
         public bool RegistrarIngresoSiNoExiste(RegisterAccess registro)
         {
             // Recuperar el usuario seleccionado de la sesión
-            var user = HttpContext.Current.Session["UsuarioSeleccionado"] as User;
-            if (user == null)
-                throw new InvalidOperationException("No se encontró el usuario seleccionado en la sesión.");
-
             bool existe = false;
-            var acceso = new DataAccess.AccesoDatos(user);
+            var acceso = new DataAccess.AccesoDatos();
 
             string sqlExiste = @"
                 SELECT 1
@@ -49,7 +45,7 @@ namespace ProyectoPedidosResto.Models
             if (existe) return false; // no inserta
 
             // Inserta porque no existe registro en el mes actual
-            var accesoIns = new DataAccess.AccesoDatos(user);
+            var accesoIns = new DataAccess.AccesoDatos();
             string sqlInsert = @"
                 INSERT INTO Ingresos (NombreMozo, IdUsuario, Fecha)
                 VALUES (@nombreMozo, @idUsuario, NOW());";

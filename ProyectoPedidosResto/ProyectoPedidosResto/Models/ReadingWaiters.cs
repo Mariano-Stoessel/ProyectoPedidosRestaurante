@@ -71,7 +71,10 @@ namespace ProyectoPedidosResto.Models
 
         public void GuardarFechaLogin(int mozoId, DateTime loginTime)
         {
-            var acceso = new DataAccess.AccesoDatos();
+            var user = HttpContext.Current.Session["UsuarioSeleccionado"] as User;
+            if (user == null)
+                throw new InvalidOperationException("No se encontró el usuario seleccionado en la sesión."); 
+            var acceso = new DataAccess.AccesoDatos(user);
             string consultaSql = "UPDATE mozos SET Mozo_Fecha = @fecha WHERE Mozo_Id = @id";
             try
             {
