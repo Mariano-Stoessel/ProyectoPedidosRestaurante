@@ -228,6 +228,7 @@
     <Compile Include="Models\ReadingArticle.cs" />
     <Compile Include="Models\ReadingCategory.cs" />
     <Compile Include="Models\ReadingCommands.cs" />
+    <Compile Include="Models\ReadingEntries.cs" />
     <Compile Include="Models\ReadingRegisterAccess.cs" />
     <Compile Include="Models\ReadingTables.cs" />
     <Compile Include="Models\ReadingUser.cs" />

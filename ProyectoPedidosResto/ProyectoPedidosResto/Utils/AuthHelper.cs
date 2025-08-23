@@ -1,7 +1,8 @@
-﻿using System;
+﻿using ProyectoPedidosResto.Models;
+using System;
+using System.Linq;
 using System.Web;
 using System.Web.Security;
-using ProyectoPedidosResto.Models;
 
 namespace ProyectoPedidosResto.Utils
 {
@@ -60,24 +61,54 @@ namespace ProyectoPedidosResto.Utils
             return (mozoId, mozoNombre, mozoLogin);
         }
 
-        //public static void LimpiarMozosInactivos() //AGREGAR EN BASE DE DATOS MOZO_FECHA O REVISAR COMO ANOTAR EN BD EL HORARIO DE INGRESO PARA QUE NO SE EXPIRE EL MOZO
-        //{
-        //    var readerMozos = new ReadingWaiters();
-        //    var mozos = readerMozos.LeerMozos();
-        //    DateTime ahora = DateTime.Now;
+        public static void LimpiarMozosInactivos()
+        {
+            var readerMozos = new ReadingWaiters();
+            var readerIngresos = new ReadingEntries();
 
-        //    foreach (var mozo in mozos)
-        //    {
-        //        // Solo limpiar mozos activos y con fecha de login válida
-        //        if (mozo.Mozo_Activo == "SI" && mozo.Mozo_Fecha != default(DateTime))
-        //        {
-        //            if ((ahora - mozo.Mozo_Fecha).TotalMinutes >= MinutesToExpire)
-        //            {
-        //                readerMozos.CambiarEstadoMozo(mozo.Mozo_Id, "NO");
-        //            }
-        //        }
-        //    }
-        //}
+            var mozos = readerMozos.LeerMozos();
+            var ingresos = readerIngresos.LeerIngresos();
+
+            DateTime ahora = DateTime.Now;
+
+            foreach (var mozo in mozos)
+            {
+                if (mozo.Mozo_Activo == "SI")
+                {
+                    // Buscar el último ingreso del mozo
+                    var ultimoIngreso = ingresos
+                        .Where(e => e.Ingreso_MozoId == mozo.Mozo_Id)
+                        .OrderByDescending(e => e.Ingreso_Entrada)
+                        .FirstOrDefault();
+
+                    if (ultimoIngreso != null)
+                    {
+                        // Si tiene entrada y no tiene salida, sigue trabajando solo si no excedió el tiempo máximo
+                        if (ultimoIngreso.Ingreso_Entrada != null &&
+                            (ultimoIngreso.Ingreso_Salida == null || ultimoIngreso.Ingreso_Salida <= ultimoIngreso.Ingreso_Entrada))
+                        {
+                            // Si el tiempo desde la entrada es menor al máximo permitido, sigue trabajando
+                            if ((ahora - ultimoIngreso.Ingreso_Entrada.Value).TotalMinutes < MinutesToExpire)
+                                continue; // El mozo sigue trabajando
+
+                            // Si ya pasó el tiempo máximo, marcar como inactivo
+                            readerMozos.CambiarEstadoMozo(mozo.Mozo_Id, "NO");
+                            continue;
+                        }
+                        // Si la hora actual está fuera del rango de trabajo (ya salió)
+                        if (ultimoIngreso.Ingreso_Salida != null && ahora > ultimoIngreso.Ingreso_Salida.Value)
+                        {
+                            readerMozos.CambiarEstadoMozo(mozo.Mozo_Id, "NO");
+                        }
+                    }
+                    else
+                    {
+                        // Si no hay ingresos, marcar como inactivo
+                        readerMozos.CambiarEstadoMozo(mozo.Mozo_Id, "NO");
+                    }
+                }
+            }
+        }
 
         public static bool LoginNoExpirado(DateTime loginTime)
         {
