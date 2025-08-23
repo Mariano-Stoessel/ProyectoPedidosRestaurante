@@ -68,8 +68,8 @@ namespace ProyectoPedidosResto.Views
                 registrousuario.NombreMozo = resultado.MozoNombre;
                 registrousuario.IdUsuario = ((User)Session["UsuarioSeleccionado"]).IdUsuario;
                 registrousuario.Fecha = DateTime.Now;
-                var readerIngregos = new ReadingRegisterAccess();
-                readerIngregos.RegistrarIngresoSiNoExiste(registrousuario);
+                var readerIngresos = new ReadingRegisterAccess();
+                readerIngresos.RegistrarIngresoSiNoExiste(registrousuario);
 
 
                 // Guarda el inicio de sesión

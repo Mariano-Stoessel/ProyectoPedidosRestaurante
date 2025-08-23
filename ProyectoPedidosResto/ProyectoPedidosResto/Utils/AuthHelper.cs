@@ -60,24 +60,24 @@ namespace ProyectoPedidosResto.Utils
             return (mozoId, mozoNombre, mozoLogin);
         }
 
-        public static void LimpiarMozosInactivos() //AGREGAR EN BASE DE DATOS MOZO_FECHA O REVISAR COMO ANOTAR EN BD EL HORARIO DE INGRESO PARA QUE NO SE EXPIRE EL MOZO
-        {
-            var readerMozos = new ReadingWaiters();
-            var mozos = readerMozos.LeerMozos();
-            DateTime ahora = DateTime.Now;
+        //public static void LimpiarMozosInactivos() //AGREGAR EN BASE DE DATOS MOZO_FECHA O REVISAR COMO ANOTAR EN BD EL HORARIO DE INGRESO PARA QUE NO SE EXPIRE EL MOZO
+        //{
+        //    var readerMozos = new ReadingWaiters();
+        //    var mozos = readerMozos.LeerMozos();
+        //    DateTime ahora = DateTime.Now;
 
-            foreach (var mozo in mozos)
-            {
-                // Solo limpiar mozos activos y con fecha de login válida
-                if (mozo.Mozo_Activo == "SI" && mozo.Mozo_Fecha != default(DateTime))
-                {
-                    if ((ahora - mozo.Mozo_Fecha).TotalMinutes >= MinutesToExpire)
-                    {
-                        readerMozos.CambiarEstadoMozo(mozo.Mozo_Id, "NO");
-                    }
-                }
-            }
-        }
+        //    foreach (var mozo in mozos)
+        //    {
+        //        // Solo limpiar mozos activos y con fecha de login válida
+        //        if (mozo.Mozo_Activo == "SI" && mozo.Mozo_Fecha != default(DateTime))
+        //        {
+        //            if ((ahora - mozo.Mozo_Fecha).TotalMinutes >= MinutesToExpire)
+        //            {
+        //                readerMozos.CambiarEstadoMozo(mozo.Mozo_Id, "NO");
+        //            }
+        //        }
+        //    }
+        //}
 
         public static bool LoginNoExpirado(DateTime loginTime)
         {

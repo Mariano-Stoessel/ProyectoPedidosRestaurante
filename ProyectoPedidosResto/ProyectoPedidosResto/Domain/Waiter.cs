@@ -19,7 +19,5 @@ namespace ProyectoPedidosResto.Domain
         public string Mozo_Nombre { get; set; }
         public string Mozo_Activo { get; set; }
         public string Mozo_Contrasena { get; set; }
-        public DateTime Mozo_Fecha { get; set; }
-
     }
 }

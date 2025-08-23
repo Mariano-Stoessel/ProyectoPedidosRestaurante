@@ -216,6 +216,7 @@
     <Compile Include="Domain\Article.cs" />
     <Compile Include="Domain\Category.cs" />
     <Compile Include="Domain\Command.cs" />
+    <Compile Include="Domain\Entry.cs" />
     <Compile Include="Domain\RegisterAccess.cs" />
     <Compile Include="Domain\Table.cs" />
     <Compile Include="Domain\User.cs" />

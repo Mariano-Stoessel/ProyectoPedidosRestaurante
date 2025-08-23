@@ -66,7 +66,7 @@ namespace ProyectoPedidosResto.Views
                 else
                 {
                     // Sesión expirada
-                    AuthHelper.LimpiarMozosInactivos(); // REVISAR SI EXISTE BD PARA SU RESOLUCION
+                    //AuthHelper.LimpiarMozosInactivos();  REVISAR SI EXISTE BD PARA SU RESOLUCION
                     AuthHelper.LimpiarYCerrarSesion();
                     Response.Redirect("~/Views/Login.aspx?exp=1");
                     return;
@@ -76,11 +76,11 @@ namespace ProyectoPedidosResto.Views
             {
                 if (currentPage == "login")
                 {
-                    AuthHelper.LimpiarMozosInactivos();
+                    //AuthHelper.LimpiarMozosInactivos();  REVISAR SI EXISTE BD PARA SU RESOLUCION
                     return;
                 }
                 // Ningún mecanismo válido, limpiar y redirigir
-                AuthHelper.LimpiarMozosInactivos(); // REVISAR SI EXISTE BD PARA SU RESOLUCION
+                //AuthHelper.LimpiarMozosInactivos();  REVISAR SI EXISTE BD PARA SU RESOLUCION
                 AuthHelper.LimpiarYCerrarSesion();
                 Response.Redirect("~/Views/Login.aspx?expirado=1");
                 return;

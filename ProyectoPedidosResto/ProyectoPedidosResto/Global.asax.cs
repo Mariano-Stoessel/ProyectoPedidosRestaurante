@@ -14,9 +14,6 @@ namespace ProyectoPedidosResto
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-
-            // Resetear todos los mozos activos al iniciar la aplicación
-            AuthHelper.ResetearMozosActivos();
         }
     }
 }
