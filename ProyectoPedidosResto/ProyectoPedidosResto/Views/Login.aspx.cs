@@ -3,6 +3,7 @@ using ProyectoPedidosResto.Models;
 using ProyectoPedidosResto.Utils;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using System.Web.UI.WebControls;
 
@@ -48,7 +49,7 @@ namespace ProyectoPedidosResto.Views
 
         protected void btnLogin_Click(object sender, EventArgs e)
         {
-          
+
 
             // Validar usuario y contraseña
             string usuario = txtUsuario.Text.Trim().ToUpper();
@@ -73,11 +74,11 @@ namespace ProyectoPedidosResto.Views
 
 
                 // Guarda el inicio de sesión
-                DateTime loginTime = DateTime.Now;
-                readerMozos.GuardarFechaLogin(resultado.MozoId, loginTime);
+                DateTime ingreso = DateTime.Now;
+                readerMozos.GuardarFechaLogin(resultado.MozoId, ingreso);
 
-                AuthHelper.SetearMozoSession(resultado.MozoId, resultado.MozoNombre, loginTime);
-                AuthHelper.CrearMozoCookie(resultado.MozoId, resultado.MozoNombre, loginTime);
+                AuthHelper.SetearMozoSession(resultado.MozoId, resultado.MozoNombre, ingreso);
+                AuthHelper.CrearMozoCookie(resultado.MozoId, resultado.MozoNombre, ingreso);
 
                 Response.Redirect("Tables.aspx");
             }
@@ -93,7 +94,7 @@ namespace ProyectoPedidosResto.Views
         {
             // Validación de campos vacíos
             if (string.IsNullOrEmpty(usuario) || string.IsNullOrEmpty(contrasena))
-                return (false, 0, null,"Por favor, complete todos los campos.");
+                return (false, 0, null, "Por favor, complete todos los campos.");
 
             var readerMozos = new ReadingWaiters();
             var mozos = readerMozos.LeerMozos();
@@ -104,7 +105,26 @@ namespace ProyectoPedidosResto.Views
                 if (usuario.Equals(usuarioEsperado, StringComparison.OrdinalIgnoreCase) && contrasena == mozo.Mozo_Contrasena)
                 {
                     if (mozo.Mozo_Activo == "SI")
-                        return (false, 0, null, "El mozo ya está activo en otra sesión.");
+                    {
+                        // Revisar el último ingreso
+                        var readerIngresos = new ReadingEntries();
+                        var ingresos = readerIngresos.LeerIngresos();
+                        var ultimoIngreso = ingresos
+                            .Where(e => e.Ingreso_MozoId == mozo.Mozo_Id)
+                            .OrderByDescending(e => e.Ingreso_Entrada)
+                            .FirstOrDefault();
+
+                        if (ultimoIngreso != null && ultimoIngreso.Ingreso_Salida != null)
+                        {
+                            // El mozo terminó su último turno, marcar como inactivo y permitir login
+                            readerMozos.CambiarEstadoMozo(mozo.Mozo_Id, "NO");
+                        }
+                        else
+                        {
+                            // Si no terminó su turno, sigue activo
+                            return (false, 0, null, "El mozo ya está activo en otra sesión.");
+                        }
+                    }
 
                     return (true, mozo.Mozo_Id, mozo.Mozo_Nombre, null);
                 }
@@ -112,7 +132,7 @@ namespace ProyectoPedidosResto.Views
             return (false, 0, null, "Usuario o contraseña incorrectos.");
         }
         protected void cargarusuarios()
-        {         
+        {
             var reader = new ReadingUser();
             List<User> usuarios = reader.LeerUsuarios();
             ddlEmpresas.Items.Clear();
@@ -124,8 +144,8 @@ namespace ProyectoPedidosResto.Views
                 var nombre = user.Nombre.Trim();
                 ddlEmpresas.Items.Add(new ListItem(nombre, nombre));
             }
-           
-            
-        }
+
+
         }
     }
+}

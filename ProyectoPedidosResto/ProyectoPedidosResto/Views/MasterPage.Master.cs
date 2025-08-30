@@ -25,13 +25,11 @@ namespace ProyectoPedidosResto.Views
                     CargarDatosEmpresa();
                 }
                 else { lblEmpresa.Text = "Sistemas MH"; imgLogo.ImageUrl = "/logos/Default.png"; }
-
             }
 
             // Leer datos de la cookie usando AuthHelper
-            var (mozoId, mozoNombre, mozoLogin) = AuthHelper.LeerMozoCookie();
-            bool cookieValida = mozoId.HasValue && !string.IsNullOrEmpty(mozoNombre) && mozoLogin.HasValue &&
-                        AuthHelper.LoginNoExpirado(mozoLogin.Value);
+            var (mozoId, mozoNombre, mozoIngreso) = AuthHelper.LeerMozoCookie();
+            bool cookieValida = mozoId.HasValue && !string.IsNullOrEmpty(mozoNombre) && mozoIngreso.HasValue;
 
             // 1. Si está en login y la cookie es válida, redirigir a Tables.aspx
             if (currentPage == "login" && cookieValida)
@@ -43,32 +41,28 @@ namespace ProyectoPedidosResto.Views
             // 2. Si la cookie es válida, mostrar datos y continuar
             if (cookieValida)
             {
+                // Si la sesión no existe, la recreamos usando los datos de la cookie
+                if (Session["MozoId"] == null || Session["MozoNombre"] == null || Session["MozoIngreso"] == null)
+                {
+                    AuthHelper.SetearMozoSession(mozoId.Value, mozoNombre, mozoIngreso.Value);
+                }
+
                 lblUsuario.Text = "Sesión de " + mozoNombre;
             }
-            else if (Session["MozoId"] != null && Session["MozoNombre"] != null && Session["MozoFecha"] != null)
+            else if (Session["MozoId"] != null && Session["MozoNombre"] != null && Session["MozoIngreso"] != null)
             {
-                // 3. Fallback: validar la sesión
+                // 3. Validar la sesión
                 int sessionMozoId = (int)Session["MozoId"];
                 string sessionMozoNombre = Session["MozoNombre"].ToString();
-                DateTime sessionMozoFecha = (DateTime)Session["MozoFecha"];
+                DateTime sessionMozoIngreso = (DateTime)Session["MozoIngreso"];
 
-                if (AuthHelper.LoginNoExpirado(sessionMozoFecha))
-                {
-                    lblUsuario.Text = "Sesión de " + sessionMozoNombre;
+                AuthHelper.CrearMozoCookie(sessionMozoId, sessionMozoNombre, sessionMozoIngreso);
+                lblUsuario.Text = "Sesión de " + sessionMozoNombre;
 
-                    // Si está en login y la sesión es válida, redirigir a Tables.aspx
-                    if (currentPage == "login")
-                    {
-                        Response.Redirect("~/Views/Tables.aspx");
-                        return;
-                    }
-                }
-                else
+                // Si está en login y la sesión es válida, redirigir a Tables.aspx
+                if (currentPage == "login")
                 {
-                    // Sesión expirada
-                    //AuthHelper.LimpiarMozosInactivos();  REVISAR SI EXISTE BD PARA SU RESOLUCION
-                    AuthHelper.LimpiarYCerrarSesion();
-                    Response.Redirect("~/Views/Login.aspx?exp=1");
+                    Response.Redirect("~/Views/Tables.aspx");
                     return;
                 }
             }
@@ -76,11 +70,9 @@ namespace ProyectoPedidosResto.Views
             {
                 if (currentPage == "login")
                 {
-                    //AuthHelper.LimpiarMozosInactivos();  REVISAR SI EXISTE BD PARA SU RESOLUCION
                     return;
                 }
                 // Ningún mecanismo válido, limpiar y redirigir
-                //AuthHelper.LimpiarMozosInactivos();  REVISAR SI EXISTE BD PARA SU RESOLUCION
                 AuthHelper.LimpiarYCerrarSesion();
                 Response.Redirect("~/Views/Login.aspx?expirado=1");
                 return;
