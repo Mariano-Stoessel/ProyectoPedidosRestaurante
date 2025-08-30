@@ -28,7 +28,8 @@ namespace ProyectoPedidosResto.Views
             }
 
             // Leer datos de la cookie usando AuthHelper
-            var (mozoId, mozoNombre, mozoIngreso) = AuthHelper.LeerMozoCookie();
+            var (mozoId, mozoNombre, mozoIngreso) = AuthHelper.LeerMozoCookie(); 
+            AuthHelper.LeerUsuariosSeleccionadoCookie(); // Asegurarse de que el usuario esté en sesión
             bool cookieValida = mozoId.HasValue && !string.IsNullOrEmpty(mozoNombre) && mozoIngreso.HasValue;
 
             // 1. Si está en login y la cookie es válida, redirigir a Tables.aspx

@@ -11,6 +11,7 @@ namespace ProyectoPedidosResto.Models
         public List<Table> LeerMesas()
         {
             // Recuperar el usuario seleccionado de la sesión
+           
             var user = HttpContext.Current.Session["UsuarioSeleccionado"] as User;
             if (user == null)
                 throw new InvalidOperationException("No se encontró el usuario seleccionado en la sesión.");

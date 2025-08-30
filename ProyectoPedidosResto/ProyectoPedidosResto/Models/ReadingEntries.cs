@@ -29,8 +29,8 @@ namespace ProyectoPedidosResto.Models
                     {
                         Ingreso_Id = acceso.Lector.GetInt32(0),
                         Ingreso_MozoId = acceso.Lector.GetInt32(1),
-                        Ingreso_Entrada = acceso.Lector.IsDBNull(4) ? (DateTime?)null : acceso.Lector.GetDateTime(4),
-                        Ingreso_Salida = acceso.Lector.IsDBNull(5) ? (DateTime?)null : acceso.Lector.GetDateTime(5)
+                        Ingreso_Entrada = acceso.Lector.IsDBNull(2) ? (DateTime?)null : acceso.Lector.GetDateTime(2),
+                        Ingreso_Salida = acceso.Lector.IsDBNull(3) ? (DateTime?)null : acceso.Lector.GetDateTime(3)
                     };
                     ingresos.Add(ingreso);
                 }

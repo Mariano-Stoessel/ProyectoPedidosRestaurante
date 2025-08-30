@@ -12,6 +12,7 @@ namespace ProyectoPedidosResto.Views
 {
     public partial class Login : System.Web.UI.Page
     {
+       
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Request.QueryString["exp"] == "1")
@@ -37,7 +38,8 @@ namespace ProyectoPedidosResto.Views
             // Buscar el usuario correspondiente
             var reader = new ReadingUser();
             List<User> usuarios = reader.LeerUsuarios();
-            User usuarioSeleccionado = usuarios.Find(u => u.Nombre.Trim().Equals(nombreSeleccionado, StringComparison.OrdinalIgnoreCase));
+            User usuarioSeleccionado = new User();
+            usuarioSeleccionado = usuarios.Find(u => u.Nombre.Trim().Equals(nombreSeleccionado, StringComparison.OrdinalIgnoreCase));
 
             if (usuarioSeleccionado != null)
             {
@@ -64,13 +66,19 @@ namespace ProyectoPedidosResto.Views
                 var readerMozos = new ReadingWaiters();
                 readerMozos.CambiarEstadoMozo(resultado.MozoId, "SI");
 
-                //Guardar el ingreso del mozo
-                RegisterAccess registrousuario = new RegisterAccess();
-                registrousuario.NombreMozo = resultado.MozoNombre;
-                registrousuario.IdUsuario = ((User)Session["UsuarioSeleccionado"]).IdUsuario;
-                registrousuario.Fecha = DateTime.Now;
-                var readerIngresos = new ReadingRegisterAccess();
-                readerIngresos.RegistrarIngresoSiNoExiste(registrousuario);
+                //Guardar el ingreso del mozo en la bbdd de Empresas
+                if (Session["UsuarioSeleccionado"] != null)
+                {
+                    RegisterAccess registrousuario = new RegisterAccess();
+                    registrousuario.NombreMozo = resultado.MozoNombre;
+                    registrousuario.IdUsuario = ((User)Session["UsuarioSeleccionado"]).IdUsuario;
+                    registrousuario.Fecha = DateTime.Now;
+                    var readerIngresos = new ReadingRegisterAccess();
+                    readerIngresos.RegistrarIngresoSiNoExiste(registrousuario);
+                    User usuarioSeleccionado = new User();
+                    usuarioSeleccionado = (User)Session["UsuarioSeleccionado"];
+                    AuthHelper.CrearUsuariosSeleccionadoCookie(usuarioSeleccionado, registrousuario.Fecha);         
+                }
 
 
                 // Guarda el inicio de sesión
