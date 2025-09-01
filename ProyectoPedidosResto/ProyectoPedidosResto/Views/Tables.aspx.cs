@@ -16,6 +16,13 @@ namespace ProyectoPedidosResto.Views
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            // Validar sesión antes de continuar
+            if (Session["MozoId"] == null)
+            {
+                Response.Redirect("~/Views/Login.aspx?exp=1");
+                return;
+            }
+
             if (!IsPostBack)
             {
                 cargarDatos();

@@ -75,7 +75,7 @@ namespace ProyectoPedidosResto.Views
                 }
                 // Ningún mecanismo válido, limpiar y redirigir
                 AuthHelper.LimpiarYCerrarSesion();
-                Response.Redirect("~/Views/Login.aspx?expirado=1");
+                Response.Redirect("~/Views/Login.aspx?exp=1");
                 return;
             }
         }
