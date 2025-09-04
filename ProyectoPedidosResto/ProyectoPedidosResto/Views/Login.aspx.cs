@@ -23,9 +23,30 @@ namespace ProyectoPedidosResto.Views
             if (!IsPostBack)
             {
                 cargarusuarios();
-                if (Session["UsuarioSeleccionado"] != null)
+
+                User usuario = null;
+
+                // Intentar obtener el usuario desde la sesión
+                if (Session["UsuarioSeleccionado"] is User userSession && !string.IsNullOrEmpty(userSession.Nombre))
                 {
-                    ddlEmpresas.SelectedValue = ((User)Session["UsuarioSeleccionado"]).Nombre.Trim();
+                    usuario = userSession;
+                }
+                else
+                {
+                    // Si no está en sesión, intentar obtenerlo desde la cookie
+                    HttpCookie cookie = Request.Cookies["UsuarioSeleccionado"];
+                    if (cookie != null && !string.IsNullOrEmpty(cookie.Value))
+                    {
+                        string nombreUsuario = cookie.Value;
+                        var reader = new ReadingUser();
+                        var usuarios = reader.LeerUsuarios();
+                        usuario = usuarios.FirstOrDefault(u => u.Nombre != null && u.Nombre.Trim().Equals(nombreUsuario.Trim(), StringComparison.OrdinalIgnoreCase));
+                    }
+                }
+
+                if (usuario != null && !string.IsNullOrEmpty(usuario.Nombre) && ddlEmpresas != null)
+                {
+                    ddlEmpresas.SelectedValue = usuario.Nombre.Trim();
                 }
             }
         }

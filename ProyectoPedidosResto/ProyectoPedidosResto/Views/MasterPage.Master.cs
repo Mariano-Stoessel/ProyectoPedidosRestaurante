@@ -20,11 +20,29 @@ namespace ProyectoPedidosResto.Views
 
             if (!IsPostBack)
             {
-                if (Session["UsuarioSeleccionado"] != null)
+                var usuarioSeleccionado = Session["UsuarioSeleccionado"] as User;
+
+                // Verifica si el usuario está en sesión y tiene datos mínimos (por ejemplo, Nombre)
+                if (usuarioSeleccionado != null && !string.IsNullOrEmpty(usuarioSeleccionado.Nombre))
                 {
                     CargarDatosEmpresa();
                 }
-                else { lblEmpresa.Text = "Sistemas MH"; imgLogo.ImageUrl = "/logos/Default.png"; }
+                else
+                {
+                    // Intenta restaurar el usuario desde la cookie
+                    AuthHelper.LeerUsuariosSeleccionadoCookie();
+                    usuarioSeleccionado = Session["UsuarioSeleccionado"] as User;
+
+                    if (usuarioSeleccionado != null)
+                    {
+                        CargarDatosEmpresa();
+                    }
+                    else
+                    {
+                        lblEmpresa.Text = "Sistemas MH";
+                        imgLogo.ImageUrl = "/logos/Default.png";
+                    }
+                }
             }
 
             // Leer datos de la cookie usando AuthHelper
@@ -97,9 +115,15 @@ namespace ProyectoPedidosResto.Views
         private void CargarDatosEmpresa()
         {
             var usuarioSeleccionado = Session["UsuarioSeleccionado"] as User;
+            if (usuarioSeleccionado == null || string.IsNullOrEmpty(usuarioSeleccionado.Nombre))
+            {
+                // Intenta restaurar el usuario desde la cookie
+                AuthHelper.LeerUsuariosSeleccionadoCookie();
+                usuarioSeleccionado = Session["UsuarioSeleccionado"] as User;
+            }
+
             if (usuarioSeleccionado != null)
             {
-                // Cambia la ruta según la propiedad de la empresa/usuario
                 imgLogo.ImageUrl = string.IsNullOrEmpty(usuarioSeleccionado.Logo)
                     ? "~/logos/Default.png"
                     : usuarioSeleccionado.Logo;

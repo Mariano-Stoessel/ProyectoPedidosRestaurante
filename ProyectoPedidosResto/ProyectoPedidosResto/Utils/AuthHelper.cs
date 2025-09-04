@@ -33,6 +33,12 @@ namespace ProyectoPedidosResto.Utils
                 cookie.Expires = DateTime.Now.AddDays(-1);
                 HttpContext.Current.Response.Cookies.Add(cookie);
             }
+            if (HttpContext.Current.Request.Cookies["UserInfo"] != null)
+            {
+                var cookie = new HttpCookie("UserInfo");
+                cookie.Expires = DateTime.Now.AddDays(-1);
+                HttpContext.Current.Response.Cookies.Add(cookie);
+            }
         }
 
         public static void CrearUsuariosSeleccionadoCookie(User usuarioSeleccionado, DateTime ingreso)
@@ -44,10 +50,12 @@ namespace ProyectoPedidosResto.Utils
 
             var cookie = new HttpCookie("UserInfo");
             cookie.Values["User_id"] = usuarioSeleccionado.IdUsuario.ToString();
+            cookie.Values["User_name"] = usuarioSeleccionado.Nombre;
             cookie.Values["User_db"] = usuarioSeleccionado.UsuarioDB;
             cookie.Values["User_ip"] = usuarioSeleccionado.IP;
             cookie.Values["User_Database"] = usuarioSeleccionado.DatabaseName;
             cookie.Values["User_Password"] = usuarioSeleccionado.Password;
+            cookie.Values["User_Logo"] = usuarioSeleccionado.Logo;
             cookie.Expires = DateTime.Now.AddMinutes(minutosRestantes);
             cookie.HttpOnly = true;
             HttpContext.Current.Response.Cookies.Add(cookie);
@@ -80,10 +88,12 @@ namespace ProyectoPedidosResto.Utils
             if (!int.TryParse(cookieUsuario.Values["User_Id"], out userId))
                 return;
             usuarioSeleccionado.IdUsuario = userId;
+            usuarioSeleccionado.Nombre = cookieUsuario.Values["User_name"];
             usuarioSeleccionado.IP = cookieUsuario.Values["User_ip"];
             usuarioSeleccionado.DatabaseName = cookieUsuario.Values["User_Database"];
             usuarioSeleccionado.Password = cookieUsuario.Values["User_Password"];
             usuarioSeleccionado.UsuarioDB = cookieUsuario.Values["User_db"];
+            usuarioSeleccionado.Logo = cookieUsuario.Values["User_Logo"];
             if (usuarioSeleccionado == null)
                 return;
             // Restaurar el usuario en la sesión si no existe

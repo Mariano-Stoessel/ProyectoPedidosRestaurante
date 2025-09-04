@@ -4,6 +4,7 @@ using ProyectoPedidosResto.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.UI.WebControls;
 using TableDomain = ProyectoPedidosResto.Domain.Table;
 
@@ -19,8 +20,21 @@ namespace ProyectoPedidosResto.Views
             // Validar sesión antes de continuar
             if (Session["MozoId"] == null)
             {
-                Response.Redirect("~/Views/Login.aspx?exp=1");
-                return;
+                // Intentar obtener el MozoId desde la cookie
+                var (mozoId, mozoNombre, mozoIngreso) = AuthHelper.LeerMozoCookie();
+                if (mozoId != null)
+                {
+                    // Si la cookie existe, restaurar la sesión
+                    Session["MozoId"] = mozoId.Value;
+                    Session["MozoNombre"] = mozoNombre;
+                    Session["MozoIngreso"] = mozoIngreso.Value;
+                }
+                else
+                {
+                    // Si no hay sesión ni cookie, redirigir al login
+                    Response.Redirect("~/Views/Login.aspx?exp=1");
+                    return;
+                }
             }
 
             if (!IsPostBack)
