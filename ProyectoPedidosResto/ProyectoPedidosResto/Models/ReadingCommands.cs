@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.EnterpriseServices;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using System.Web;
 using static ProyectoPedidosResto.Models.DataAccess;
 
@@ -14,6 +16,71 @@ namespace ProyectoPedidosResto.Models
 {
     public class ReadingCommands
     {
+        // ----------------- helpers para decimales -----------------
+        private static decimal ToDecimalSafe(object value, decimal def = 0m)
+        {
+            if (value == null || value == DBNull.Value) return def;
+
+            switch (value)
+            {
+                case decimal d: return d;
+                case double db: return Convert.ToDecimal(db, CultureInfo.InvariantCulture);
+                case float f: return Convert.ToDecimal(f, CultureInfo.InvariantCulture);
+                case long l: return l;
+                case int i: return i;
+                case short s: return s;
+                case string str: return ParseFlexibleDecimal(str, def);
+                default: return def;
+            }
+        }
+
+        // Acepta "12,50", "1.234,50", "1,234.50", "$ 1.234,50", etc.
+        private static decimal ParseFlexibleDecimal(string s, decimal def)
+        {
+            if (string.IsNullOrWhiteSpace(s)) return def;
+            s = s.Trim();
+
+            // deja sólo dígitos, coma, punto y signo
+            s = s.Replace("\u00A0", " ");                 // non-breaking space
+            s = Regex.Replace(s, @"[^\d\.,\-]", "");
+
+            int lastComma = s.LastIndexOf(',');
+            int lastDot = s.LastIndexOf('.');
+
+            if (lastComma >= 0 && lastDot >= 0)
+            {
+                bool commaIsDecimal = lastComma > lastDot;
+                char dec = commaIsDecimal ? ',' : '.';
+                char thou = commaIsDecimal ? '.' : ',';
+
+                s = s.Replace(thou.ToString(), "");       // quita miles
+                if (dec == ',') s = s.Replace(',', '.');  // decimal = punto
+            }
+            else if (s.Contains(","))                    // sólo coma
+            {
+                var parts = s.Split(',');
+                if (parts.Length == 2 && parts[1].Length <= 2)
+                    s = parts[0].Replace(".", "") + "." + parts[1];
+                else
+                    s = s.Replace(",", "");              // comas como miles
+            }
+            else if (s.Contains("."))                    // sólo punto
+            {
+                var parts = s.Split('.');
+                if (!(parts.Length == 2 && parts[1].Length <= 2))
+                    s = s.Replace(".", "");              // puntos como miles
+            }
+
+            return decimal.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out var res)
+                ? res : def;
+        }
+
+        private static string DecimalToDbString(decimal d) =>
+            d.ToString(CultureInfo.InvariantCulture);
+
+        // ----------------------------------------------------------
+
+
         public List<Command> LeerCommands(int mesa)
         {
             // Recuperar el usuario seleccionado de la sesión
@@ -38,7 +105,7 @@ namespace ProyectoPedidosResto.Models
                         Com_MesaId = acceso.Lector.GetInt32(1),
                         ArticuloNombre=acceso.Lector.IsDBNull(2) ? null : acceso.Lector.GetString(2),
                         Com_Cant = acceso.Lector.IsDBNull(3) ? null :  acceso.Lector.GetString(3),
-                        Com_Unitario= acceso.Lector.GetDecimal(4),
+                        Com_Unitario = ToDecimalSafe(acceso.Lector.GetValue(4)),
                         Com_Estado = acceso.Lector.IsDBNull(5) ? null : acceso.Lector.GetString(5),
 
 
@@ -81,8 +148,8 @@ namespace ProyectoPedidosResto.Models
                 datos.SetearParametro("@hora", DateTime.Now.ToString("HH:mm:ss"));
                 datos.SetearParametro("@Detalle", comanda.ArticuloNombre);
                 datos.SetearParametro("@Estado", comanda.Com_Estado = "PEDIDO");
-                datos.SetearParametro("@Unitario", comanda.Com_Unitario.ToString());
-                
+                datos.SetearParametro("@Unitario", DecimalToDbString(comanda.Com_Unitario));
+
 
                 datos.EjecutarAccion();
 
@@ -111,7 +178,7 @@ namespace ProyectoPedidosResto.Models
             {
                 acceso.SetearConsulta(consultaSql);
                 acceso.SetearParametro("@comindice", idcomanda);
-                acceso.EjecutarLectura();
+                acceso.EjecutarAccion();
             }
             catch (Exception ex)
             {
@@ -138,7 +205,7 @@ namespace ProyectoPedidosResto.Models
                 acceso.SetearConsulta(consultaSql);
                 acceso.SetearParametro("@nuevacantidad", nuevacantidad);
                 acceso.SetearParametro("@comindice", idcomanda);
-                acceso.SetearParametro("@ComUnitario", total.ToString());
+                acceso.SetearParametro("@ComUnitario", DecimalToDbString(total));
                 acceso.SetearParametro("@estado", estado);
 
                 acceso.EjecutarLectura();

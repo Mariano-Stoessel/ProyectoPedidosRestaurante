@@ -23,8 +23,27 @@ namespace ProyectoPedidosResto.Models
 
             public AccesoDatos()
             {
-                conexion = new MySqlConnection("Server=localhost;Port=3306;Database=restaurantedb;Uid=root;Pwd=meko;");
-                comando = new MySqlCommand();
+                var csb = new MySqlConnectionStringBuilder
+                {
+                    
+                    Server =  "localhost" ,
+                    Database = "w370320_restodbM",
+                    UserID = "w370320_restodbM",
+                    Password = "lizoka42LI",
+                    Port= 3306,
+                    SslMode = 0
+                    /*Server = "localhost",
+                    Database = "restaurantedb",
+                    UserID = "root",
+                    Password = "meko",
+                    Port = 3306,
+                    SslMode = 0*/
+
+                };
+
+                
+                conexion = new MySqlConnection(csb.ConnectionString);
+                comando = new MySqlCommand { Connection = conexion };
             }
 
             public AccesoDatos(User user)

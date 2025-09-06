@@ -2,6 +2,7 @@
 using ProyectoPedidosResto.Models;
 using ProyectoPedidosResto.Utils;
 using System;
+using System.Runtime.CompilerServices;
 
 namespace ProyectoPedidosResto.Views
 {
@@ -12,7 +13,7 @@ namespace ProyectoPedidosResto.Views
             string currentPage = System.IO.Path.GetFileName(Request.Path).ToLower();
 
             // Mostrar/ocultar controles según estado de página
-            bool esLogin = currentPage == "login";
+            bool esLogin = currentPage == "login" || currentPage == "login.aspx";
             pnlHamburguesa.Visible = !esLogin;
             pnlCollapse.Visible = !esLogin;
             lblUsuario.Visible = !esLogin;
@@ -51,9 +52,9 @@ namespace ProyectoPedidosResto.Views
             bool cookieValida = mozoId.HasValue && !string.IsNullOrEmpty(mozoNombre) && mozoIngreso.HasValue;
 
             // 1. Si está en login y la cookie es válida, redirigir a Tables.aspx
-            if (currentPage == "login" && cookieValida)
+            if (esLogin && cookieValida)
             {
-                Response.Redirect("~/Views/Tables.aspx");
+                Response.Redirect(ResolveUrl("~/Views/Tables.aspx"));
                 return;
             }
 
@@ -67,6 +68,7 @@ namespace ProyectoPedidosResto.Views
                 }
 
                 lblUsuario.Text = "Sesión de " + mozoNombre;
+                return;
             }
             else if (Session["MozoId"] != null && Session["MozoNombre"] != null && Session["MozoIngreso"] != null)
             {
@@ -79,7 +81,7 @@ namespace ProyectoPedidosResto.Views
                 lblUsuario.Text = "Sesión de " + sessionMozoNombre;
 
                 // Si está en login y la sesión es válida, redirigir a Tables.aspx
-                if (currentPage == "login")
+                if (esLogin)
                 {
                     Response.Redirect("~/Views/Tables.aspx");
                     return;
@@ -87,7 +89,7 @@ namespace ProyectoPedidosResto.Views
             }
             else
             {
-                if (currentPage == "login")
+                if (esLogin)
                 {
                     return;
                 }
@@ -109,7 +111,7 @@ namespace ProyectoPedidosResto.Views
 
             AuthHelper.LimpiarYCerrarSesion();
 
-            Response.Redirect("Login.aspx", false);
+            Response.Redirect("/Views/Login.aspx", false);
         }
 
         private void CargarDatosEmpresa()

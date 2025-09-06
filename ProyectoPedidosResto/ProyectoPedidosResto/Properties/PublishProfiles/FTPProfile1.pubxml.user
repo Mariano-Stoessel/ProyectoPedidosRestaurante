@@ -1,0 +1,235 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- https://go.microsoft.com/fwlink/?LinkID=208121. -->
+<Project>
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAATrKHyYianEuIv4ESbvkBJAAAAAACAAAAAAAQZgAAAAEAACAAAADXa8Dt9YxC0nfxBSUSgn2GhtW2pOzZkqAPquJkz4zGfgAAAAAOgAAAAAIAACAAAACSsw4NajWG+jSztbLVtn2mT3kU+PiHyFrwTnOyy1z38SAAAADQm6t6rUO+FjyEBFENELx2VXTHQ0kXZ+lFlKmBqFQCcEAAAAB3qD4j/4EwintUpu29hSJuywYHo2YkHrSGpFP3mrMk9QOV47fBUaH2+99uqg2q16Zu37qlr49v/8xRH5WsEoIY</EncryptedPassword>
+    <_PublishTargetUrl>ftp://w370320.ferozo.com/public_html</_PublishTargetUrl>
+    <History>True|2025-09-06T00:14:38.5025976Z||;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="bin/Antlr3.Runtime.dll">
+      <publishTime>09/04/2025 18:44:28</publishTime>
+    </File>
+    <File Include="bin/Antlr3.Runtime.pdb">
+      <publishTime>09/04/2025 18:44:28</publishTime>
+    </File>
+    <File Include="bin/BouncyCastle.Cryptography.dll">
+      <publishTime>09/04/2025 18:44:29</publishTime>
+    </File>
+    <File Include="bin/Google.Protobuf.dll">
+      <publishTime>09/04/2025 18:44:30</publishTime>
+    </File>
+    <File Include="bin/Google.Protobuf.pdb">
+      <publishTime>09/04/2025 18:44:30</publishTime>
+    </File>
+    <File Include="bin/K4os.Compression.LZ4.dll">
+      <publishTime>09/04/2025 18:44:30</publishTime>
+    </File>
+    <File Include="bin/K4os.Compression.LZ4.Streams.dll">
+      <publishTime>09/04/2025 18:44:31</publishTime>
+    </File>
+    <File Include="bin/K4os.Hash.xxHash.dll">
+      <publishTime>09/04/2025 18:44:31</publishTime>
+    </File>
+    <File Include="bin/Microsoft.AspNet.FriendlyUrls.dll">
+      <publishTime>09/05/2025 20:57:25</publishTime>
+    </File>
+    <File Include="bin/Microsoft.AspNet.Web.Optimization.WebForms.dll">
+      <publishTime>09/04/2025 18:44:31</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Bcl.AsyncInterfaces.dll">
+      <publishTime>09/04/2025 18:44:31</publishTime>
+    </File>
+    <File Include="bin/Microsoft.ScriptManager.MSAjax.dll">
+      <publishTime>09/04/2025 18:44:31</publishTime>
+    </File>
+    <File Include="bin/Microsoft.ScriptManager.WebForms.dll">
+      <publishTime>09/04/2025 18:44:31</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Web.Infrastructure.dll">
+      <publishTime>09/05/2025 20:57:27</publishTime>
+    </File>
+    <File Include="bin/MySql.Data.dll">
+      <publishTime>09/05/2025 20:57:56</publishTime>
+    </File>
+    <File Include="bin/Newtonsoft.Json.dll">
+      <publishTime>09/04/2025 18:44:35</publishTime>
+    </File>
+    <File Include="bin/ProyectoPedidosResto.dll">
+      <publishTime>09/05/2025 21:13:27</publishTime>
+    </File>
+    <File Include="bin/ProyectoPedidosResto.pdb">
+      <publishTime>09/05/2025 21:13:27</publishTime>
+    </File>
+    <File Include="bin/System.Buffers.dll">
+      <publishTime>09/04/2025 18:44:35</publishTime>
+    </File>
+    <File Include="bin/System.Configuration.ConfigurationManager.dll">
+      <publishTime>09/04/2025 18:44:36</publishTime>
+    </File>
+    <File Include="bin/System.Diagnostics.DiagnosticSource.dll">
+      <publishTime>09/04/2025 18:44:36</publishTime>
+    </File>
+    <File Include="bin/System.IO.Pipelines.dll">
+      <publishTime>09/04/2025 18:44:37</publishTime>
+    </File>
+    <File Include="bin/System.Memory.dll">
+      <publishTime>09/04/2025 18:44:38</publishTime>
+    </File>
+    <File Include="bin/System.Numerics.Vectors.dll">
+      <publishTime>09/04/2025 18:44:38</publishTime>
+    </File>
+    <File Include="bin/System.Runtime.CompilerServices.Unsafe.dll">
+      <publishTime>09/04/2025 18:44:39</publishTime>
+    </File>
+    <File Include="bin/System.Threading.Tasks.Extensions.dll">
+      <publishTime>09/04/2025 18:44:39</publishTime>
+    </File>
+    <File Include="bin/System.Web.Helpers.dll">
+      <publishTime>09/04/2025 18:44:31</publishTime>
+    </File>
+    <File Include="bin/System.Web.Mvc.dll">
+      <publishTime>09/04/2025 18:44:31</publishTime>
+    </File>
+    <File Include="bin/System.Web.Optimization.dll">
+      <publishTime>09/04/2025 18:44:31</publishTime>
+    </File>
+    <File Include="bin/System.Web.Razor.dll">
+      <publishTime>09/04/2025 18:44:31</publishTime>
+    </File>
+    <File Include="bin/System.Web.Webpages.Deployment.dll">
+      <publishTime>09/04/2025 18:44:31</publishTime>
+    </File>
+    <File Include="bin/System.Web.Webpages.dll">
+      <publishTime>09/04/2025 18:44:31</publishTime>
+    </File>
+    <File Include="bin/System.Web.Webpages.Razor.dll">
+      <publishTime>09/04/2025 18:44:31</publishTime>
+    </File>
+    <File Include="bin/WebGrease.dll">
+      <publishTime>09/04/2025 18:44:39</publishTime>
+    </File>
+    <File Include="bin/ZstdSharp.dll">
+      <publishTime>09/04/2025 18:44:39</publishTime>
+    </File>
+    <File Include="Bundle.config">
+      <publishTime>09/04/2025 18:44:21</publishTime>
+    </File>
+    <File Include="Content/Commands.css">
+      <publishTime>09/04/2025 18:44:21</publishTime>
+    </File>
+    <File Include="Content/Login.css">
+      <publishTime>09/04/2025 18:44:21</publishTime>
+    </File>
+    <File Include="Content/Site.css">
+      <publishTime>09/04/2025 18:44:21</publishTime>
+    </File>
+    <File Include="Content/Tables.css">
+      <publishTime>09/04/2025 18:44:21</publishTime>
+    </File>
+    <File Include="favicon.ico">
+      <publishTime>09/04/2025 18:44:26</publishTime>
+    </File>
+    <File Include="Global.asax">
+      <publishTime>09/04/2025 18:44:22</publishTime>
+    </File>
+    <File Include="Scripts/Commands.js">
+      <publishTime>09/04/2025 18:44:23</publishTime>
+    </File>
+    <File Include="Scripts/Site.js">
+      <publishTime>09/04/2025 18:44:23</publishTime>
+    </File>
+    <File Include="Scripts/Tables.js">
+      <publishTime>09/04/2025 18:44:23</publishTime>
+    </File>
+    <File Include="Scripts/WebForms/DetailsView.js">
+      <publishTime>09/04/2025 18:44:23</publishTime>
+    </File>
+    <File Include="Scripts/WebForms/Focus.js">
+      <publishTime>09/04/2025 18:44:23</publishTime>
+    </File>
+    <File Include="Scripts/WebForms/GridView.js">
+      <publishTime>09/04/2025 18:44:23</publishTime>
+    </File>
+    <File Include="Scripts/WebForms/Menu.js">
+      <publishTime>09/04/2025 18:44:23</publishTime>
+    </File>
+    <File Include="Scripts/WebForms/MenuStandards.js">
+      <publishTime>09/04/2025 18:44:23</publishTime>
+    </File>
+    <File Include="Scripts/WebForms/MSAjax/MicrosoftAjax.js">
+      <publishTime>09/04/2025 18:44:23</publishTime>
+    </File>
+    <File Include="Scripts/WebForms/MSAjax/MicrosoftAjaxApplicationServices.js">
+      <publishTime>09/04/2025 18:44:23</publishTime>
+    </File>
+    <File Include="Scripts/WebForms/MSAjax/MicrosoftAjaxComponentModel.js">
+      <publishTime>09/04/2025 18:44:23</publishTime>
+    </File>
+    <File Include="Scripts/WebForms/MSAjax/MicrosoftAjaxCore.js">
+      <publishTime>09/04/2025 18:44:23</publishTime>
+    </File>
+    <File Include="Scripts/WebForms/MSAjax/MicrosoftAjaxGlobalization.js">
+      <publishTime>09/04/2025 18:44:23</publishTime>
+    </File>
+    <File Include="Scripts/WebForms/MSAjax/MicrosoftAjaxHistory.js">
+      <publishTime>09/04/2025 18:44:23</publishTime>
+    </File>
+    <File Include="Scripts/WebForms/MSAjax/MicrosoftAjaxNetwork.js">
+      <publishTime>09/04/2025 18:44:23</publishTime>
+    </File>
+    <File Include="Scripts/WebForms/MSAjax/MicrosoftAjaxSerialization.js">
+      <publishTime>09/04/2025 18:44:23</publishTime>
+    </File>
+    <File Include="Scripts/WebForms/MSAjax/MicrosoftAjaxTimer.js">
+      <publishTime>09/04/2025 18:44:23</publishTime>
+    </File>
+    <File Include="Scripts/WebForms/MSAjax/MicrosoftAjaxWebForms.js">
+      <publishTime>09/04/2025 18:44:23</publishTime>
+    </File>
+    <File Include="Scripts/WebForms/MSAjax/MicrosoftAjaxWebServices.js">
+      <publishTime>09/04/2025 18:44:23</publishTime>
+    </File>
+    <File Include="Scripts/WebForms/SmartNav.js">
+      <publishTime>09/04/2025 18:44:23</publishTime>
+    </File>
+    <File Include="Scripts/WebForms/TreeView.js">
+      <publishTime>09/04/2025 18:44:23</publishTime>
+    </File>
+    <File Include="Scripts/WebForms/WebForms.js">
+      <publishTime>09/04/2025 18:44:23</publishTime>
+    </File>
+    <File Include="Scripts/WebForms/WebParts.js">
+      <publishTime>09/04/2025 18:44:23</publishTime>
+    </File>
+    <File Include="Scripts/WebForms/WebUIValidation.js">
+      <publishTime>09/04/2025 18:44:23</publishTime>
+    </File>
+    <File Include="Views/Commands.aspx">
+      <publishTime>09/04/2025 18:44:23</publishTime>
+    </File>
+    <File Include="Views/Default.aspx">
+      <publishTime>09/04/2025 18:44:23</publishTime>
+    </File>
+    <File Include="Views/Login.aspx">
+      <publishTime>09/04/2025 18:44:23</publishTime>
+    </File>
+    <File Include="Views/MasterPage.Master">
+      <publishTime>09/04/2025 18:44:23</publishTime>
+    </File>
+    <File Include="Views/Tables.aspx">
+      <publishTime>09/04/2025 18:44:23</publishTime>
+    </File>
+    <File Include="Views/web.config">
+      <publishTime>09/04/2025 18:44:23</publishTime>
+    </File>
+    <File Include="ViewSwitcher.ascx">
+      <publishTime>09/05/2025 20:57:28</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>09/05/2025 21:13:48</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

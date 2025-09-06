@@ -109,7 +109,7 @@ namespace ProyectoPedidosResto.Views
                 AuthHelper.SetearMozoSession(resultado.MozoId, resultado.MozoNombre, ingreso);
                 AuthHelper.CrearMozoCookie(resultado.MozoId, resultado.MozoNombre, ingreso);
 
-                Response.Redirect("Tables.aspx");
+                Response.Redirect(ResolveUrl("~/Views/Tables.aspx"));
             }
             else
             {
