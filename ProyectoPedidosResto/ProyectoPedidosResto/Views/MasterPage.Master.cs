@@ -10,10 +10,10 @@ namespace ProyectoPedidosResto.Views
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string currentPage = System.IO.Path.GetFileName(Request.Path).ToLower();
+            string currentPage = System.IO.Path.GetFileName(Request.Url.AbsolutePath).ToLower();
 
             // Mostrar/ocultar controles según estado de página
-            bool esLogin = currentPage == "login" || currentPage == "login.aspx";
+            bool esLogin = currentPage == "login" || currentPage == "login.aspx" || currentPage == "";
             pnlHamburguesa.Visible = !esLogin;
             pnlCollapse.Visible = !esLogin;
             lblUsuario.Visible = !esLogin;
