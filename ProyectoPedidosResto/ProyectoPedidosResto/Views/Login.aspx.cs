@@ -99,15 +99,15 @@ namespace ProyectoPedidosResto.Views
 
 
                 //Guardar el ingreso del mozo en la bbdd de Empresas
+                    var readerMozos = new ReadingWaiters();
                 if (Session["UsuarioSeleccionado"] != null)
                 {
-                    var readerMozos = new ReadingWaiters();
                     RegisterAccess registrousuario = new RegisterAccess();
                     registrousuario.NombreMozo = resultado.MozoNombre;
                     registrousuario.IdUsuario = ((User)Session["UsuarioSeleccionado"]).IdUsuario;
                     registrousuario.Fecha = DateTime.Now;
-                    registrousuario.IdMozo = resultado.MozoId;
-                    readerMozos.CambiarEstadoMozo(resultado.MozoId, "SI", resultado.MozoNombre, registrousuario.IdUsuario);
+                    
+                    readerMozos.CambiarEstadoMozo(resultado.MozoId, "SI");
                     var readerIngresos = new ReadingRegisterAccess();
                     readerIngresos.RegistrarIngresoSiNoExiste(registrousuario);
                     User usuarioSeleccionado = new User();
