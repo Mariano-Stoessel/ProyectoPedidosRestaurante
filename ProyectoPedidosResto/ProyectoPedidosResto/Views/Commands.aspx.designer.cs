@@ -132,6 +132,15 @@ namespace ProyectoPedidosResto.Views
         protected global::System.Web.UI.WebControls.HiddenField HiddenField1;
 
         /// <summary>
+        /// Control txtObsModificar.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtObsModificar;
+
+        /// <summary>
         /// Control btnAceptarCantidad.
         /// </summary>
         /// <remarks>
@@ -220,6 +229,15 @@ namespace ProyectoPedidosResto.Views
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfCantidad;
+
+        /// <summary>
+        /// Control txtObs.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtObs;
 
         /// <summary>
         /// Control btnAgregarProducto.

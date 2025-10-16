@@ -3,6 +3,8 @@
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>D:\COSAS MARIANO\Proyecto Maxi\deploy</_PublishTargetUrl>
+    <History>True|2025-10-13T22:02:18.1750166Z||;True|2025-10-05T10:35:19.5646020-03:00||;True|2025-09-14T16:50:08.3310914-03:00||;True|2025-09-14T16:48:23.5548221-03:00||;True|2025-09-14T16:23:47.5235921-03:00||;</History>
+    <LastFailureDetails />
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/Antlr3.Runtime.dll">
@@ -54,10 +56,10 @@
       <publishTime>09/04/2025 18:44:35</publishTime>
     </File>
     <File Include="bin/ProyectoPedidosResto.dll">
-      <publishTime>09/06/2025 00:35:42</publishTime>
+      <publishTime>10/13/2025 19:37:21</publishTime>
     </File>
     <File Include="bin/ProyectoPedidosResto.pdb">
-      <publishTime>09/06/2025 00:35:42</publishTime>
+      <publishTime>10/13/2025 19:37:21</publishTime>
     </File>
     <File Include="bin/System.Buffers.dll">
       <publishTime>09/04/2025 18:44:35</publishTime>
@@ -204,16 +206,16 @@
       <publishTime>09/04/2025 18:44:23</publishTime>
     </File>
     <File Include="Views/Commands.aspx">
-      <publishTime>09/04/2025 18:44:23</publishTime>
+      <publishTime>10/13/2025 15:52:07</publishTime>
     </File>
     <File Include="Views/Default.aspx">
       <publishTime>09/04/2025 18:44:23</publishTime>
     </File>
     <File Include="Views/Login.aspx">
-      <publishTime>09/04/2025 18:44:23</publishTime>
+      <publishTime>10/06/2025 16:47:04</publishTime>
     </File>
     <File Include="Views/MasterPage.Master">
-      <publishTime>09/04/2025 18:44:23</publishTime>
+      <publishTime>09/14/2025 16:45:38</publishTime>
     </File>
     <File Include="Views/Tables.aspx">
       <publishTime>09/04/2025 18:44:23</publishTime>

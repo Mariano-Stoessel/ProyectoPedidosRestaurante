@@ -143,5 +143,13 @@ namespace ProyectoPedidosResto.Views
         {
             imgLogo.Attributes["onerror"] = "this.onerror=null;this.src='" + ResolveUrl("~/logos/Default.png") + "';";
         }
+
+        protected void imgLogo_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            if (Session["MozoId"] != null)
+            {
+                    Response.Redirect("~/Views/Tables.aspx");
+            }
+        }
     }
 }

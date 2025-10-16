@@ -25,20 +25,21 @@ namespace ProyectoPedidosResto.Models
             {
                 var csb = new MySqlConnectionStringBuilder
                 {
-                    
-                    Server =  "localhost" ,
-                    Database = "w370320_restodbM",
-                    UserID = "w370320_restodbM",
-                    Password = "lizoka42LI",
-                    Port= 3306,
-                    SslMode = 0
-                    /*Server = "localhost",
+
+                    /*Server =  "190.103.205.57" ,
+                     Database = "restaurantedb",
+                     UserID = "Mariano",
+                     Password = "@@Tormenta1420!",
+                     Port= 3306,
+                     SslMode = 0*/
+                     
+                    Server = "localhost",
                     Database = "restaurantedb",
                     UserID = "root",
                     Password = "meko",
                     Port = 3306,
-                    SslMode = 0*/
-
+                    SslMode = 0
+                    
                 };
 
                 

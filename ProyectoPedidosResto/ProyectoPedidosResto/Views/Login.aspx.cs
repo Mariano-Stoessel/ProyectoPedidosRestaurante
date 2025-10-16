@@ -73,10 +73,22 @@ namespace ProyectoPedidosResto.Views
         protected void btnLogin_Click(object sender, EventArgs e)
         {
 
+            if (ddlEmpresas.SelectedIndex == 0)
+            {
+                lblMensaje.Text = "Por favor, seleccione su empresa.";
+                return;
+            }
 
             // Validar usuario y contraseña
             string usuario = txtUsuario.Text.Trim().ToUpper();
-            string contrasena = txtPassword.Text.Trim();
+            string contrasena;
+            if (txtPassword.Text == "")
+            {
+                contrasena = null;
+            }
+            else { 
+                contrasena = txtPassword.Text.Trim();
+            }
             string mensaje = string.Empty;
 
             var resultado = ValidarUsuario(usuario, contrasena);
@@ -84,16 +96,18 @@ namespace ProyectoPedidosResto.Views
             if (resultado.EsValido)
             {
                 // Cambiar estado a activo aquí
-                var readerMozos = new ReadingWaiters();
-                readerMozos.CambiarEstadoMozo(resultado.MozoId, "SI");
+
 
                 //Guardar el ingreso del mozo en la bbdd de Empresas
                 if (Session["UsuarioSeleccionado"] != null)
                 {
+                    var readerMozos = new ReadingWaiters();
                     RegisterAccess registrousuario = new RegisterAccess();
                     registrousuario.NombreMozo = resultado.MozoNombre;
                     registrousuario.IdUsuario = ((User)Session["UsuarioSeleccionado"]).IdUsuario;
                     registrousuario.Fecha = DateTime.Now;
+                    registrousuario.IdMozo = resultado.MozoId;
+                    readerMozos.CambiarEstadoMozo(resultado.MozoId, "SI", resultado.MozoNombre, registrousuario.IdUsuario);
                     var readerIngresos = new ReadingRegisterAccess();
                     readerIngresos.RegistrarIngresoSiNoExiste(registrousuario);
                     User usuarioSeleccionado = new User();
@@ -122,7 +136,7 @@ namespace ProyectoPedidosResto.Views
         private (bool EsValido, int MozoId, string MozoNombre, string Mensaje) ValidarUsuario(string usuario, string contrasena)
         {
             // Validación de campos vacíos
-            if (string.IsNullOrEmpty(usuario) || string.IsNullOrEmpty(contrasena))
+            if (string.IsNullOrEmpty(usuario))
                 return (false, 0, null, "Por favor, complete todos los campos.");
 
             var readerMozos = new ReadingWaiters();
@@ -130,9 +144,12 @@ namespace ProyectoPedidosResto.Views
 
             foreach (var mozo in mozos)
             {
-                string usuarioEsperado = mozo.Mozo_Nombre + mozo.Mozo_Id; // Concatenar nombre y ID del mozo
-                if (usuario.Equals(usuarioEsperado, StringComparison.OrdinalIgnoreCase) && contrasena == mozo.Mozo_Contrasena)
+                string usuarioEsperado = mozo.Mozo_Nombre; // Concatenar nombre y ID del mozo
+                
+                if (usuario.Equals(usuarioEsperado, StringComparison.OrdinalIgnoreCase))
                 {
+                    if(contrasena == mozo.Mozo_Contrasena  || mozo.Mozo_Contrasena == "") {
+                    
                     if (mozo.Mozo_Activo == "SI")
                     {
                         // Revisar el último ingreso
@@ -153,6 +170,7 @@ namespace ProyectoPedidosResto.Views
                             // Si no terminó su turno, sigue activo
                             return (false, 0, null, "El mozo ya está activo en otra sesión.");
                         }
+                    }
                     }
 
                     return (true, mozo.Mozo_Id, mozo.Mozo_Nombre, null);

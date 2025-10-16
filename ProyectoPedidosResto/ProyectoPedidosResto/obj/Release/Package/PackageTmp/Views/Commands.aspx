@@ -16,7 +16,7 @@
         var hfNuevaCantidadId = '<%= hfNuevaCantidad.ClientID %>';
         var hfCantidadId = '<%= hfCantidad.ClientID %>';
         var ddlEstadoId = '<%= ddlEstado.ClientID %>';
-        
+
     </script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -161,6 +161,12 @@
                         </div>
                         <asp:HiddenField ID="HiddenField1" runat="server" />
                     </div>
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                            <label class="me-2">Obs:</label>                       
+                            <div class="input-group">
+                                <asp:TextBox runat="server" CssClass="form-control me-2" AutoPostBack="false" ID="txtObsModificar" />                          
+                        </div>
+                    </div>
                     <div class="d-flex justify-content-between">
                         <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Cancelar</button>
                         <asp:Button ID="btnAceptarCantidad" runat="server" CssClass="btn btn-success" Text="Aceptar" OnClientClick="return guardarCantidadYPostback();" OnClick="btnModificarProducto_Click" />
@@ -191,7 +197,7 @@
     </div>
 
     <!-- Modal Productos -->
-    <div class="modal fade" id="ModalComandas" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="ModalComandas" style="height:100%" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content bg-dark text-white">
                 <div class="modal-header border-secondary justify-content-center pb-2">
@@ -260,6 +266,16 @@
                             </div>
                         </div>
                         <asp:HiddenField ID="hfCantidad" runat="server" />
+                    </div>
+                    <div class="row d-flex align-items-center mb-3">
+                        <div class="col">
+                            <label class="me-2">Observaciones:</label>
+                        </div>
+                        <div class="col">
+                            <div class="input-group">
+                                <asp:TextBox runat="server" CssClass="form-control me-2" AutoPostBack="false" ID="txtObs" />
+                            </div>
+                        </div>
                     </div>
 
                     <div class="d-flex justify-content-between">

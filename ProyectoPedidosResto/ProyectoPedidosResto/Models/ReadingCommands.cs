@@ -207,6 +207,7 @@ namespace ProyectoPedidosResto.Models
                 acceso.SetearParametro("@comindice", idcomanda);
                 acceso.SetearParametro("@ComUnitario", DecimalToDbString(total));
                 acceso.SetearParametro("@estado", estado);
+                
 
                 acceso.EjecutarLectura();
             }
@@ -219,6 +220,36 @@ namespace ProyectoPedidosResto.Models
             {
                 acceso.CerrarConexion();
             }
+        }
+        public void ActualizarObs(int idcomanda, string obs)
+        {
+            // Recuperar el usuario seleccionado de la sesión
+            var user = HttpContext.Current.Session["UsuarioSeleccionado"] as User;
+            if (user == null)
+                throw new InvalidOperationException("No se encontró el usuario seleccionado en la sesión.");
+            var acceso = new DataAccess.AccesoDatos(user);
+            string consultaSql = "UPDATE mega.mesa_comandas SET Com_Detalle = @obs WHERE Com_Indice = @comindice ";
+
+            try
+            {
+                acceso.SetearConsulta(consultaSql);
+                acceso.SetearParametro("@obs", obs);
+                acceso.SetearParametro("@comindice", idcomanda);
+                
+
+
+                acceso.EjecutarLectura();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Error al Actualizar Comandas: " + ex.Message);
+                throw;
+            }
+            finally
+            {
+                acceso.CerrarConexion();
+            }
+
         }
 
         internal void CambiarMesaComandas(int mesaActualId, int mesaNuevaId)

@@ -76,6 +76,14 @@ namespace ProyectoPedidosResto.Views
         protected void btnModificarProducto_Click(object sender, EventArgs e)
         {
             int nuevaCantidad;
+            string obs ="";
+            if(txtObsModificar != null)
+            {
+                obs = hfArticuloNombreoListaSeleccionado.Value.ToString().Split('(')[0].Trim() + " (" + txtObsModificar.Text.Trim() + ")";
+                txtObsModificar.Text = "";
+                ActualizarObs(obs);
+            }
+
             if (int.TryParse(hfNuevaCantidad.Value, out nuevaCantidad))
             {
                 if (nuevaCantidad == 0) { EliminarComanda(); }
@@ -96,6 +104,11 @@ namespace ProyectoPedidosResto.Views
                 return;
             }
             string NombreProducto = hfNombreProductoSeleccionado.Value.ToString();
+            if(txtObs.Text != null && txtObs.Text != "")
+            {
+                NombreProducto += " (" + txtObs.Text.Trim() + ")";
+                txtObs.Text = "";
+            }
             string cantidad = hfCantidad.Value;
             string precioUnitario = hfPrecioProductoSeleccionado.Value;
             InsertarComandas(idProducto, NombreProducto, cantidad, precioUnitario);
@@ -190,9 +203,20 @@ namespace ProyectoPedidosResto.Views
             string nuevacantidad = nuevaCantidad.ToString();
             int idcomanda = int.Parse(hfProductoListaSeleccionado.Value);
             string estado = ddlEstado.SelectedValue;
+          
+            
 
-            var actualizarCantidad = new ReadingCommands();
+                var actualizarCantidad = new ReadingCommands();
             actualizarCantidad.ActualizarCantidadYEstado(nuevacantidad, idcomanda, Com_Unitario, estado);
+            CargarProductosLista(lblIdMesa.Text);
+            CargarTotal();
+        }
+        private void ActualizarObs(string obs)
+        {
+            
+            int idcomanda = int.Parse(hfProductoListaSeleccionado.Value);
+            var actualizarObs = new ReadingCommands();
+            actualizarObs.ActualizarObs(idcomanda, obs);
             CargarProductosLista(lblIdMesa.Text);
             CargarTotal();
         }
@@ -239,7 +263,14 @@ namespace ProyectoPedidosResto.Views
             var reader = new ReadingCommands();
             int IdMesa = Convert.ToInt32(idMesa);
 
-            commands = reader.LeerCommands(IdMesa);
+            // Leer los comandos y ordenarlos por estado personalizado
+            commands = reader.LeerCommands(IdMesa)
+                .OrderBy(c =>
+                    c.Com_Estado == "PEDIDO" ? 0 :
+                    c.Com_Estado == "PREPARACION" ? 1 : 
+                    c.Com_Estado == "ENTREGADO" ? 2 : 3
+                )
+                .ToList();
             rptProductosLista.DataSource = commands;
             rptProductosLista.DataBind();
         }
