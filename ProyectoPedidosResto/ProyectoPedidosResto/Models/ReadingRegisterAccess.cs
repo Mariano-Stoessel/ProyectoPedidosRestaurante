@@ -18,7 +18,7 @@ namespace ProyectoPedidosResto.Models
                 SELECT 1
                 FROM Ingresos
                 WHERE IdUsuario = @idUsuario
-                  AND NombreMozo = @nombreMozo
+                  AND NombreMozo = @nombreMozo 
                   AND YEAR(Fecha) = YEAR(CURDATE())
                   AND MONTH(Fecha) = MONTH(CURDATE())
                 LIMIT 1;";
@@ -47,14 +47,15 @@ namespace ProyectoPedidosResto.Models
             // Inserta porque no existe registro en el mes actual
             var accesoIns = new DataAccess.AccesoDatos();
             string sqlInsert = @"
-                INSERT INTO Ingresos (NombreMozo, IdUsuario, Fecha)
-                VALUES (@nombreMozo, @idUsuario, NOW());";
+                INSERT INTO Ingresos (NombreMozo, IdMozo, IdUsuario, Fecha)
+                VALUES (@nombreMozo, @idMozo, @idUsuario, NOW());";
 
             try
             {
                 accesoIns.SetearConsulta(sqlInsert);
                 accesoIns.SetearParametro("@idUsuario", registro.IdUsuario);
                 accesoIns.SetearParametro("@nombreMozo", registro.NombreMozo);
+                accesoIns.SetearParametro("@idMozo", registro.IdMozo);
                 accesoIns.EjecutarAccion();
                 return true;
             }

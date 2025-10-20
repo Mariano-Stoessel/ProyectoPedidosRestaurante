@@ -124,13 +124,13 @@ namespace ProyectoPedidosResto.Utils
 
         public static void ResetearMozosActivos()
         {
-            var readerMozos = new ReadingWaiters();
-            var mozos = readerMozos.LeerMozos();
+            var readerMozosWEB = new ReadingWaitersWEB();
+            var mozos = readerMozosWEB.LeerMozos();
             foreach (var mozo in mozos)
             {
                 if (mozo.Mozo_Activo == "SI")
                 {
-                    readerMozos.CambiarEstadoMozo(mozo.Mozo_Id, "NO");
+                    readerMozosWEB.CambiarEstadoMozo(mozo.Mozo_Id, "NO");
                 }
             }
         }

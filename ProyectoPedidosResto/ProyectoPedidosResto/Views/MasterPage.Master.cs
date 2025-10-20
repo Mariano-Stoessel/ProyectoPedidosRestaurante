@@ -3,6 +3,7 @@ using ProyectoPedidosResto.Models;
 using ProyectoPedidosResto.Utils;
 using System;
 using System.Runtime.CompilerServices;
+using System.Web;
 
 namespace ProyectoPedidosResto.Views
 {
@@ -104,9 +105,12 @@ namespace ProyectoPedidosResto.Views
         {
             if (Session["MozoId"] != null)
             {
+                var user = HttpContext.Current.Session["UsuarioSeleccionado"] as User;
+                if (user == null)
+                    throw new InvalidOperationException("No se encontró el usuario seleccionado en la sesión.");
                 int mozoId = (int)Session["MozoId"];
-                var readerMozos = new ReadingWaiters();
-                readerMozos.CambiarEstadoMozo(mozoId, "NO");
+                var readerMozosWEB = new ReadingWaitersWEB();
+                readerMozosWEB.CambiarEstadoMozo(mozoId, "NO");
             }
 
             AuthHelper.LimpiarYCerrarSesion();

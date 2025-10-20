@@ -99,15 +99,15 @@ namespace ProyectoPedidosResto.Views
 
 
                 //Guardar el ingreso del mozo en la bbdd de Empresas
-                    var readerMozos = new ReadingWaiters();
+                    var readerMozosWEB = new ReadingWaitersWEB();
                 if (Session["UsuarioSeleccionado"] != null)
                 {
                     RegisterAccess registrousuario = new RegisterAccess();
                     registrousuario.NombreMozo = resultado.MozoNombre;
+                    registrousuario.IdMozo = resultado.MozoId;
                     registrousuario.IdUsuario = ((User)Session["UsuarioSeleccionado"]).IdUsuario;
-                    registrousuario.Fecha = DateTime.Now;
-                    
-                    readerMozos.CambiarEstadoMozo(resultado.MozoId, "SI");
+                    registrousuario.Fecha = DateTime.Now;                   
+                    readerMozosWEB.CambiarEstadoMozo(resultado.MozoId, "SI");
                     var readerIngresos = new ReadingRegisterAccess();
                     readerIngresos.RegistrarIngresoSiNoExiste(registrousuario);
                     User usuarioSeleccionado = new User();
@@ -117,6 +117,7 @@ namespace ProyectoPedidosResto.Views
 
 
                 // Guarda el inicio de sesión
+                var readerMozos = new ReadingWaiters();
                 DateTime ingreso = DateTime.Now;
                 readerMozos.GuardarFechaLogin(resultado.MozoId, ingreso);
 
@@ -141,16 +142,18 @@ namespace ProyectoPedidosResto.Views
 
             var readerMozos = new ReadingWaiters();
             var mozos = readerMozos.LeerMozos();
+            var readerMozosWEB = new ReadingWaitersWEB();
+            
 
             foreach (var mozo in mozos)
             {
-                string usuarioEsperado = mozo.Mozo_Nombre; // Concatenar nombre y ID del mozo
-                
+                string usuarioEsperado = mozo.Mozo_Nombre;
                 if (usuario.Equals(usuarioEsperado, StringComparison.OrdinalIgnoreCase))
                 {
+                    var mozosWEB = readerMozosWEB.LeerMozos(mozo.Mozo_Id,mozo.Mozo_Nombre);
                     if(contrasena == mozo.Mozo_Contrasena  || mozo.Mozo_Contrasena == "") {
                     
-                    if (mozo.Mozo_Activo == "SI")
+                    if (mozosWEB.Mozo_Activo == "SI")
                     {
                         // Revisar el último ingreso
                         var readerIngresos = new ReadingEntries();
@@ -163,7 +166,7 @@ namespace ProyectoPedidosResto.Views
                         if (ultimoIngreso != null && ultimoIngreso.Ingreso_Salida != null)
                         {
                             // El mozo terminó su último turno, marcar como inactivo y permitir login
-                            readerMozos.CambiarEstadoMozo(mozo.Mozo_Id, "NO");
+                            readerMozosWEB.CambiarEstadoMozo(mozo.Mozo_Id, "NO");
                         }
                         else
                         {
