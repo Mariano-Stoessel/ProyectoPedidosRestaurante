@@ -26,19 +26,19 @@ namespace ProyectoPedidosResto.Models
                 var csb = new MySqlConnectionStringBuilder
                 {
 
-                    Server =  "190.103.205.57" ,
+                    /*Server =  "190.103.205.57" ,
                      Database = "restaurantedb",
                      UserID = "Mariano",
                      Password = "@@Tormenta1420!",
                      Port= 3306,
-                     SslMode = 0
+                     SslMode = 0*/
                      
-                    /*Server = "localhost",
+                    Server = "localhost",
                     Database = "restaurantedb",
                     UserID = "root",
                     Password = "meko",
                     Port = 3306,
-                    SslMode = 0*/
+                    SslMode = 0
                     
                 };
 

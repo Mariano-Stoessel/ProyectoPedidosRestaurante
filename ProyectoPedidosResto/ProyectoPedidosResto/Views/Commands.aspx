@@ -15,7 +15,7 @@
         var ddlEstadoId = '<%= ddlEstado.ClientID %>';
         var hfNuevaCantidadId = '<%= hfNuevaCantidad.ClientID %>';
         var hfCantidadId = '<%= hfCantidad.ClientID %>';
-        var ddlEstadoId = '<%= ddlEstado.ClientID %>';
+        var txtObsModificarId = '<%= txtObsModificar.ClientID %>';
 
     </script>
 

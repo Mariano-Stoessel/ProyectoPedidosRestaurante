@@ -76,10 +76,24 @@ namespace ProyectoPedidosResto.Views
         protected void btnModificarProducto_Click(object sender, EventArgs e)
         {
             int nuevaCantidad;
-            string obs ="";
-            if(txtObsModificar != null)
+            string obs = "";
+            if (txtObsModificar != null)
             {
-                obs = hfArticuloNombreoListaSeleccionado.Value.ToString().Split('(')[0].Trim() + " (" + txtObsModificar.Text.Trim() + ")";
+                // Obtiene el nombre base (sin paréntesis) del hidden field
+                var baseNombre = hfArticuloNombreoListaSeleccionado.Value ?? "";
+                var idx = baseNombre.IndexOf('(');
+                if (idx >= 0) baseNombre = baseNombre.Substring(0, idx).Trim();
+                var obsText = txtObsModificar.Text?.Trim();
+
+                if (!string.IsNullOrEmpty(obsText))
+                {
+                    obs = baseNombre + " (" + obsText + ")";
+                }
+                else
+                {
+                    obs = baseNombre;
+                }
+
                 txtObsModificar.Text = "";
                 ActualizarObs(obs);
             }

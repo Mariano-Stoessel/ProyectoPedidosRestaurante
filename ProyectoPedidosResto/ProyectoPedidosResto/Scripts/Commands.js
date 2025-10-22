@@ -94,6 +94,16 @@ function abrirModalModificarCantidad() {
         if (estado) {
             document.getElementById(ddlEstadoId).value = estado;
         }
+        // Precargar la observación en el textbox del modal si existe.
+        var nombreCompleto = document.getElementById(hfArticuloNombreoListaSeleccionadoId).value || '';
+        var obs = '';
+        // Busca el texto entre paréntesis al final: "NombreProducto (obs)"
+        var m = nombreCompleto.match(/\(([^)]+)\)\s*$/);
+        if (m && m[1]) {
+            obs = m[1].trim();
+        }
+        var txtObs = document.getElementById(txtObsModificarId);
+        if (txtObs) txtObs.value = obs;
 
         $('#ModalModificarCantidad').modal('show');
     }
