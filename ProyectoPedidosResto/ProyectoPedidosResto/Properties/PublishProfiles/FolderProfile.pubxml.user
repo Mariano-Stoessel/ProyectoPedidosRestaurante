@@ -3,7 +3,7 @@
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>D:\COSAS MARIANO\Proyecto Maxi\deploy</_PublishTargetUrl>
-    <History>True|2025-10-13T22:02:18.1750166Z||;True|2025-10-05T10:35:19.5646020-03:00||;True|2025-09-14T16:50:08.3310914-03:00||;True|2025-09-14T16:48:23.5548221-03:00||;True|2025-09-14T16:23:47.5235921-03:00||;</History>
+    <History>True|2025-10-22T00:18:25.7106715Z||;True|2025-10-21T21:15:16.5500366-03:00||;True|2025-10-21T21:11:07.6898976-03:00||;True|2025-10-13T19:02:18.1750166-03:00||;True|2025-10-05T10:35:19.5646020-03:00||;True|2025-09-14T16:50:08.3310914-03:00||;True|2025-09-14T16:48:23.5548221-03:00||;True|2025-09-14T16:23:47.5235921-03:00||;</History>
     <LastFailureDetails />
   </PropertyGroup>
   <ItemGroup>
@@ -56,10 +56,10 @@
       <publishTime>09/04/2025 18:44:35</publishTime>
     </File>
     <File Include="bin/ProyectoPedidosResto.dll">
-      <publishTime>10/13/2025 19:37:21</publishTime>
+      <publishTime>10/21/2025 21:18:25</publishTime>
     </File>
     <File Include="bin/ProyectoPedidosResto.pdb">
-      <publishTime>10/13/2025 19:37:21</publishTime>
+      <publishTime>10/21/2025 21:18:25</publishTime>
     </File>
     <File Include="bin/System.Buffers.dll">
       <publishTime>09/04/2025 18:44:35</publishTime>

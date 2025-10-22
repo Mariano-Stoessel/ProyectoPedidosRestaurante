@@ -150,7 +150,7 @@ namespace ProyectoPedidosResto.Views
                 string usuarioEsperado = mozo.Mozo_Nombre;
                 if (usuario.Equals(usuarioEsperado, StringComparison.OrdinalIgnoreCase))
                 {
-                    var mozosWEB = readerMozosWEB.LeerMozos(mozo.Mozo_Id,mozo.Mozo_Nombre);
+                    var mozosWEB = readerMozosWEB.LeerMozos(mozo.Mozo_Id, mozo.Mozo_Nombre);
                     if(contrasena == mozo.Mozo_Contrasena  || mozo.Mozo_Contrasena == "") {
                     
                     if (mozosWEB.Mozo_Activo == "SI")

@@ -1,4 +1,5 @@
-﻿using ProyectoPedidosResto.Domain;
+﻿using Org.BouncyCastle.Bcpg.OpenPgp;
+using ProyectoPedidosResto.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,7 +49,7 @@ namespace ProyectoPedidosResto.Models
             return mozos;
         }
 
-        public Waiter LeerMozos(int idmozo, string mozonombre)
+        public Waiter LeerMozos(int idmozo, string nombremozo)
         {
             var user = HttpContext.Current.Session["UsuarioSeleccionado"] as User;
             if (user == null)
@@ -56,11 +57,11 @@ namespace ProyectoPedidosResto.Models
             int userid = user.IdUsuario;
             if(MozoNuevo(idmozo,userid) == 0)
             {
-                GuardarMozoNuevo(idmozo, mozonombre, userid);
+                GuardarMozoNuevo(idmozo, userid, nombremozo);
             }
             var acceso = new DataAccess.AccesoDatos();
             var mozo = new Waiter();
-            string consultaSql = "SELECT IdMozo, NombreMozo, Activo FROM restaurantedb.mozos Where IdUsuario = @idusuario AND IdMozo = @idmozo;";
+            string consultaSql = "SELECT IdMozo, Activo FROM restaurantedb.mozos Where IdUsuario = @idusuario AND IdMozo = @idmozo;";
 
             try
             {
@@ -73,8 +74,7 @@ namespace ProyectoPedidosResto.Models
                 {
 
                     mozo.Mozo_Id = acceso.Lector.GetInt32(0);
-                    mozo.Mozo_Nombre = acceso.Lector.GetString(1);
-                    mozo.Mozo_Activo = acceso.Lector.IsDBNull(2) ? null : acceso.Lector.GetString(2);                  
+                    mozo.Mozo_Activo = acceso.Lector.IsDBNull(1) ? null : acceso.Lector.GetString(1);                  
                     
                    
                 }
@@ -117,16 +117,16 @@ namespace ProyectoPedidosResto.Models
         }
 
         
-        public void GuardarMozoNuevo(int mozoId, string mozonombre, int idusuario) {
+        public void GuardarMozoNuevo(int mozoId, int idusuario, string nombremozo) {
             var acceso = new DataAccess.AccesoDatos();
-            string consultaSql = "INSERT INTO restaurantedb.mozos (IdMozo, NombreMozo,IdUsuario, Activo)" +
-                                 "Values(@idmozo, @nombremozo, @idusuario, 'NO')";
+            string consultaSql = "INSERT INTO restaurantedb.mozos (IdMozo,IdUsuario, Activo, NombreMozo)" +
+                                 "Values(@idmozo, @idusuario, 'NO', @nombremozo)";
             try
             {
                 acceso.SetearConsulta(consultaSql);
-                acceso.SetearParametro("@idmozo", mozoId );
-                acceso.SetearParametro("@nombremozo", mozonombre);
+                acceso.SetearParametro("@idmozo", mozoId );             
                 acceso.SetearParametro("@idusuario", idusuario);
+                acceso.SetearParametro("@nombremozo", nombremozo);
                 acceso.EjecutarLectura();
             }
             finally

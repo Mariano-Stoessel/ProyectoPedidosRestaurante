@@ -17,8 +17,8 @@ namespace ProyectoPedidosResto.Models
             string sqlExiste = @"
                 SELECT 1
                 FROM Ingresos
-                WHERE IdUsuario = @idUsuario
-                  AND NombreMozo = @nombreMozo 
+                WHERE IdUsuario = @idusuario
+                  AND Idmozo = @idmozo
                   AND YEAR(Fecha) = YEAR(CURDATE())
                   AND MONTH(Fecha) = MONTH(CURDATE())
                 LIMIT 1;";
@@ -26,8 +26,8 @@ namespace ProyectoPedidosResto.Models
             try
             {
                 acceso.SetearConsulta(sqlExiste);
-                acceso.SetearParametro("@idUsuario", registro.IdUsuario);
-                acceso.SetearParametro("@nombreMozo", registro.NombreMozo);
+                acceso.SetearParametro("@idusuario", registro.IdUsuario);
+                acceso.SetearParametro("@idmozo", registro.IdMozo);
                 acceso.EjecutarLectura();
 
                 existe = acceso.Lector.Read(); // si hay fila, ya existe en el mes actual
@@ -47,14 +47,13 @@ namespace ProyectoPedidosResto.Models
             // Inserta porque no existe registro en el mes actual
             var accesoIns = new DataAccess.AccesoDatos();
             string sqlInsert = @"
-                INSERT INTO Ingresos (NombreMozo, IdMozo, IdUsuario, Fecha)
-                VALUES (@nombreMozo, @idMozo, @idUsuario, NOW());";
+                INSERT INTO Ingresos (IdMozo, IdUsuario, Fecha)
+                VALUES (@idMozo, @idUsuario, NOW());";
 
             try
             {
                 accesoIns.SetearConsulta(sqlInsert);
                 accesoIns.SetearParametro("@idUsuario", registro.IdUsuario);
-                accesoIns.SetearParametro("@nombreMozo", registro.NombreMozo);
                 accesoIns.SetearParametro("@idMozo", registro.IdMozo);
                 accesoIns.EjecutarAccion();
                 return true;

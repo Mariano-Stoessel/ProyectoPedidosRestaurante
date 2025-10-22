@@ -23,8 +23,7 @@ namespace ProyectoPedidosResto.Models
                                         Usuario,           
                                         Password,
                                         Activo,
-                                        IdTipoUsuario,
-                                        CantidadIngreso,
+                                        IdTipoUsuario,                                        
                                         FechaUltimoIngreso
                                     FROM Usuarios";
 
@@ -47,9 +46,8 @@ namespace ProyectoPedidosResto.Models
                         Password = acceso.Lector.IsDBNull(7) ? null : acceso.Lector.GetString(7),
                         // Activo puede venir como TINYINT(1) en MySQL: Convert.ToBoolean lo maneja bien
                         Activo = !acceso.Lector.IsDBNull(8) && Convert.ToBoolean(acceso.Lector.GetValue(8)),
-                        IdTipoUsuario = acceso.Lector.IsDBNull(9) ? 0 : acceso.Lector.GetInt32(9),
-                        CantidadIngreso = acceso.Lector.IsDBNull(10) ? 0 : acceso.Lector.GetInt32(10),
-                        FechaUltimoIngreso = acceso.Lector.IsDBNull(11) ? (DateTime?)null : acceso.Lector.GetDateTime(11)
+                        IdTipoUsuario = acceso.Lector.IsDBNull(9) ? 0 : acceso.Lector.GetInt32(9),                      
+                        FechaUltimoIngreso = acceso.Lector.IsDBNull(10) ? (DateTime?)null : acceso.Lector.GetDateTime(10)
                     };
 
                     usuarios.Add(u);

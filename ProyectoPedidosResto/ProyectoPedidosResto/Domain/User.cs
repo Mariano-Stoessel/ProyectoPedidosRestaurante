@@ -17,8 +17,7 @@ namespace ProyectoPedidosResto.Domain
             public string UsuarioDB { get; set; }     // Para diferenciar del nombre propio
             public string Password { get; set; }
             public bool Activo { get; set; }
-            public int IdTipoUsuario { get; set; }
-            public int CantidadIngreso { get; set; }
+            public int IdTipoUsuario { get; set; }           
             public DateTime? FechaUltimoIngreso { get; set; }
         
 
