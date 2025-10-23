@@ -255,7 +255,7 @@
                     </div>
 
                     <div class="row d-flex align-items-center mb-3">
-                        <div class="col-7">
+                        <div class="col-6">
                             <label class="me-2">Cantidad:</label>
                         </div>
                         <div class="col">
