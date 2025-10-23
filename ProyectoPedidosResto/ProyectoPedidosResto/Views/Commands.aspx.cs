@@ -61,10 +61,16 @@ namespace ProyectoPedidosResto.Views
 
             }
 
-            if (Request.QueryString["cambioMesa"] == "ok")
+            if (Session["NotificacionCambioMesa"] != null)
             {
+                string mensaje = Session["NotificacionCambioMesa"].ToString();
+
+                // Mostrar la notificación (usando el mismo ScriptManager que ya tenía)
                 ScriptManager.RegisterStartupScript(this, GetType(), "alertCambioMesa",
-                    "alert('¡Cambio de mesa exitoso!');", true);
+                    $"alert('{mensaje}');", true);
+
+                // *** PASO CRUCIAL: Eliminar la variable de Session para que no se muestre de nuevo. ***
+                Session.Remove("NotificacionCambioMesa");
             }
         }
 
@@ -173,7 +179,8 @@ namespace ProyectoPedidosResto.Views
                 readerTables.ActualizarMesa(mesaAnterior);
             }
 
-            Response.Redirect($"Commands.aspx?idMesa={mesaNuevaId}&cambioMesa=ok");
+            Session["NotificacionCambioMesa"] = "¡Cambio de mesa exitoso!";
+            Response.Redirect($"Commands.aspx?idMesa={mesaNuevaId}");
         }
 
         private void CargarMesasLibres()
