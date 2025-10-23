@@ -164,7 +164,7 @@
                     <div class="d-flex align-items-center justify-content-between mb-3">
                             <label class="me-2">Obs:</label>                       
                             <div class="input-group">
-                                <asp:TextBox runat="server" CssClass="form-control me-2" AutoPostBack="false" ID="txtObsModificar" />                          
+                                <asp:TextBox runat="server" CssClass="form-control" AutoPostBack="false" ID="txtObsModificar" />                          
                         </div>
                     </div>
                     <div class="d-flex justify-content-between">
@@ -255,7 +255,7 @@
                     </div>
 
                     <div class="row d-flex align-items-center mb-3">
-                        <div class="col">
+                        <div class="col-7">
                             <label class="me-2">Cantidad:</label>
                         </div>
                         <div class="col">
@@ -268,12 +268,12 @@
                         <asp:HiddenField ID="hfCantidad" runat="server" />
                     </div>
                     <div class="row d-flex align-items-center mb-3">
-                        <div class="col">
-                            <label class="me-2">Observaciones:</label>
+                        <div class="col-3">
+                            <label class="me-2">Obs:</label>
                         </div>
                         <div class="col">
                             <div class="input-group">
-                                <asp:TextBox runat="server" CssClass="form-control me-2" AutoPostBack="false" ID="txtObs" />
+                                <asp:TextBox runat="server" CssClass="form-control" AutoPostBack="false" ID="txtObs" />
                             </div>
                         </div>
                     </div>

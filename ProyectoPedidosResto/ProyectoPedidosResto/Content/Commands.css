@@ -12,7 +12,7 @@ select option[disabled] {
     border-radius: 0.5rem;
     font-size: smaller;
     margin-bottom: 10px;
-    height: 200px;
+    min-height: 200px;
     overflow-y: auto;
 }
 
@@ -28,7 +28,7 @@ select option[disabled] {
     border-radius: 0.5rem;
     font-size: smaller;
     margin-bottom: 10px;
-    height: 200px;
+    height: 300px;
     overflow-y: auto;
 }
 
@@ -125,7 +125,7 @@ select option[disabled] {
 }
 
 #ModalModificarCantidad .modal-dialog {
-    max-width: 350px;
+    max-width: 450px;
     width: 100%;
     margin: auto;
 }

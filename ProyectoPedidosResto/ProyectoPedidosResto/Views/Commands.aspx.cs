@@ -100,6 +100,8 @@ namespace ProyectoPedidosResto.Views
 
             if (int.TryParse(hfNuevaCantidad.Value, out nuevaCantidad))
             {
+                nuevaCantidad = hfNuevaCantidad.Value == "" ? 1 : nuevaCantidad;
+
                 if (nuevaCantidad == 0) { EliminarComanda(); }
                 else
                 {
