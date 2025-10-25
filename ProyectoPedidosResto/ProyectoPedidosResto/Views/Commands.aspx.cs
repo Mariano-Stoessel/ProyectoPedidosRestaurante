@@ -134,7 +134,7 @@ namespace ProyectoPedidosResto.Views
             string cantidad = hfCantidad.Value;
             string precioUnitario = hfPrecioProductoSeleccionado.Value;
             InsertarComandas(idProducto, NombreProducto, cantidad, precioUnitario);
-
+            CargarMesasLibres();
         }
 
         protected void BtnVolver_Click(object sender, EventArgs e)
@@ -226,10 +226,8 @@ namespace ProyectoPedidosResto.Views
             string nuevacantidad = nuevaCantidad.ToString();
             int idcomanda = int.Parse(hfProductoListaSeleccionado.Value);
             string estado = ddlEstado.SelectedValue;
-          
-            
 
-                var actualizarCantidad = new ReadingCommands();
+            var actualizarCantidad = new ReadingCommands();
             actualizarCantidad.ActualizarCantidadYEstado(nuevacantidad, idcomanda, Com_Unitario, estado);
             CargarProductosLista(lblIdMesa.Text);
             CargarTotal();

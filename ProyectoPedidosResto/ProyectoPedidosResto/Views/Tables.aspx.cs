@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 using TableDomain = ProyectoPedidosResto.Domain.Table;
 
@@ -141,20 +142,46 @@ namespace ProyectoPedidosResto.Views
 
         protected void btnAceptarMesa_Click(object sender, EventArgs e)
         {
+            // Server-side validation: mozo must be selected
+            if (!ValidarMozoSeleccionado())
+            {
+                // keep modal open and don't proceed
+                MostrarModal();
+                cargarDatos();
+                cargarDdl();
+                return;
+            }
+
             var (mesaNumero, idMozo, cantidadPersonas, observaciones) = ObtenerDatosMesa();
             ActualizarMesaOcupada(mesaNumero, idMozo, cantidadPersonas, observaciones);
+
+            // Clear possible error
+            lblMozoError.Text = string.Empty;
 
             Response.Redirect(Request.RawUrl);
         }
 
         protected void btnTomarComanda_Click(object sender, EventArgs e)
         {
+            // Server-side validation: mozo must be selected
+            if (!ValidarMozoSeleccionado())
+            {
+                // keep modal open and don't proceed
+                MostrarModal();
+                cargarDatos();
+                cargarDdl();
+                return;
+            }
+
             var (mesaNumero, idMozo, cantidadPersonas, observaciones) = ObtenerDatosMesa();
             ActualizarMesaOcupada(mesaNumero, idMozo, cantidadPersonas, observaciones);
 
+            // Clear possible error
+            lblMozoError.Text = string.Empty;
+
             string url = $"Commands.aspx?idMesa={mesaNumero}";
-            Response.Redirect(url);
         }
+
         private void cargarDdl()
         {
             // Cargar Filtros de estado
@@ -229,6 +256,32 @@ namespace ProyectoPedidosResto.Views
                 mesa.Mesa_Obs = observaciones;
 
                 readerMesas.ActualizarMesa(mesa);
+            }
+        }
+
+        private bool ValidarMozoSeleccionado()
+        {
+            // Considera que el primer item tiene value == "" cuando no se seleccionó mozo
+            if (string.IsNullOrEmpty(ddlMozos.SelectedValue))
+            {
+                return false;
+            }
+
+            lblMozoError.Text = string.Empty;
+            return true;
+        }
+
+        private void MostrarModal()
+        {
+            string script = "var m = new bootstrap.Modal(document.getElementById('modalMesaGeneral')); m.show();";
+
+            if (ScriptManager.GetCurrent(Page) != null)
+            {
+                ScriptManager.RegisterStartupScript(Page, GetType(), "showModal", script, true);
+            }
+            else
+            {
+                ClientScript.RegisterStartupScript(GetType(), "showModal", script, true);
             }
         }
     }

@@ -125,8 +125,13 @@ function cambiarCantidadCatalogo(delta) {
     var label = document.getElementById('lblCantidad');
     var valor = parseInt(label.textContent) || 1;
     valor += delta;
+    // No permitir menos de 1
     if (valor < 1) valor = 1;
     label.textContent = valor;
+
+    // Mantener el hidden sincronizado inmediatamente
+    var hf = document.getElementById(hfCantidadId);
+    if (hf) hf.value = Math.max(1, valor).toString();
 }
 
 function guardarCantidadYPostback() {
@@ -136,6 +141,8 @@ function guardarCantidadYPostback() {
     return true;
 }
 function guardarCantidadCatalogo() {
-    var valor = document.getElementById('lblCantidad').textContent;
-    document.getElementById(hfCantidadId).value = valor;
+    var valor = parseInt(document.getElementById('lblCantidad').textContent, 10) || 1;
+    // Asegurar que el valor guardado sea al menos 1
+    valor = Math.max(1, valor);
+    document.getElementById(hfCantidadId).value = valor.toString();
 }

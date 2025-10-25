@@ -11,7 +11,7 @@ namespace ProyectoPedidosResto.Models
 {
     public class ReadingArticle
     {
-      
+
         private static decimal ToDecimalSafe(object value, decimal def = 0m)
         {
             if (value == null || value == DBNull.Value) return def;
@@ -124,8 +124,12 @@ namespace ProyectoPedidosResto.Models
 
             try
             {
+                // Quitar paréntesis y su contenido
+                string nombreLimpio = (NombreArticulo ?? string.Empty);
+                nombreLimpio = Regex.Replace(nombreLimpio, @"\s*\([^)]*\)", "").Trim();
+
                 acceso.SetearConsulta(consultaSql);
-                acceso.SetearParametro("@NombreArticulo", NombreArticulo);
+                acceso.SetearParametro("@NombreArticulo", nombreLimpio);
                 acceso.EjecutarLectura();
 
                 if (acceso.Lector.Read())
@@ -141,5 +145,6 @@ namespace ProyectoPedidosResto.Models
                 acceso.CerrarConexion();
             }
         }
+
     }
 }
