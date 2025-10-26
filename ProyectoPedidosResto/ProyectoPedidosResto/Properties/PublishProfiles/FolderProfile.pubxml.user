@@ -3,7 +3,7 @@
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>D:\COSAS MARIANO\Proyecto Maxi\deploy</_PublishTargetUrl>
-    <History>True|2025-10-22T00:18:25.7106715Z||;True|2025-10-21T21:15:16.5500366-03:00||;True|2025-10-21T21:11:07.6898976-03:00||;True|2025-10-13T19:02:18.1750166-03:00||;True|2025-10-05T10:35:19.5646020-03:00||;True|2025-09-14T16:50:08.3310914-03:00||;True|2025-09-14T16:48:23.5548221-03:00||;True|2025-09-14T16:23:47.5235921-03:00||;</History>
+    <History>True|2025-10-26T22:38:08.2603231Z||;True|2025-10-26T19:17:18.8165459-03:00||;True|2025-10-21T21:18:25.7106715-03:00||;True|2025-10-21T21:15:16.5500366-03:00||;True|2025-10-21T21:11:07.6898976-03:00||;True|2025-10-13T19:02:18.1750166-03:00||;True|2025-10-05T10:35:19.5646020-03:00||;True|2025-09-14T16:50:08.3310914-03:00||;True|2025-09-14T16:48:23.5548221-03:00||;True|2025-09-14T16:23:47.5235921-03:00||;</History>
     <LastFailureDetails />
   </PropertyGroup>
   <ItemGroup>
@@ -56,10 +56,10 @@
       <publishTime>09/04/2025 18:44:35</publishTime>
     </File>
     <File Include="bin/ProyectoPedidosResto.dll">
-      <publishTime>10/21/2025 21:18:25</publishTime>
+      <publishTime>10/26/2025 19:38:07</publishTime>
     </File>
     <File Include="bin/ProyectoPedidosResto.pdb">
-      <publishTime>10/21/2025 21:18:25</publishTime>
+      <publishTime>10/26/2025 19:38:07</publishTime>
     </File>
     <File Include="bin/System.Buffers.dll">
       <publishTime>09/04/2025 18:44:35</publishTime>
@@ -116,7 +116,7 @@
       <publishTime>09/04/2025 18:44:21</publishTime>
     </File>
     <File Include="Content/Commands.css">
-      <publishTime>09/04/2025 18:44:21</publishTime>
+      <publishTime>10/26/2025 18:33:29</publishTime>
     </File>
     <File Include="Content/Login.css">
       <publishTime>09/04/2025 18:44:21</publishTime>
@@ -134,7 +134,7 @@
       <publishTime>09/04/2025 18:44:22</publishTime>
     </File>
     <File Include="Scripts/Commands.js">
-      <publishTime>09/04/2025 18:44:23</publishTime>
+      <publishTime>10/26/2025 18:33:29</publishTime>
     </File>
     <File Include="Scripts/Site.js">
       <publishTime>09/04/2025 18:44:23</publishTime>
@@ -206,7 +206,7 @@
       <publishTime>09/04/2025 18:44:23</publishTime>
     </File>
     <File Include="Views/Commands.aspx">
-      <publishTime>10/13/2025 15:52:07</publishTime>
+      <publishTime>10/26/2025 18:33:29</publishTime>
     </File>
     <File Include="Views/Default.aspx">
       <publishTime>09/04/2025 18:44:23</publishTime>
@@ -218,7 +218,7 @@
       <publishTime>09/14/2025 16:45:38</publishTime>
     </File>
     <File Include="Views/Tables.aspx">
-      <publishTime>09/04/2025 18:44:23</publishTime>
+      <publishTime>10/26/2025 18:33:29</publishTime>
     </File>
     <File Include="Views/web.config">
       <publishTime>09/04/2025 18:44:23</publishTime>

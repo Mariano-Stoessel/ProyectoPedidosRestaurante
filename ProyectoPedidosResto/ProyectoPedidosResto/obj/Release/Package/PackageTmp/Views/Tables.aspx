@@ -6,7 +6,7 @@
         var ddlMozosId = '<%= ddlMozos.ClientID %>';
         var txtObservacionesId = '<%= txtObservaciones.ClientID %>';
         var hfMesaSeleccionadaId = '<%= hfMesaSeleccionadaId.ClientID %>';
-</script>
+    </script>
     <script src="<%= ResolveUrl("~/Scripts/Tables.js") %>"></script>
 </asp:Content>
 <asp:Content ID="ContentTables" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -141,6 +141,9 @@
                         <div class="mb-3">
                             <label class="form-label">Observaciones:</label>
                             <asp:TextBox ID="txtObservaciones" runat="server" CssClass="form-control bg-black text-white" TextMode="MultiLine" Rows="4"></asp:TextBox>
+                        </div>
+                        <div>
+                            <asp:Label ID="lblMozoError" runat="server" CssClass="text-danger small"></asp:Label>
                         </div>
                     </div>
                     <div class="modal-footer d-flex justify-content-between">
