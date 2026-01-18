@@ -180,6 +180,7 @@ namespace ProyectoPedidosResto.Views
             lblMozoError.Text = string.Empty;
 
             string url = $"Commands.aspx?idMesa={mesaNumero}";
+            Response.Redirect(url);
         }
 
         private void cargarDdl()
@@ -264,7 +265,9 @@ namespace ProyectoPedidosResto.Views
             // Considera que el primer item tiene value == "" cuando no se seleccionó mozo
             if (string.IsNullOrEmpty(ddlMozos.SelectedValue))
             {
-                return false;
+                var (mozoId, mozoNombre, mozoIngreso) = AuthHelper.LeerMozoCookie();
+               ddlMozos.SelectedValue = mozoId?.ToString() ?? "";
+                return true;
             }
 
             lblMozoError.Text = string.Empty;
