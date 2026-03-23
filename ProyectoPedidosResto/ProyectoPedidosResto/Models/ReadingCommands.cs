@@ -83,11 +83,9 @@ namespace ProyectoPedidosResto.Models
 
         public List<Command> LeerCommands(int mesa)
         {
-            // Recuperar el usuario seleccionado de la sesión
-            var user = HttpContext.Current.Session["UsuarioSeleccionado"] as User;
-            if (user == null)
-                throw new InvalidOperationException("No se encontró el usuario seleccionado en la sesión.");
-            var acceso = new DataAccess.AccesoDatos(user);
+           
+            
+            var acceso = new DataAccess.AccesoDatos();
             var Comandas = new List<Command>();
             string consultaSql = "SELECT Com_Indice, Com_MesaId, Com_Detalle, Com_Cant, Com_Unitario, Com_Estado FROM mesa_comandas where Com_MesaId=@idmesa ORDER BY Com_Detalle ASC ";
 
@@ -128,16 +126,12 @@ namespace ProyectoPedidosResto.Models
 
         public void InsertarComanda(Command comanda)
         {
-            // Recuperar el usuario seleccionado de la sesión
-            var user = HttpContext.Current.Session["UsuarioSeleccionado"] as User;
-            if (user == null)
-                throw new InvalidOperationException("No se encontró el usuario seleccionado en la sesión.");
-
-            var acceso = new DataAccess.AccesoDatos(user);
+            
+            var acceso = new DataAccess.AccesoDatos();
             var Comandas = comanda;
                 string query = @"INSERT INTO mesa_comandas (Com_MesaId, Com_Id_Art, Com_Cant, Com_Hora, Com_Detalle, Com_Estado, Com_Unitario)
                                  VALUES (@mesaId, @articuloId, @cantidad, @hora, @Detalle, @Estado, @Unitario)";          
-            AccesoDatos datos = new AccesoDatos(user);
+            AccesoDatos datos = new AccesoDatos();
             try
             {
                 datos.SetearConsulta(query);
@@ -166,12 +160,9 @@ namespace ProyectoPedidosResto.Models
         }
         public void EliminarCommands(int idcomanda)
         {
-            // Recuperar el usuario seleccionado de la sesión
-            var user = HttpContext.Current.Session["UsuarioSeleccionado"] as User;
-            if (user == null)
-                throw new InvalidOperationException("No se encontró el usuario seleccionado en la sesión.");
+            
 
-            var acceso = new DataAccess.AccesoDatos(user);
+            var acceso = new DataAccess.AccesoDatos();
             string consultaSql = "DELETE FROM mesa_comandas WHERE Com_Indice = @comindice ";
 
             try
@@ -192,12 +183,9 @@ namespace ProyectoPedidosResto.Models
         }
         public void ActualizarCantidadYEstado(string nuevacantidad, int idcomanda, decimal total, string estado)
         {
-            // Recuperar el usuario seleccionado de la sesión
-            var user = HttpContext.Current.Session["UsuarioSeleccionado"] as User;
-            if (user == null)
-                throw new InvalidOperationException("No se encontró el usuario seleccionado en la sesión.");
+            
 
-            var acceso = new DataAccess.AccesoDatos(user);
+            var acceso = new DataAccess.AccesoDatos();
             string consultaSql = "UPDATE mega.mesa_comandas SET Com_Cant = @nuevacantidad, Com_Unitario = @ComUnitario, Com_Estado = @estado WHERE Com_Indice = @comindice ";
 
             try
@@ -223,11 +211,8 @@ namespace ProyectoPedidosResto.Models
         }
         public void ActualizarObs(int idcomanda, string obs)
         {
-            // Recuperar el usuario seleccionado de la sesión
-            var user = HttpContext.Current.Session["UsuarioSeleccionado"] as User;
-            if (user == null)
-                throw new InvalidOperationException("No se encontró el usuario seleccionado en la sesión.");
-            var acceso = new DataAccess.AccesoDatos(user);
+            
+            var acceso = new DataAccess.AccesoDatos();
             string consultaSql = "UPDATE mega.mesa_comandas SET Com_Detalle = @obs WHERE Com_Indice = @comindice ";
 
             try
@@ -254,11 +239,8 @@ namespace ProyectoPedidosResto.Models
 
         internal void CambiarMesaComandas(int mesaActualId, int mesaNuevaId)
         {
-            // Recuperar el usuario seleccionado de la sesión
-            var user = HttpContext.Current.Session["UsuarioSeleccionado"] as User;
-            if (user == null)
-                throw new InvalidOperationException("No se encontró el usuario seleccionado en la sesión.");
-            var acceso = new DataAccess.AccesoDatos(user);
+            
+            var acceso = new DataAccess.AccesoDatos();
             string consultaSql = "UPDATE mesa_comandas SET Com_MesaId = @nuevaMesaId WHERE Com_MesaId = @mesaActualId";
 
             try

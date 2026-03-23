@@ -32,7 +32,7 @@
 
                             <!-- IZQUIERDA: Logo + Empresa -->
                             <div class="logo-container">
-                                <asp:ImageButton ID="imgLogo" runat="server" CssClass="logo-placeholder" ImageUrl="~/logos/Default.png" AlternateText="Logo" OnPreRender="imgLogo_PreRender" OnClick="imgLogo_Click"/>
+                                <asp:ImageButton ID="imgLogo" runat="server" CssClass="logo-placeholder" ImageUrl="~/logos/LogoClubSarmiento.png" AlternateText="Logo" OnPreRender="imgLogo_PreRender" OnClick="imgLogo_Click"/>
                                 <asp:Label ID="lblEmpresa" runat="server" Text="Empresa"></asp:Label>
                             </div>
 

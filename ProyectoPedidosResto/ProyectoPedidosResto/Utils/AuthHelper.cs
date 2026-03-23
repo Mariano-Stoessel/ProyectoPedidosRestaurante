@@ -41,25 +41,7 @@ namespace ProyectoPedidosResto.Utils
             }
         }
 
-        public static void CrearUsuariosSeleccionadoCookie(User usuarioSeleccionado, DateTime ingreso)
-        {
-            // Calcular minutos restantes desde el ingreso original
-            double minutosRestantes = MinutesToExpire - (DateTime.Now - ingreso).TotalMinutes;
-            if (minutosRestantes <= 0)
-                minutosRestantes = 1.0 / 60.0; // 1 segundo en minutos
-
-            var cookie = new HttpCookie("UserInfo");
-            cookie.Values["User_id"] = usuarioSeleccionado.IdUsuario.ToString();
-            cookie.Values["User_name"] = usuarioSeleccionado.Nombre;
-            cookie.Values["User_db"] = usuarioSeleccionado.UsuarioDB;
-            cookie.Values["User_ip"] = usuarioSeleccionado.IP;
-            cookie.Values["User_Database"] = usuarioSeleccionado.DatabaseName;
-            cookie.Values["User_Password"] = usuarioSeleccionado.Password;
-            cookie.Values["User_Logo"] = usuarioSeleccionado.Logo;
-            cookie.Expires = DateTime.Now.AddMinutes(minutosRestantes);
-            cookie.HttpOnly = true;
-            HttpContext.Current.Response.Cookies.Add(cookie);
-        }
+        
 
         public static void CrearMozoCookie(int mozoId, string mozoNombre, DateTime ingreso)
         {
@@ -77,31 +59,8 @@ namespace ProyectoPedidosResto.Utils
             HttpContext.Current.Response.Cookies.Add(cookie);
         }
 
-        // Restaurar el usuario seleccionado desde la cookie si no está en la sesión.
-        public static void LeerUsuariosSeleccionadoCookie()
-        {
-            User usuarioSeleccionado = new User();
-            var cookieUsuario = HttpContext.Current.Request.Cookies["UserInfo"];
-            if (cookieUsuario == null)
-                return;
-            int userId;
-            if (!int.TryParse(cookieUsuario.Values["User_Id"], out userId))
-                return;
-            usuarioSeleccionado.IdUsuario = userId;
-            usuarioSeleccionado.Nombre = cookieUsuario.Values["User_name"];
-            usuarioSeleccionado.IP = cookieUsuario.Values["User_ip"];
-            usuarioSeleccionado.DatabaseName = cookieUsuario.Values["User_Database"];
-            usuarioSeleccionado.Password = cookieUsuario.Values["User_Password"];
-            usuarioSeleccionado.UsuarioDB = cookieUsuario.Values["User_db"];
-            usuarioSeleccionado.Logo = cookieUsuario.Values["User_Logo"];
-            if (usuarioSeleccionado == null)
-                return;
-            // Restaurar el usuario en la sesión si no existe
-            if (HttpContext.Current.Session["UsuarioSeleccionado"] == null)
-            {
-                HttpContext.Current.Session["UsuarioSeleccionado"] = usuarioSeleccionado;
-            }
-        }
+       
+        
         // Leer la cookie del mozo y devolver los datos
         public static (int? MozoId, string MozoNombre, DateTime? ingreso) LeerMozoCookie()
         {
@@ -122,7 +81,7 @@ namespace ProyectoPedidosResto.Utils
             return (mozoId, mozoNombre, mozoLogin);
         }
 
-        public static void ResetearMozosActivos()
+        /*public static void ResetearMozosActivos()
         {
             var readerMozosWEB = new ReadingWaitersWEB();
             var mozos = readerMozosWEB.LeerMozos();
@@ -133,6 +92,6 @@ namespace ProyectoPedidosResto.Utils
                     readerMozosWEB.CambiarEstadoMozo(mozo.Mozo_Id, "NO");
                 }
             }
-        }
+        }*/
     }
 }

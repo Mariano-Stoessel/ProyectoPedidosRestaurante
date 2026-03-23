@@ -10,11 +10,8 @@ namespace ProyectoPedidosResto.Models
     {
         public List<Waiter> LeerMozos()
         {
-            // Recuperar el usuario seleccionado de la sesión
-            var user = HttpContext.Current.Session["UsuarioSeleccionado"] as User;
-            if (user == null)
-                throw new InvalidOperationException("No se encontró el usuario seleccionado en la sesión.");
-            var acceso = new DataAccess.AccesoDatos(user);
+            
+            var acceso = new DataAccess.AccesoDatos();
             var mozos = new List<Waiter>();
             string consultaSql = "SELECT Mozo_Id, Mozo_Nombre, Mozo_Activo, Mozo_Contrasena FROM mozos ORDER BY Mozo_Nombre ASC ";
 
@@ -50,11 +47,8 @@ namespace ProyectoPedidosResto.Models
         
         public void CambiarEstadoMozo(int mozoId, string estado)
         {
-            // Recuperar el usuario seleccionado de la sesión
-            var user = HttpContext.Current.Session["UsuarioSeleccionado"] as User;
-            if (user == null)
-                throw new InvalidOperationException("No se encontró el usuario seleccionado en la sesión.");
-            var acceso = new DataAccess.AccesoDatos(user);
+            
+            var acceso = new DataAccess.AccesoDatos();
             string consultaSql = "UPDATE mozos SET Mozo_Activo = @estado WHERE Mozo_Id = @id";
             try
             {
@@ -68,14 +62,34 @@ namespace ProyectoPedidosResto.Models
                 acceso.CerrarConexion();
             }
         }
+        public void ActualizarEstadoMozosPorTiempo(DateTime fechaActual)
+        {
+            var acceso = new DataAccess.AccesoDatos();
+
+            string consultaSql = @"
+        UPDATE mozos
+        SET Mozo_Activo = 'NO'
+        WHERE Mozo_FecIng IS NOT NULL
+        AND Mozo_Activo = 'SI'
+        AND TIMESTAMPDIFF(MINUTE, Mozo_FecIng, @fechaActual) > 360";
+
+            try
+            {
+                acceso.SetearConsulta(consultaSql);
+                acceso.SetearParametro("@fechaActual", fechaActual);
+                acceso.EjecutarAccion();
+            }
+            finally
+            {
+                acceso.CerrarConexion();
+            }
+        }
 
         public void GuardarFechaLogin(int mozoId, DateTime loginTime)
         {
-            var user = HttpContext.Current.Session["UsuarioSeleccionado"] as User;
-            if (user == null)
-                throw new InvalidOperationException("No se encontró el usuario seleccionado en la sesión."); 
-            var acceso = new DataAccess.AccesoDatos(user);
-            string consultaSql = "UPDATE mozos SET Mozo_Fecha = @fecha WHERE Mozo_Id = @id";
+            
+            var acceso = new DataAccess.AccesoDatos();
+            string consultaSql = "UPDATE mozos SET Mozo_FecIng = @fecha WHERE Mozo_Id = @id";
             try
             {
                 acceso.SetearConsulta(consultaSql);

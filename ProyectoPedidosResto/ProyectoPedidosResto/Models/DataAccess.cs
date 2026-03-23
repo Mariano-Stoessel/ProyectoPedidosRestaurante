@@ -15,7 +15,6 @@ namespace ProyectoPedidosResto.Models
             private MySqlConnection conexion;
             private MySqlCommand comando;
             private MySqlDataReader lector;
-
             public MySqlDataReader Lector
             {
                 get { return lector; }
@@ -25,20 +24,21 @@ namespace ProyectoPedidosResto.Models
             {
                 var csb = new MySqlConnectionStringBuilder
                 {
-
+                    //conexion local
+                    Server = "localhost",
+                    Database = "mega",
+                    UserID = "root",
+                    Password = "meko",
+                    Port = 3306,
+                    SslMode = 0
+                     
+                    /*
                     Server =  "190.103.205.57" ,
                      Database = "restaurantedb",
                      UserID = "Mariano",
                      Password = "@@Tormenta1420!",
                      Port= 3306,
                      SslMode = 0
-                     
-                    /*Server = "localhost",
-                    Database = "restaurantedb",
-                    UserID = "root",
-                    Password = "meko",
-                    Port = 3306,
-                    SslMode = 0
                     */                   
                 };
 
@@ -47,23 +47,7 @@ namespace ProyectoPedidosResto.Models
                 comando = new MySqlCommand { Connection = conexion };
             }
 
-            public AccesoDatos(User user)
-            {
-                var csb = new MySqlConnectionStringBuilder
-                {
-                    Server = string.IsNullOrWhiteSpace(user.IP) ? "localhost" : user.IP,
-                    Database = user.DatabaseName,
-                    UserID = user.UsuarioDB,
-                    Password = user.Password,
-                    SslMode = 0
-                };
-
-                // Si tenés el puerto como string:
-                if (uint.TryParse(user.Port, out var p)) csb.Port = p; else csb.Port = 3306;
-
-                conexion = new MySqlConnection(csb.ConnectionString);
-                comando = new MySqlCommand { Connection = conexion };
-            }
+            
             public void SetearConsulta(string consulta)
             {
                 comando.CommandType = System.Data.CommandType.Text;

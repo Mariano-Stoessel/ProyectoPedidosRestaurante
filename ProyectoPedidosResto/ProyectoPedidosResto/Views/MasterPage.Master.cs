@@ -22,34 +22,17 @@ namespace ProyectoPedidosResto.Views
 
             if (!IsPostBack)
             {
-                var usuarioSeleccionado = Session["UsuarioSeleccionado"] as User;
-
-                // Verifica si el usuario está en sesión y tiene datos mínimos (por ejemplo, Nombre)
-                if (usuarioSeleccionado != null && !string.IsNullOrEmpty(usuarioSeleccionado.Nombre))
-                {
-                    CargarDatosEmpresa();
-                }
-                else
-                {
-                    // Intenta restaurar el usuario desde la cookie
-                    AuthHelper.LeerUsuariosSeleccionadoCookie();
-                    usuarioSeleccionado = Session["UsuarioSeleccionado"] as User;
-
-                    if (usuarioSeleccionado != null)
-                    {
-                        CargarDatosEmpresa();
-                    }
-                    else
-                    {
-                        lblEmpresa.Text = "Sistemas MH";
-                        imgLogo.ImageUrl = "/logos/Default.png";
-                    }
-                }
+             
+                    
+                    
+                        lblEmpresa.Text = "BUFFET CLUB SARMIENTO";
+                        imgLogo.ImageUrl = "/logos/LogoClubSarmiento.png";
+                    
+                
             }
 
             // Leer datos de la cookie usando AuthHelper
-            var (mozoId, mozoNombre, mozoIngreso) = AuthHelper.LeerMozoCookie(); 
-            AuthHelper.LeerUsuariosSeleccionadoCookie(); // Asegurarse de que el usuario esté en sesión
+            var (mozoId, mozoNombre, mozoIngreso) = AuthHelper.LeerMozoCookie();          
             bool cookieValida = mozoId.HasValue && !string.IsNullOrEmpty(mozoNombre) && mozoIngreso.HasValue;
 
             // 1. Si está en login y la cookie es válida, redirigir a Tables.aspx
@@ -105,12 +88,10 @@ namespace ProyectoPedidosResto.Views
         {
             if (Session["MozoId"] != null)
             {
-                var user = HttpContext.Current.Session["UsuarioSeleccionado"] as User;
-                if (user == null)
-                    throw new InvalidOperationException("No se encontró el usuario seleccionado en la sesión.");
                 int mozoId = (int)Session["MozoId"];
-                var readerMozosWEB = new ReadingWaitersWEB();
-                readerMozosWEB.CambiarEstadoMozo(mozoId, "NO");
+               ReadingWaiters readingwaiters= new ReadingWaiters();
+                readingwaiters.CambiarEstadoMozo(mozoId, "NO");
+
             }
 
             AuthHelper.LimpiarYCerrarSesion();
@@ -120,32 +101,15 @@ namespace ProyectoPedidosResto.Views
 
         private void CargarDatosEmpresa()
         {
-            var usuarioSeleccionado = Session["UsuarioSeleccionado"] as User;
-            if (usuarioSeleccionado == null || string.IsNullOrEmpty(usuarioSeleccionado.Nombre))
-            {
-                // Intenta restaurar el usuario desde la cookie
-                AuthHelper.LeerUsuariosSeleccionadoCookie();
-                usuarioSeleccionado = Session["UsuarioSeleccionado"] as User;
-            }
-
-            if (usuarioSeleccionado != null)
-            {
-                imgLogo.ImageUrl = string.IsNullOrEmpty(usuarioSeleccionado.Logo)
-                    ? "~/logos/Default.png"
-                    : usuarioSeleccionado.Logo;
-
-                lblEmpresa.Text = usuarioSeleccionado.Nombre;
-            }
-            else
-            {
-                imgLogo.ImageUrl = "~/logos/Default.png";
+            
+                imgLogo.ImageUrl = "~/logos/LogoClubSarmiento.png";
                 lblEmpresa.Text = "Sistemas MH";
-            }
+            
         }
 
         protected void imgLogo_PreRender(object sender, EventArgs e)
         {
-            imgLogo.Attributes["onerror"] = "this.onerror=null;this.src='" + ResolveUrl("~/logos/Default.png") + "';";
+            imgLogo.Attributes["onerror"] = "this.onerror=null;this.src='" + ResolveUrl("~/logos/LogoClubSarmiento.png") + "';";
         }
 
         protected void imgLogo_Click(object sender, System.Web.UI.ImageClickEventArgs e)

@@ -22,62 +22,20 @@ namespace ProyectoPedidosResto.Views
 
             if (!IsPostBack)
             {
-                cargarusuarios();
+                
 
-                User usuario = null;
+                
 
-                // Intentar obtener el usuario desde la sesión
-                if (Session["UsuarioSeleccionado"] is User userSession && !string.IsNullOrEmpty(userSession.Nombre))
-                {
-                    usuario = userSession;
-                }
-                else
-                {
-                    // Si no está en sesión, intentar obtenerlo desde la cookie
-                    HttpCookie cookie = Request.Cookies["UsuarioSeleccionado"];
-                    if (cookie != null && !string.IsNullOrEmpty(cookie.Value))
-                    {
-                        string nombreUsuario = cookie.Value;
-                        var reader = new ReadingUser();
-                        var usuarios = reader.LeerUsuarios();
-                        usuario = usuarios.FirstOrDefault(u => u.Nombre != null && u.Nombre.Trim().Equals(nombreUsuario.Trim(), StringComparison.OrdinalIgnoreCase));
-                    }
-                }
-
-                if (usuario != null && !string.IsNullOrEmpty(usuario.Nombre) && ddlEmpresas != null)
-                {
-                    ddlEmpresas.SelectedValue = usuario.Nombre.Trim();
-                }
+                       
             }
         }
 
-        protected void ddlEmpresas_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // Obtener el nombre seleccionado
-            string nombreSeleccionado = ddlEmpresas.SelectedValue;
-
-            // Buscar el usuario correspondiente
-            var reader = new ReadingUser();
-            List<User> usuarios = reader.LeerUsuarios();
-            User usuarioSeleccionado = new User();
-            usuarioSeleccionado = usuarios.Find(u => u.Nombre.Trim().Equals(nombreSeleccionado, StringComparison.OrdinalIgnoreCase));
-
-            if (usuarioSeleccionado != null)
-            {
-                // Guardar el usuario en la sesión
-                Session["UsuarioSeleccionado"] = usuarioSeleccionado;
-                Response.Redirect(Request.RawUrl);
-            }
-        }
+       
 
         protected void btnLogin_Click(object sender, EventArgs e)
         {
 
-            if (ddlEmpresas.SelectedIndex == 0)
-            {
-                lblMensaje.Text = "Por favor, seleccione su empresa.";
-                return;
-            }
+            
 
             // Validar usuario y contraseña
             string usuario = txtUsuario.Text.Trim().ToUpper();
@@ -100,30 +58,18 @@ namespace ProyectoPedidosResto.Views
 
 
                 //Guardar el ingreso del mozo en la bbdd de Empresas
-                var readerMozosWEB = new ReadingWaitersWEB();
+                
                 var readerMozos = new ReadingWaiters();
-                if (Session["UsuarioSeleccionado"] != null)
-                {
-                    RegisterAccess registrousuario = new RegisterAccess();
-                    registrousuario.NombreMozo = resultado.MozoNombre;
-                    registrousuario.IdMozo = resultado.MozoId;
-                    registrousuario.IdUsuario = ((User)Session["UsuarioSeleccionado"]).IdUsuario;
-                    registrousuario.Fecha = DateTime.Now;
-                    readerMozosWEB.CambiarEstadoMozo(resultado.MozoId, "SI");
-                    readerMozos.CambiarEstadoMozo(resultado.MozoId, "SI");
-                    var readerIngresos = new ReadingRegisterAccess();
-                    readerIngresos.RegistrarIngresoSiNoExiste(registrousuario);
-                    User usuarioSeleccionado = new User();
-                    usuarioSeleccionado = (User)Session["UsuarioSeleccionado"];
-                    AuthHelper.CrearUsuariosSeleccionadoCookie(usuarioSeleccionado, registrousuario.Fecha);
-                }
+                
+                
+                
 
 
                 // Guarda el inicio de sesión
                 
                 DateTime ingreso = DateTime.Now;
                 readerMozos.GuardarFechaLogin(resultado.MozoId, ingreso);
-
+                readerMozos.CambiarEstadoMozo(resultado.MozoId, "SI");
                 AuthHelper.SetearMozoSession(resultado.MozoId, resultado.MozoNombre, ingreso);
                 AuthHelper.CrearMozoCookie(resultado.MozoId, resultado.MozoNombre, ingreso);
 
@@ -135,6 +81,7 @@ namespace ProyectoPedidosResto.Views
                 txtPassword.Text = string.Empty;
                 lblMensaje.Text = resultado.Mensaje;
             }
+
         }
 
         private (bool EsValido, int MozoId, string MozoNombre, string Mensaje) ValidarUsuario(string usuario, string contrasena)
@@ -145,7 +92,7 @@ namespace ProyectoPedidosResto.Views
 
             var readerMozos = new ReadingWaiters();
             var mozos = readerMozos.LeerMozos();
-            var readerMozosWEB = new ReadingWaitersWEB();
+            readerMozos.ActualizarEstadoMozosPorTiempo(DateTime.Now);
 
 
             foreach (var mozo in mozos)
@@ -153,31 +100,15 @@ namespace ProyectoPedidosResto.Views
                 string usuarioEsperado = mozo.Mozo_Nombre;
                 if (usuario.Equals(usuarioEsperado, StringComparison.OrdinalIgnoreCase))
                 {
-                    var mozosWEB = readerMozosWEB.LeerMozos(mozo.Mozo_Id, mozo.Mozo_Nombre);
-                    if (contrasena == mozo.Mozo_Contrasena)
+                   if(mozo.Mozo_Activo == "SI")
+                    {
+                        return (false, 0, null, "Usuario activo en otra sesion.");
+                    }
+
+
+                    if (contrasena == mozo.Mozo_Contrasena || mozo.Mozo_Contrasena == null)
                     {
 
-                        if (mozosWEB.Mozo_Activo == "SI")
-                        {
-                            // Revisar el último ingreso
-                            var readerIngresos = new ReadingEntries();
-                            var ingresos = readerIngresos.LeerIngresos();
-                            var ultimoIngreso = ingresos
-                                .Where(e => e.Ingreso_MozoId == mozo.Mozo_Id)
-                                .OrderByDescending(e => e.Ingreso_Entrada)
-                                .FirstOrDefault();
-
-                            if (ultimoIngreso != null && ultimoIngreso.Ingreso_Salida != null)
-                            {
-                                // El mozo terminó su último turno, marcar como inactivo y permitir login
-                                readerMozosWEB.CambiarEstadoMozo(mozo.Mozo_Id, "NO");
-                            }
-                            else
-                            {
-                                // Si no terminó su turno, sigue activo
-                                return (false, 0, null, "El mozo ya está activo en otra sesión.");
-                            }
-                        }
                         return (true, mozo.Mozo_Id, mozo.Mozo_Nombre, null);
                     }
 
@@ -185,21 +116,6 @@ namespace ProyectoPedidosResto.Views
             }
             return (false, 0, null, "Usuario o contraseña incorrectos.");
         }
-        protected void cargarusuarios()
-        {
-            var reader = new ReadingUser();
-            List<User> usuarios = reader.LeerUsuarios();
-            ddlEmpresas.Items.Clear();
-            ddlEmpresas.Items.Add(new ListItem("Seleccione su empresa", ""));
-
-            foreach (var user in usuarios)
-            {
-                // Usamos Cat_nombre como Text Y como Value
-                var nombre = user.Nombre.Trim();
-                ddlEmpresas.Items.Add(new ListItem(nombre, nombre));
-            }
-
-
-        }
+        
     }
 }

@@ -210,7 +210,6 @@
     <Compile Include="Domain\Entry.cs" />
     <Compile Include="Domain\RegisterAccess.cs" />
     <Compile Include="Domain\Table.cs" />
-    <Compile Include="Domain\User.cs" />
     <Compile Include="Domain\Waiter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -219,12 +218,8 @@
     <Compile Include="Models\ReadingArticle.cs" />
     <Compile Include="Models\ReadingCategory.cs" />
     <Compile Include="Models\ReadingCommands.cs" />
-    <Compile Include="Models\ReadingEntries.cs" />
-    <Compile Include="Models\ReadingRegisterAccess.cs" />
     <Compile Include="Models\ReadingTables.cs" />
-    <Compile Include="Models\ReadingUser.cs" />
     <Compile Include="Models\ReadingWaiters.cs" />
-    <Compile Include="Models\ReadingWaitersWEB.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\AuthHelper.cs" />
     <Compile Include="Views\Commands.aspx.cs">
